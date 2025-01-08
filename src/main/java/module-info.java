@@ -1,6 +1,7 @@
 module com.example {
     requires javafx.controls;
     requires javafx.fxml;
+	requires javafx.graphics;
 
     opens com.example.Controller to javafx.fxml; // Permet l'accès par réflexion à ce package
 

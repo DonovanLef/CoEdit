@@ -8,9 +8,9 @@ import javafx.stage.Stage;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/ChatView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
         Scene scene = new Scene(loader.load());
-        stage.setTitle("Chat Multicast");
+        stage.setTitle("Nom d'utilisateur");
         stage.setScene(scene);
         stage.show();
     }
