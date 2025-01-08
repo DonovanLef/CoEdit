@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.Controller.FolderController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+    
+    <!-- Liste des fichiers -->
+    <ListView fx:id="fileListView" prefHeight="200" prefWidth="300"/>
+    
+    <!-- Bouton pour ouvrir le fichier -->
+    <Button fx:id="openButton" text="Ouvrir le fichier" onAction="#openFile"/>
+</VBox>

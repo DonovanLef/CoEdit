@@ -57,7 +57,7 @@ public class ChatController {
         
         // Enregistrez le texte dans un fichier local
         try {
-            File file = new File("document.txt"); // Utilisez le chemin que vous préférez
+            File file = new File("documents/document.txt"); // Utilisez le chemin que vous préférez
             FileWriter writer = new FileWriter(file);
             writer.write(textToSave);
             writer.close();

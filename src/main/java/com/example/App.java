@@ -9,7 +9,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/ChatView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));
         Scene scene = new Scene(loader.load(), 400, 400);
         stage.setTitle("Éditeur partagé");
         stage.setScene(scene);
