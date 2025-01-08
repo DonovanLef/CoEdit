@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller.ChatController" spacing="10" alignment="CENTER" styleClass="root">
-    <ListView fx:id="messageList" VBox.vgrow="ALWAYS" />
-    <HBox spacing="10">
-        <TextField fx:id="messageInput" HBox.hgrow="ALWAYS" promptText="Écrivez un message..." />
-        <Button text="Envoyer" onAction="#onSendMessage" />
-    </HBox>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.Controller.ChatController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+    <TextArea fx:id="sharedTextArea" editable="true" prefHeight="300" prefWidth="400"/>
+    <Button text="Enregistrer" onAction="#onSave"/>
 </VBox>

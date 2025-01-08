@@ -1,4 +1,3 @@
-
 package com.example.Model;
 
 import java.net.*;
@@ -33,7 +32,7 @@ public class MulticastEditor {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 String message = new String(packet.getData(), 0, packet.getLength());
-                
+
                 // Utiliser le callback pour transmettre le message
                 if (messageListener != null) {
                     messageListener.accept(message);
@@ -53,5 +52,10 @@ public class MulticastEditor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Envoi du texte complet (à appeler lors de la sauvegarde)
+    public void sendText(String text) {
+        sendMessage("TEXT_UPDATE:" + text);
     }
 }

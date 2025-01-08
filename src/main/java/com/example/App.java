@@ -6,11 +6,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
-        Scene scene = new Scene(loader.load());
-        stage.setTitle("Nom d'utilisateur");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/ChatView.fxml"));
+        Scene scene = new Scene(loader.load(), 400, 400);
+        stage.setTitle("Éditeur partagé");
         stage.setScene(scene);
         stage.show();
     }
