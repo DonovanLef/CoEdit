@@ -26,7 +26,7 @@ public class MulticastEditor {
 
     // Écoute des messages en multicast
     private void listen() {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[10240];
         while (true) {
             try {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
