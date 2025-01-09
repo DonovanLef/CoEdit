@@ -68,35 +68,40 @@ public class ChatController {
             e.printStackTrace();
         }
 
-
-
         sharedTextArea.setOnKeyReleased(event -> {
-            int caretPosition = sharedTextArea.getCaretPosition();
+            if (event.getCode().isLetterKey() || event.getCode().isDigitKey() || event.getCode().isWhitespaceKey()
+                    || event.getCode().isKeypadKey()) {
+                System.out.println("pass2");
+                int caretPosition = sharedTextArea.getCaretPosition();
 
-            String beforeCaret = sharedTextArea.getText().substring(0, caretPosition);
-            String afterCaret = sharedTextArea.getText().substring(caretPosition);
-            
-            int startOfLine = beforeCaret.lastIndexOf('\n') + 1;
+                String beforeCaret = sharedTextArea.getText().substring(0, caretPosition);
+                String afterCaret = sharedTextArea.getText().substring(caretPosition);
 
-            int endOfLine = afterCaret.indexOf('\n');
-            if (endOfLine == -1)
-                endOfLine = afterCaret.length(); // S'il n'y a pas de '\n', prendre jusqu'à la fin
+                int startOfLine = beforeCaret.lastIndexOf('\n') + 1;
 
-            String currentLine = sharedTextArea.getText().substring(startOfLine, caretPosition + endOfLine);
+                int endOfLine = afterCaret.indexOf('\n');
+                if (endOfLine == -1)
+                    endOfLine = afterCaret.length(); // S'il n'y a pas de '\n', prendre jusqu'à la fin
 
-            int lineNumber = beforeCaret.split("\n").length - 1;
+                String currentLine = sharedTextArea.getText().substring(startOfLine, caretPosition + endOfLine);
 
-            System.out.println(lineNumber);
-            LineModel currentLineModel = lines.get(lineNumber);
+                int lineNumber = beforeCaret.split("\n").length - 1;
 
-            if (currentLineModel == null) {
-                lines.add(new LineModel(System.currentTimeMillis(), currentLine));
+                System.out.println(lineNumber);
+                LineModel currentLineModel = null;
+                
+                if (lines.size() > lineNumber && lineNumber >= 0)
+                        currentLineModel = lines.get(lineNumber);
+
+                if (currentLineModel == null) {
+                    lines.add(new LineModel(System.currentTimeMillis(), currentLine));
+                    currentLineModel = lines.get(lines.size()-1);
+                } else {
+                    currentLineModel.setLine(currentLine);
+                }
+
+                multicastEditor.sendMessage(getLineFormat(currentLineModel));
             }
-            else {
-                currentLineModel.setLine(currentLine);
-            }
-
-            multicastEditor.sendMessage(getLineFormat(currentLineModel));
         });
 
     }
@@ -111,6 +116,7 @@ public class ChatController {
 
     // Méthode appelée lorsqu'un message est reçu
     private void onMessageReceived(String message) {
+        System.out.println("pass");
         if (message.startsWith("<?") && message.contains(";>")) {
             // Supprimer les balises "<?" et ">"
             message = message.substring(2, message.length());
