@@ -2,6 +2,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
@@ -10,7 +11,8 @@
     
     <!-- Liste des fichiers -->
     <ListView fx:id="fileListView" prefHeight="200" prefWidth="300"/>
-    
+    <!-- TextField pour saisir le nom du fichier -->
+    <TextField fx:id="fileNameTextField" promptText="Entrez le nom du fichier"/>
     <!-- Bouton pour ouvrir le fichier -->
-    <Button fx:id="openButton" text="Ouvrir le fichier" onAction="#openFile"/>
+    <Button fx:id="btnAdd" text="+" onAction="#createFile"/>
 </VBox>
