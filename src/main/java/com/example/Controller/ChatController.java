@@ -5,7 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -20,6 +23,7 @@ public class ChatController {
 
     private MulticastEditor multicastEditor;
 
+    private File file;
 
     @FXML
     public void initialize() {
@@ -57,7 +61,7 @@ public class ChatController {
         
         // Enregistrez le texte dans un fichier local
         try {
-            File file = new File("documents/document.txt"); // Utilisez le chemin que vous préférez
+            File file = new File("documents/"+this.file.getName()); // Utilisez le chemin que vous préférez
             FileWriter writer = new FileWriter(file);
             writer.write(textToSave);
             writer.close();
@@ -66,4 +70,23 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+    public void setFile(File file) {
+        this.file = file;
+    try {
+        // Charger le contenu du fichier dans le TextArea
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StringBuilder content = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            content.append(line).append("\n");
+        }
+        reader.close();
+
+        // Mettre le contenu dans la zone de texte
+        sharedTextArea.setText(content.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
 }

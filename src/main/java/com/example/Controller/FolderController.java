@@ -5,10 +5,13 @@ import com.example.Model.Folder;
 
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -64,19 +67,19 @@ public class FolderController {
     private void openFile(String file) {
             File selectedFile = folder.getFile(file);
 
-            if (selectedFile != null) {
-                // Lire le contenu du fichier et l'afficher dans la zone de texte
-                try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
-                    StringBuilder content = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        content.append(line).append("\n");
-                    }
-                    fileContentArea.setText(content.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            try {
+				// Charger le fichier FXML de la nouvelle vue
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ChatView.fxml"));
+				Parent chatView = loader.load();
+
+				ChatController chatController = loader.getController();
+                chatController.setFile(selectedFile);
+				Stage stage = (Stage) btnAdd.getScene().getWindow();
+				stage.setScene(new Scene(chatView));
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         
     }
     @FXML
