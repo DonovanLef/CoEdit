@@ -59,7 +59,7 @@ public class ChatController {
 
     @FXML
     public void initialize() {
-        lines = readLinesFromFile("document.txt");
+        lines = readLinesFromFile("documents/document.txt");
         this.setTextArea();
 
         try {
