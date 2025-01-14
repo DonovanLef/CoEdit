@@ -20,16 +20,11 @@ public class NameEntryController {
 		if (!userName.isEmpty()) {
 			try {
 				// Charger le fichier FXML de la nouvelle vue
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ChatView.fxml"));
-				Parent chatView = loader.load();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
+				Parent folderView = loader.load();
 
-				// Optionnel : Passer des données au contrôleur de ChatView
-				// ChatController controller = loader.getController();
-				// controller.setUserName(userName);
-
-				// Obtenir la scène actuelle et la remplacer par la nouvelle
 				Stage stage = (Stage) nameField.getScene().getWindow();
-				stage.setScene(new Scene(chatView));
+				stage.setScene(new Scene(folderView));
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();

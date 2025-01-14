@@ -28,6 +28,7 @@ public class ChatController {
 
     private MulticastEditor multicastEditor;
 
+    private File file;
     public static ArrayList<LineModel> readLinesFromFile(String filePath) {
         ArrayList<LineModel> lineModels = new ArrayList<>();
 
@@ -58,7 +59,7 @@ public class ChatController {
 
     @FXML
     public void initialize() {
-        lines = readLinesFromFile("document.txt");
+        lines = readLinesFromFile("documents/document.txt");
         if (lines.size() == 0)
             lines.add(new LineModel(System.currentTimeMillis()));
             
@@ -160,7 +161,7 @@ public class ChatController {
 
         // Enregistrez le texte dans un fichier local
         try {
-            File file = new File("document.txt"); // Utilisez le chemin que vous préférez
+            File file = new File("documents/"+this.file.getName()); // Utilisez le chemin que vous préférez
             FileWriter writer = new FileWriter(file);
             writer.write(getTextWithBalises());
             writer.close();
@@ -169,6 +170,25 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+    public void setFile(File file) {
+        this.file = file;
+    try {
+        // Charger le contenu du fichier dans le TextArea
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StringBuilder content = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            content.append(line).append("\n");
+        }
+        reader.close();
+
+        // Mettre le contenu dans la zone de texte
+        sharedTextArea.setText(content.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
 
     private String getTextWithBalises() {
         String textArea = "";
