@@ -29,7 +29,9 @@ public class ChatController {
     private MulticastEditor multicastEditor;
 
     private File file;
-    public static ArrayList<LineModel> readLinesFromFile(String filePath) {
+
+    public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
+        String filePath = fileRepo + "/" + this.file.getName();
         ArrayList<LineModel> lineModels = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -39,6 +41,7 @@ public class ChatController {
                 if (line.startsWith("<?") && line.contains(";>")) {
                     // Supprimer les balises "<?" et ">"
                     line = line.substring(2, line.length());
+                    System.out.println(line);
                     // Diviser la ligne en idLine et le contenu
                     String[] parts = line.split(";>");
 
@@ -59,9 +62,6 @@ public class ChatController {
 
     @FXML
     public void initialize() {
-        lines = readLinesFromFile("documents/document.txt");
-        this.setTextArea();
-
         try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
             multicastEditor = new MulticastEditor(this::onMessageReceived);
@@ -84,7 +84,7 @@ public class ChatController {
                 if (endOfLine == -1)
                     endOfLine = afterCaret.length(); // S'il n'y a pas de '\n', prendre jusqu'à la fin
 
-                if (startOfLine == -1) 
+                if (startOfLine == -1)
                     startOfLine = 0;
 
                 String currentLine = sharedTextArea.getText().substring(startOfLine, caretPosition + endOfLine).trim();
@@ -103,9 +103,7 @@ public class ChatController {
                 }
 
                 multicastEditor.sendMessage(getLineFormat(currentLineModel));
-            }
-            else if (event.getCode() == KeyCode.ENTER) {
-                System.out.println("newLine");
+            } else if (event.getCode() == KeyCode.ENTER) {
                 lines.add(new LineModel(System.currentTimeMillis()));
             }
         });
@@ -158,7 +156,7 @@ public class ChatController {
 
         // Enregistrez le texte dans un fichier local
         try {
-            File file = new File("documents/"+this.file.getName()); // Utilisez le chemin que vous préférez
+            File file = new File("documents/" + this.file.getName()); // Utilisez le chemin que vous préférez
             FileWriter writer = new FileWriter(file);
             writer.write(getTextWithBalises());
             writer.close();
@@ -167,25 +165,27 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+
     public void setFile(File file) {
         this.file = file;
-    try {
-        // Charger le contenu du fichier dans le TextArea
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        StringBuilder content = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            content.append(line).append("\n");
+        try {
+            // Charger le contenu du fichier dans le TextArea
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            reader.close();
+
+            // Mettre le contenu dans la zone de texte
+            lines = readLinesFromFile("documents/");
+            if (lines.size() == 0)
+                lines.add(new LineModel(System.currentTimeMillis()));
+    
+            for (LineModel lineModel : lines) {
+                System.out.println(getLineFormat(lineModel));
+            }
+            this.setTextArea();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        reader.close();
-
-        // Mettre le contenu dans la zone de texte
-        sharedTextArea.setText(content.toString());
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-}
-
 
     private String getTextWithBalises() {
         String textArea = "";
