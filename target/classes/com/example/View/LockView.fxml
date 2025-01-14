@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller.ScreenLockController" spacing="10" alignment="CENTER" styleClass="root">
+    <Label text="L'écran est verrouillé. Veuillez patienter." style="-fx-font-size: 16px;" />
+    <Button text="Déverrouiller" onAction="#closeLock" style="-fx-font-size: 14px;" />
+</VBox>

@@ -19,12 +19,12 @@ public class NameEntryController {
 		String userName = nameField.getText();
 		if (!userName.isEmpty()) {
 			try {
-				// Charger le fichier FXML de la nouvelle vue
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
-				Parent folderView = loader.load();
-
-				Stage stage = (Stage) nameField.getScene().getWindow();
-				stage.setScene(new Scene(folderView));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/view/FolderView.fxml"));
+				Parent root = loader.load();
+	
+				Stage stage = new Stage();
+				stage.setTitle("Nouvelle Vue");
+				stage.setScene(new Scene(root));
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();

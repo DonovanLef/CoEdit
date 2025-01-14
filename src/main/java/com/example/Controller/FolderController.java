@@ -1,24 +1,23 @@
 package com.example.Controller;
 
 
+import java.io.File;
+import java.io.IOException;
+
 import com.example.Model.Folder;
 
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class FolderController {
 
@@ -33,8 +32,13 @@ public class FolderController {
     
     private Folder folder;
 
+    private ScreenLockController screenLockController;
+
     @FXML
     public void initialize() {
+
+        this.screenLockController = new ScreenLockController();
+
         // Initialiser le dossier avec des fichiers
         folder = new Folder();
 
@@ -86,6 +90,7 @@ public class FolderController {
 			}
         
     }
+
     @FXML
     public void createFile() {
         // Récupérer le nom du fichier à partir du TextField
@@ -110,6 +115,7 @@ public class FolderController {
             fileListView.getItems().add(fileName);
         }
     }
+
     private void showAlert(String title, String message, AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -117,6 +123,10 @@ public class FolderController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    
+
+    @FXML
+    private void lockScreen(ActionEvent event) {
+        this.screenLockController.openLock(event);
+    }
+
 }
