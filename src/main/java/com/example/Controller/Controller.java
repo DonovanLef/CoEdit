@@ -28,7 +28,7 @@ public class Controller {
 	public ConflictsController getConflictsController() {
 		return conflictsController;
 	}
-	public NetworkController getNetworkModel() {
+	public NetworkController getNetworkController() {
 		return networkController;
 	}
 	public FolderController getFolderController() {
