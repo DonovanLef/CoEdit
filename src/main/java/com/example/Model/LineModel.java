@@ -7,11 +7,13 @@ public class LineModel {
 	private String line;
 
 	public LineModel(long idLine, String line) {
+		System.out.println("test2");
 		this.idLine = idLine;
 		this.line = line;
 	}
 
 	public LineModel(long idLine) {
+		System.out.println("test1");
 		this.idLine = idLine;
 		this.line = "";
 	}
