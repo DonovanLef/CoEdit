@@ -12,7 +12,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Controller ctrl = new Controller();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/ConflictsView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Éditeur partagé");
         stage.setScene(scene);

@@ -13,6 +13,7 @@ public class NetworkController {
 		this.ctrl = ctrl;
 	}
 	public void handleRequest(String message) {
-		this.ctrl.getChatController().onMessageReceived(message);
+		String res  = this.networkModel.handleRequest(message);	
+		this.ctrl.getChatController().onMessageReceived(res);
 	}
 }
