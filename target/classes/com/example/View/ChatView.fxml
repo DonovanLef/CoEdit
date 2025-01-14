@@ -7,6 +7,6 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.Controller.ChatController"
       spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-    <TextArea fx:id="sharedTextArea" editable="true" prefHeight="300" prefWidth="400"/>
+    <TextArea fx:id="sharedTextArea" editable="true" prefHeight="300" prefWidth="400" wrapText="true"/>
     <Button text="Enregistrer" onAction="#onSave"/>
 </VBox>
