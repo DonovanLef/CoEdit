@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.Controller.ConflictsController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+    
+    <!-- Conteneur horizontal pour deux zones -->
+    <HBox spacing="20" alignment="CENTER">
+        
+        <!-- Conteneur pour la première TextArea et son bouton -->
+        <VBox spacing="10" alignment="CENTER">
+            <TextArea fx:id="textAreaLeft" editable="true" prefHeight="300" prefWidth="400"/>
+            <Button text="Sélectionner gauche" onAction="#onSelectLeft"/>
+        </VBox>
+        
+        <!-- Conteneur pour la deuxième TextArea et son bouton -->
+        <VBox spacing="10" alignment="CENTER">
+            <TextArea fx:id="textAreaRight" editable="true" prefHeight="300" prefWidth="400"/>
+            <Button text="Sélectionner droite" onAction="#onSelectRight"/>
+        </VBox>
+        
+    </HBox>
+
+</VBox>

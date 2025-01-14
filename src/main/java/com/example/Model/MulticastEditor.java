@@ -58,4 +58,5 @@ public class MulticastEditor {
     public void sendText(String text) {
         sendMessage("TEXT_UPDATE:" + text);
     }
+    
 }
