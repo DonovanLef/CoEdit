@@ -59,6 +59,9 @@ public class ChatController {
     @FXML
     public void initialize() {
         lines = readLinesFromFile("document.txt");
+        if (lines.size() == 0)
+            lines.add(new LineModel(System.currentTimeMillis()));
+            
         this.setTextArea();
 
         try {
