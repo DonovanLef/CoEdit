@@ -34,6 +34,12 @@ public class FolderController {
 
     private ScreenLockController screenLockController;
 
+    private Controller ctrl;
+
+    public void setController(Controller ctrl) {
+        this.ctrl = ctrl;
+    }
+
     @FXML
     public void initialize() {
 

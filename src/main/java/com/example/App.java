@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.Controller.Controller;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,8 +11,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/LockView.fxml"));
-        Scene scene = new Scene(loader.load(), 400, 400);
+        Controller ctrl = new Controller();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
+        Scene scene = new Scene(loader.load());
         stage.setTitle("Éditeur partagé");
         stage.setScene(scene);
         stage.show();

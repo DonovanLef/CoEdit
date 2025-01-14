@@ -2,6 +2,8 @@ package com.example.Controller;
 
 import com.example.Model.LineModel;
 import com.example.Model.MulticastEditor;
+import com.example.Model.NetworkModel;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -29,6 +31,12 @@ public class ChatController {
     private MulticastEditor multicastEditor;
 
     private File file;
+
+    private Controller ctrl;
+
+    public void setController(Controller ctrl) {
+        this.ctrl = ctrl;
+    }
 
     public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
         String filePath = fileRepo + "/" + this.file.getName();
@@ -64,7 +72,7 @@ public class ChatController {
     public void initialize() {
         try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
-            multicastEditor = new MulticastEditor(this::onMessageReceived);
+            multicastEditor = new MulticastEditor(this.ctrl.getNetworkModel()::handleRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,7 +127,7 @@ public class ChatController {
     }
 
     // Méthode appelée lorsqu'un message est reçu
-    private void onMessageReceived(String message) {
+    public void onMessageReceived(String message) {
         if (message.startsWith("<?") && message.contains(";>")) {
             // Supprimer les balises "<?" et ">"
             message = message.substring(2, message.length());
