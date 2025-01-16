@@ -45,7 +45,7 @@ public class Document implements Serializable{
 		return res;
 	}
 
-	public void save(){
+	public void save(String path){
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(this.name + ".ser"))) {
 			oos.writeObject(this);
 		} catch (IOException e) {
@@ -81,5 +81,7 @@ public class Document implements Serializable{
         }
         return null;
 	}
+
+
 
 }

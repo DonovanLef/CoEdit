@@ -21,8 +21,12 @@ public class NetworkModel {
 
 
 	// Cette méthode est utilisée pour la modification de lignes
-	public LineModel handle200(byte[] bytes) {
+	public LineModel handle100(byte[] bytes) {
 		return LineModel.restoreByBytes(bytes);
+
+	}
+	public Document handle200(byte[] bytes) {
+		return Document.restoreByBytes(bytes);
 
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 
+import com.example.Model.Document;
 import com.example.Model.Folder;
 
 
@@ -38,16 +39,19 @@ public class FolderController {
 
     public void setController(Controller ctrl) {
         this.ctrl = ctrl;
+        
+        
+        
     }
     @FXML
     public void initialize() {
         // Initialiser le dossier avec des fichiers
-        folder = new Folder();
-
+        this.folder = new Folder();
         // Ajouter des fichiers pour l'exemple
         folder.scanDocumentsFolder();
         // Ajouter la liste des fichiers au ListView
         fileListView.getItems().addAll(folder.getFileNames());
+        
 
         
 
@@ -123,6 +127,11 @@ public class FolderController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    
+    public void createDocument(Document doc) {
+        doc.save(Folder.PATH);
+    }
+    public void deleteDocument(String name) {
+        folder.deleteFile(name);
+        fileListView.getItems().remove(name);
+    }
 }
