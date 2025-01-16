@@ -77,19 +77,49 @@ public class ChatController {
             e.printStackTrace();
         }
 
-        sharedTextArea.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            enterPressed = event.getCode() == KeyCode.ENTER;
-            deletePressed = event.getCode() == KeyCode.BACK_SPACE;
-            isUserChange = event.getCode().isLetterKey();
-        });
+        // sharedTextArea.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        //     enterPressed = event.getCode() == KeyCode.ENTER;
+        //     deletePressed = event.getCode() == KeyCode.BACK_SPACE;
+        //     isUserChange = event.getCode().isLetterKey();
+        // });
 
 
-        sharedTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (isUserChange || enterPressed || deletePressed) {
-                isUserChange = false; 
-                handleUserTextChange(oldValue, newValue);
+        // sharedTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
+        //     if (isUserChange || enterPressed || deletePressed) {
+        //         isUserChange = false; 
+        //         handleUserTextChange(oldValue, newValue);
+        //     }
+        // });
+
+        sharedTextArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                updateLineModels(newValue);
             }
         });
+    }
+
+    private void updateLineModels(String newText) {
+        String[] newLines = newText.split("\n");
+
+        // Synchroniser lines avec newLines
+        for (int i = 0; i < newLines.length; i++) {
+            if (i < lines.size()) {
+                // Mettre à jour la ligne existante
+                lines.get(i).setLine(newLines[i]);
+            } else {
+                // Ajouter une nouvelle ligne avec un GUID unique
+                lines.add(new LineModel(newLines[i]));
+            }
+        }
+
+        // Supprimer les lignes excédentaires si nécessaire
+        while (lines.size() > newLines.length) {
+            lines.remove(lines.size() - 1);
+        }
+
+        // Debug : Afficher les identifiants et le contenu
+        lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine()));
     }
 
     private void setTextArea() {
@@ -164,7 +194,7 @@ public class ChatController {
             // Mettre le contenu dans la zone de texte
             lines = readLinesFromFile("documents/");
             if (lines.size() == 0)
-                lines.add(new LineModel(System.currentTimeMillis()));
+                lines.add(new LineModel());
 
             this.setTextArea();
         } catch (IOException e) {
