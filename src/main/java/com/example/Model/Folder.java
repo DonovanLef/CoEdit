@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 public class Folder {
 
     private List<File> files;
+    public static final String PATH = System.getProperty("user.dir") +"/documents/";
 
     public Folder() {
         files = new ArrayList<>();
@@ -47,9 +48,7 @@ public class Folder {
     }
     public void scanDocumentsFolder() {
         // Remplacez ceci par le chemin de votre dossier Documents
-        String documentsPath =System.getProperty("user.dir") +"/documents"; // Chemin vers Documents sur la machine de l'utilisateur
-        System.out.println(documentsPath); // Chemin racine du projet
-        File folder = new File(documentsPath);
+        File folder = new File(PATH);
         if (folder.exists() && folder.isDirectory()) {
             File[] listOfFiles = folder.listFiles();
             if (listOfFiles != null) {
@@ -63,10 +62,8 @@ public class Folder {
     }
     public void renameFile(String oldName, String newName, ListView<String> fileListView) {
         try {
-            String projectPath = System.getProperty("user.dir");
-            String documentsPath = projectPath + File.separator + "documents";
-            File oldFile = new File(documentsPath, oldName);
-            File newFile = new File(documentsPath, newName);
+            File oldFile = new File(PATH, oldName);
+            File newFile = new File(PATH, newName);
     
             if (oldFile.exists() && oldFile.renameTo(newFile)) {
                 System.out.println("Fichier renommé de " + oldName + " à " + newName);
@@ -82,9 +79,7 @@ public class Folder {
     }
     public String createFile(String fileName) {
         try {
-            String projectPath = System.getProperty("user.dir");
-            String documentsPath = projectPath + File.separator + "documents";
-            File newFile = new File(documentsPath, fileName);
+            File newFile = new File(PATH, fileName);
     
             if (newFile.createNewFile()) {
                 System.out.println("Fichier créé : " + newFile.getName());
@@ -98,4 +93,18 @@ public class Folder {
             return "Erreur: Une erreur s'est produite lors de la création du fichier.";
         }
     }
+    public void deleteFile(String name) {
+        File file = getFile(name);
+        if (file != null) {
+            if (file.delete()) {
+                System.out.println("Fichier supprimé : " + name);
+                files.remove(file);
+            } else {
+                System.out.println("Impossible de supprimer le fichier.");
+            }
+            files.remove(file);
+        }
+    }
+    
+    
 }

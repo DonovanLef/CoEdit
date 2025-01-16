@@ -26,7 +26,7 @@ public class NameEntryController {
 		if (!userName.isEmpty()) {
 			try {
 				// Charger le fichier FXML de la nouvelle vue
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));
 				Parent folderView = loader.load();
 
 				Stage stage = (Stage) nameField.getScene().getWindow();

@@ -16,15 +16,16 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Controller ctrl = new Controller();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));
         byte[] byteArray = ByteBuffer.allocate(2).putShort((short) 200).array();
         
         Document doc = new Document();
         doc.setName("Matthewthewthew");
         doc.addLine(new LineModel(System.currentTimeMillis(), "Hello"));
-        doc.toByteArray();
+        ctrl.getFolderController().createDocument(doc);
+        ctrl.getFolderController().deleteDocument(doc.getName());
         //concatenate the two byte arrays
-        ctrl.getNetworkController().handleReceive(concatenateByteArrays(byteArray, doc.toByteArray()));
+        //ctrl.getNetworkController().handleReceive(concatenateByteArrays(byteArray, doc.toByteArray()));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Éditeur partagé");
         stage.setScene(scene);
