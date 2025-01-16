@@ -25,9 +25,9 @@ public class NameEntryController {
 		String userName = nameField.getText();
 		if (!userName.isEmpty()) {
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/view/FolderView.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
 				Parent root = loader.load();
-	
+
 				Stage stage = new Stage();
 				stage.setTitle("Nouvelle Vue");
 				stage.setScene(new Scene(root));

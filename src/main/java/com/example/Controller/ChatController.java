@@ -1,21 +1,20 @@
 package com.example.Controller;
 
-import com.example.Model.LineModel;
-import com.example.Model.MulticastEditor;
-import com.example.Model.NetworkModel;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.control.Button;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.example.Model.LineModel;
+import com.example.Model.MulticastEditor;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 public class ChatController {
 
@@ -206,4 +205,5 @@ public class ChatController {
     private String getLineFormat(LineModel lineModel) {
         return "<?" + lineModel.getIdLine() + ";>" + lineModel.getLine();
     }
+
 }

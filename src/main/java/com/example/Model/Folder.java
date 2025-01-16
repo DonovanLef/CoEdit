@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.control.ListView;
-
 public class Folder {
 
     private List<File> files;
@@ -20,6 +18,11 @@ public class Folder {
     // Méthode pour ajouter un fichier au dossier
     public void addFile(File file) {
         files.add(file);
+    }
+
+    // Methode pour supprimer un fichier au dossier
+    public void removeFile(File file) {
+        files.remove(file);
     }
 
     // Méthode pour récupérer tous les fichiers du dossier
@@ -45,6 +48,7 @@ public class Folder {
         }
         return fileNames;
     }
+
     public void scanDocumentsFolder() {
         // Remplacez ceci par le chemin de votre dossier Documents
         String documentsPath =System.getProperty("user.dir") +"/documents"; // Chemin vers Documents sur la machine de l'utilisateur
@@ -61,7 +65,8 @@ public class Folder {
             }
         }
     }
-    public void renameFile(String oldName, String newName, ListView<String> fileListView) {
+
+    public void renameFile(String oldName, String newName) {
         try {
             String projectPath = System.getProperty("user.dir");
             String documentsPath = projectPath + File.separator + "documents";
@@ -69,17 +74,16 @@ public class Folder {
             File newFile = new File(documentsPath, newName);
     
             if (oldFile.exists() && oldFile.renameTo(newFile)) {
-                System.out.println("Fichier renommé de " + oldName + " à " + newName);
+                // System.out.println("Fichier renommé de " + oldName + " à " + newName);
             } else {
-                System.out.println("Impossible de renommer le fichier.");
-                // Rétablir l'ancien nom dans la liste
-                int index = fileListView.getItems().indexOf(newName);
-                fileListView.getItems().set(index, oldName);
+                // Rétablir l'ancien nom de fichier dans le dossier
+                files.set(files.indexOf(newFile), oldFile);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public String createFile(String fileName) {
         try {
             String projectPath = System.getProperty("user.dir");
@@ -87,7 +91,6 @@ public class Folder {
             File newFile = new File(documentsPath, fileName);
     
             if (newFile.createNewFile()) {
-                System.out.println("Fichier créé : " + newFile.getName());
                 addFile(newFile); // Ajouter au modèle
                 return "";
             } else {
@@ -98,4 +101,21 @@ public class Folder {
             return "Erreur: Une erreur s'est produite lors de la création du fichier.";
         }
     }
+
+    public void deleteFile(String fileName) {
+        String projectPath = System.getProperty("user.dir");
+        String documentsPath = projectPath + File.separator + "documents/";
+        File file = new File(documentsPath + fileName);
+
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                // System.out.println("Fichier supprimé : " + fileName);
+            } else {
+                // System.err.println("Erreur lors de la suppression du fichier : " + fileName);
+            }
+        } else {
+            // System.err.println("Fichier introuvable : " + fileName);
+        }
+    }
+
 }

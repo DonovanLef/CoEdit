@@ -14,6 +14,8 @@ public class App extends Application {
         Controller ctrl = new Controller();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
         Scene scene = new Scene(loader.load());
+        stage.setHeight(400);
+        stage.setWidth(500);
         stage.setTitle("Éditeur partagé");
         stage.setScene(scene);
         stage.show();
