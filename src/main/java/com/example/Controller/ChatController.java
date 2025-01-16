@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import com.example.Model.Document;
 import com.example.Model.LineModel;
 import com.example.Model.MulticastEditor;
 import com.example.Model.NetworkModel;
@@ -46,38 +47,39 @@ public class ChatController {
         this.ctrl = ctrl;
     }
 
-    public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
-        String filePath = fileRepo + "/" + this.file.getName();
-        ArrayList<LineModel> lineModels = new ArrayList<>();
+    // public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
+    //     String filePath = fileRepo + "/" + this.file.getName();
+    //     ArrayList<LineModel> lineModels = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Supposons que chaque ligne est au format "<?'idLine'; line"
-                if (line.startsWith("<?") && line.contains(";>")) {
-                    // Supprimer les balises "<?" et ">"
-                    line = line.substring(2, line.length());
-                    // Diviser la ligne en idLine et le contenu
-                    String[] parts = line.split(";>");
+    //     try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+    //         String line;
+    //         while ((line = br.readLine()) != null) {
+    //             // Supposons que chaque ligne est au format "<?'idLine'; line"
+    //             if (line.startsWith("<?") && line.contains(";>")) {
+    //                 // Supprimer les balises "<?" et ">"
+    //                 line = line.substring(2, line.length());
+    //                 // Diviser la ligne en idLine et le contenu
+    //                 String[] parts = line.split(";>");
 
-                    // S'assurer que parts contient deux éléments après le split
-                    if (parts.length >= 2) {
-                        if (!parts[1].isEmpty())
-                            lineModels.add(new LineModel(Long.parseLong(parts[0]), parts[1]));
-                    } else {
-                        System.err.println("Ligne mal formée : " + line);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    //                 // S'assurer que parts contient deux éléments après le split
+    //                 if (parts.length >= 2) {
+    //                     if (!parts[1].isEmpty())
+    //                         lineModels.add(new LineModel(Long.parseLong(parts[0]), parts[1]));
+    //                 } else {
+    //                     System.err.println("Ligne mal formée : " + line);
+    //                 }
+    //             }
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
 
-        return lineModels;
-    }
+    //     return lineModels;
+    // }
 
     @FXML
     public void initialize() {
+        if (this.ctrl == null) this.ctrl = new Controller();
         try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
             multicastEditor = new MulticastEditor(this.ctrl.getNetworkController()::handleReceive);
@@ -113,11 +115,16 @@ public class ChatController {
         // Synchroniser lines avec newLines
         for (int i = 0; i < newLines.length; i++) {
             if (i < lines.size()) {
-                // Mettre à jour la ligne existante
-                lines.get(i).setLine(newLines[i]);
+                if (!lines.get(i).getLine().equals(newLines[i])) {
+                    // Mettre à jour la ligne existante si elle a changé
+                    lines.get(i).setLine(newLines[i]);
+                    multicastEditor.sendMessage(getLineFormat(lines.get(i)));
+                }
             } else {
                 // Ajouter une nouvelle ligne avec un GUID unique
-                lines.add(new LineModel(newLines[i]));
+                LineModel newLineModel = new LineModel(newLines[i]);
+                lines.add(newLineModel);
+                multicastEditor.sendMessage(getLineFormat(newLineModel));
             }
         }
 
@@ -129,6 +136,7 @@ public class ChatController {
         // Debug : Afficher les identifiants et le contenu
         lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine()));
     }
+    
 
     private void setTextArea() {
         String textArea = "";
@@ -140,7 +148,8 @@ public class ChatController {
             }
 
         }
-        textArea = textArea.substring(0, textArea.length()-1);
+        if (!textArea.isEmpty())
+            textArea = textArea.substring(0, textArea.length()-1);
         sharedTextArea.setText(textArea);
     }
 
@@ -186,10 +195,13 @@ public class ChatController {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             reader.close();
 
-            // Mettre le contenu dans la zone de texte
-            lines = readLinesFromFile("documents/");
-            if (lines.size() == 0)
+            Document doc = Document.restoreByFile("documents/" + this.file.getName());
+            if (doc != null)
+                lines = (ArrayList<LineModel>) doc.getLines();
+            else {
+                lines = new ArrayList<>();
                 lines.add(new LineModel());
+            }
 
             this.setTextArea();
         } catch (IOException e) {
@@ -295,7 +307,7 @@ public class ChatController {
         System.out.println("lineNb : " + lineNumber);
         if (endOfLine.isEmpty()) {
             System.out.println("test1");
-            LineModel newLineModel = new LineModel(System.currentTimeMillis(), "<!:>");
+            LineModel newLineModel = new LineModel("<!:>");
             lines.add(lineNumber+1, newLineModel);
             multicastEditor.sendMessage(getLineFormat(newLineModel));
         } else {
@@ -303,7 +315,7 @@ public class ChatController {
             lineModel.setLine(currentLine);
             multicastEditor.sendMessage(getLineFormat(lineModel));
 
-            LineModel newLineModel = new LineModel(System.currentTimeMillis(), endOfLine);
+            LineModel newLineModel = new LineModel(endOfLine);
             lines.add(lineNumber+1, newLineModel);
 
             multicastEditor.sendMessage(getLineFormat(newLineModel));
