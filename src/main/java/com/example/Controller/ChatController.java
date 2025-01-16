@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import com.example.Model.Document;
+import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.MulticastEditor;
 import com.example.Model.NetworkModel;
@@ -135,6 +136,8 @@ public class ChatController {
 
         // Debug : Afficher les identifiants et le contenu
         lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine()));
+
+        this.setTextArea();
     }
     
 
@@ -175,17 +178,9 @@ public class ChatController {
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
     @FXML
     private void onSave() {
-
-        // Enregistrez le texte dans un fichier local
-        try {
-            File file = new File("documents/" + this.file.getName()); // Utilisez le chemin que vous préférez
-            FileWriter writer = new FileWriter(file);
-            writer.write(getTextWithBalises());
-            writer.close();
-            System.out.println("Document sauvegardé !");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Document doc = new Document();
+        doc.setLines(lines);
+        doc.save(Folder.PATH);
     }
 
     public void setFile(File file) {
@@ -195,7 +190,7 @@ public class ChatController {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             reader.close();
 
-            Document doc = Document.restoreByFile("documents/" + this.file.getName());
+            Document doc = Document.restoreByFile(Folder.PATH);
             if (doc != null)
                 lines = (ArrayList<LineModel>) doc.getLines();
             else {
