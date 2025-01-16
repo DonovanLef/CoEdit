@@ -2,9 +2,8 @@ package com.example.Controller;
 
 import com.example.Model.LineModel;
 import com.example.Model.MulticastEditor;
+import com.example.Model.NetworkModel;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -39,6 +38,12 @@ public class ChatController {
     private boolean enterPressed = false;
     private boolean deletePressed = false;
 
+    private Controller ctrl;
+
+    public void setController(Controller ctrl) {
+        this.ctrl = ctrl;
+    }
+
     public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
         String filePath = fileRepo + "/" + this.file.getName();
         ArrayList<LineModel> lineModels = new ArrayList<>();
@@ -72,7 +77,8 @@ public class ChatController {
     @FXML
     public void initialize() {
         try {
-            multicastEditor = new MulticastEditor(this::onMessageReceived);
+            // Initialisation du MulticastEditor avec un callback pour recevoir les messages
+            multicastEditor = new MulticastEditor(this.ctrl.getNetworkController()::handleReceive);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,34 +142,21 @@ public class ChatController {
         sharedTextArea.setText(textArea);
     }
 
-    // Méthode appelée lorsqu'un message est reçu
-    private void onMessageReceived(String message) {
-        if (message.startsWith("<?") && message.contains(";>")) {
-            // Supprimer les balises "<?" et ">"
-            message = message.substring(2, message.length());
-
-            // Diviser la ligne en idLine et le contenu
-            String[] parts = message.split(";>");
-
-            if (parts.length >= 2) {
-                long idLine = Long.parseLong(parts[0]);
-                String line = parts[1];
-
-                boolean isUpdate = false;
-                for (LineModel lineModel : lines) {
-                    if (lineModel.getIdLine() == idLine) {
-                        lineModel.setLine(line);
-                        isUpdate = true;
-                    }
-                }
-
-                if (!isUpdate) {
-                    lines.add(new LineModel(idLine, line));
-                }
+    public void addLine(LineModel other) {
+        for (LineModel lineModel : lines) {
+            if (lineModel.getIdLine() == other.getIdLine()) {
+                lineModel.setLine(other.getLine());
+                return;
             }
         }
+        lines.add(other);
 
+    }
+    public void handleCreateLine(LineModel line) 
+    {
         int caretPosition = sharedTextArea.getCaretPosition();
+
+        this.addLine(line);
         this.setTextArea();
         sharedTextArea.positionCaret(caretPosition);
     }

@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ResourceBundle.Control;
 
 public class FolderController {
 
@@ -33,6 +34,11 @@ public class FolderController {
     
     private Folder folder;
 
+    private Controller ctrl;
+
+    public void setController(Controller ctrl) {
+        this.ctrl = ctrl;
+    }
     @FXML
     public void initialize() {
         // Initialiser le dossier avec des fichiers
@@ -60,6 +66,10 @@ public class FolderController {
             int index = event.getIndex();
             fileListView.getItems().set(index, newName);
         });
+        fileNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            fileNameTextField.setText(newValue.replaceAll("[^A-Za-z0-9\\-]", ""));
+        });
+        
     }
 
     // Ouvrir le fichier sélectionné dans le ListView
