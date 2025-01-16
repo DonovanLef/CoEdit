@@ -6,28 +6,39 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.UUID;
 
 public class LineModel implements Serializable{
 
-    private long idLine;
+    private UUID idLine;
 
     private String line;
 
-    public LineModel(long idLine, String line) {
+    public LineModel(UUID idLine, String line) {
         this.idLine = idLine;
         this.line = line;
     }
 
-    public LineModel(long idLine) {
+    public LineModel(UUID idLine) {
         this.idLine = idLine;
         this.line = "";
     }
 
-    public long getIdLine() {
+	public LineModel() {
+        this.idLine = UUID.randomUUID();
+        this.line = "";
+    }
+
+	public LineModel(String line) {
+        this.idLine = UUID.randomUUID();
+        this.line = line;
+    }
+
+    public UUID getIdLine() {
         return idLine;
     }
 
-    public void setIdLine(long idLine) {
+    public void setIdLine(UUID idLine) {
         this.idLine = idLine;
     }
 
