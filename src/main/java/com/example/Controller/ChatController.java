@@ -203,14 +203,30 @@ public class ChatController {
         if (startOfLine == -1)
             startOfLine = 0;
 
-        System.out.println(beforeCaret);
+        System.out.println("beforeCaret : " + beforeCaret + " ||");
+        String[] parts = beforeCaret.split("\n");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        for (int i = 0; i < parts.length; i++) {
+            System.out.println(parts[i]);
+        }
         int lineNumber = beforeCaret.split("\n").length -1;
+
+        System.out.println("--------------- : " + lineNumber);
+        System.out.println("--------------- : ");
+
+        if (beforeCaret.endsWith("\n")) {
+            System.out.println("pass32");
+            lineNumber ++;
+        }
+        
 
         String currentLine = sharedTextArea.getText().substring(startOfLine, caretPosition + endOfLine);
         if (currentLine.endsWith("\n")) {
             currentLine = currentLine.substring(0, currentLine.length() - 1);
         }
-        if (currentLine.startsWith("\n")) {
+        else if (currentLine.startsWith("\n")) {
             currentLine = currentLine.substring(1);
         }
 
@@ -225,7 +241,13 @@ public class ChatController {
         if (enterPressed) {
             enterPressed = false;
             System.out.println("newLine");
-            handleNewLine(caretPosition, currentLine, lineNumber);
+            System.out.println("afterCaret : " + afterCaret);
+            afterCaret = afterCaret.substring(1);
+            int nextLine = afterCaret.indexOf("\n");
+            String newEndOfLine = "";
+            if (nextLine != -1)
+                newEndOfLine = afterCaret.substring(0, nextLine);
+            handleNewLine(caretPosition, currentLine,newEndOfLine ,lineNumber);
         } else if (deletePressed && oldLineCount > newLineCount) {
             deletePressed = false; 
             System.out.println("removeLine");
@@ -240,19 +262,25 @@ public class ChatController {
     }
 
 
-    private void handleNewLine(int caretPosition, String currentLine, int lineNumber) {
+    private void handleNewLine(int caretPosition, String currentLine, String endOfLine,int lineNumber) {
         System.out.println("caret : " + caretPosition);
         System.out.println("current : " + currentLine);
+        System.out.println("currentLength : " + currentLine.length());
+        System.out.println("endOfLine : " + endOfLine);
         System.out.println("lineNb : " + lineNumber);
-        if (caretPosition >= currentLine.length() - 1) {
+        if (endOfLine.isEmpty()) {
             System.out.println("test1");
             LineModel newLineModel = new LineModel(System.currentTimeMillis(), "<!:>");
-            lines.add(lineNumber, newLineModel);
+            lines.add(lineNumber+1, newLineModel);
             multicastEditor.sendMessage(getLineFormat(newLineModel));
         } else {
-            String newLine = currentLine.substring(caretPosition + 1);
-            LineModel newLineModel = lines.get(lines.size() - 1);
-            newLineModel.setLine(newLine);
+            LineModel lineModel = lines.get(lineNumber);
+            lineModel.setLine(currentLine);
+            multicastEditor.sendMessage(getLineFormat(lineModel));
+
+            LineModel newLineModel = new LineModel(System.currentTimeMillis(), endOfLine);
+            lines.add(lineNumber+1, newLineModel);
+
             multicastEditor.sendMessage(getLineFormat(newLineModel));
         }
     }
