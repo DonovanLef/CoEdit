@@ -34,9 +34,7 @@ public class ChatController {
 
     private Controller ctrl;
 
-    public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
-    }
+
 
     public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
         String filePath = fileRepo + "/" + this.file.getName();
@@ -72,7 +70,7 @@ public class ChatController {
     public void initialize() {
         try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
-            multicastEditor = new MulticastEditor(this.ctrl.getNetworkController()::handleReceive);
+            multicastEditor = new MulticastEditor(Controller.ctrl.getNetworkController()::handleReceive);
         } catch (Exception e) {
             e.printStackTrace();
         }

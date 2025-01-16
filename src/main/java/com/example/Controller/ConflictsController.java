@@ -11,12 +11,6 @@ public class ConflictsController {
     @FXML
     private TextArea textAreaRight;
 
-    private Controller ctrl;
-
-    public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
-    }
-
    
 
     // Action pour le bouton de gauche

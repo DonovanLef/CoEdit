@@ -8,13 +8,10 @@ import com.example.Model.NetworkModel;
 
 public class NetworkController {
 	
-	private Controller ctrl;
+	
 	private NetworkModel networkModel;
 	public NetworkController() {
 		this.networkModel = new NetworkModel();
-	}
-	public void setController(Controller ctrl) {
-		this.ctrl = ctrl;
 	}
 	public void handleReceive(byte[] bytes) {
 		//Transformer les 16premiers byte en decimal
@@ -25,18 +22,18 @@ public class NetworkController {
 		// Modification d'une ligne
 		if (code == 100) {
 			LineModel line = this.networkModel.handle100(serial);
-			this.ctrl.getChatController().handleCreateLine(line);
+			Controller.ctrl.getChatController().handleCreateLine(line);
 			
 		}
 		// Creation d'un document
 		if (code == 200) {
 			Document doc = this.networkModel.handle200(serial);
-			this.ctrl.getFolderController().createDocument(doc);
+			Controller.ctrl.getFolderController().createDocument(doc);
 		}
 		// Suppression d'un document
 		if (code == 201) {
 			String name = new String(serial);
-			this.ctrl.getFolderController().deleteDocument(name);
+			Controller.ctrl.getFolderController().deleteDocument(name);
 		}
 		// demande de modification
 		if (code == 202) {

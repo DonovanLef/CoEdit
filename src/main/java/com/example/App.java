@@ -23,7 +23,7 @@ public class App extends Application {
         doc.setName("Matthewthewthew");
         doc.addLine(new LineModel(System.currentTimeMillis(), "Hello"));
         ctrl.getFolderController().createDocument(doc);
-        ctrl.getFolderController().deleteDocument(doc.getName());
+       Document.deleteFile(doc.getName());
         //concatenate the two byte arrays
         //ctrl.getNetworkController().handleReceive(concatenateByteArrays(byteArray, doc.toByteArray()));
         Scene scene = new Scene(loader.load());
