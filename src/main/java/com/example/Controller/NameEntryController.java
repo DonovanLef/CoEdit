@@ -31,8 +31,7 @@ public class NameEntryController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
 				Parent root = loader.load();
 
-				Stage stage = new Stage();
-				stage.setTitle("Nouvelle Vue");
+				Stage stage = (Stage) nameField.getScene().getWindow();
 				stage.setScene(new Scene(root));
 				stage.show();
 			} catch (IOException e) {
