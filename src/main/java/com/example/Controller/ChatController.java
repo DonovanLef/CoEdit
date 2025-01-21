@@ -114,7 +114,7 @@ public class ChatController {
         for (int i = 0; i < minLength; i++) {
             if (!lines.get(i).getLine().equals(newLines[i])) {
                 lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
-                multicastEditor.sendLine(lines.get(i), Controller.ctrl);
+                Controller.ctrl.getMulticastEditor().sendLine(lines.get(i), Controller.ctrl);
             }
         }
 
@@ -122,7 +122,7 @@ public class ChatController {
         for (int i = minLength; i < newLines.length; i++) {
             LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername(), this.file.getName());
             lines.add(newLineModel);
-            multicastEditor.sendLine(newLineModel, Controller.ctrl);
+            Controller.ctrl.getMulticastEditor().sendLine(newLineModel, Controller.ctrl);
         }
 
         // Suppression des lignes excédentaires
@@ -167,9 +167,10 @@ public class ChatController {
     public void handleCreateLine(LineModel line) {
         System.out.println(line.getLine());
 
-        if (line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
         if (line.getDocName().equals(this.file.getName())) {
             System.out.println("pass1");
+            if (line.getModifiedBy() != null && line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
+            System.out.println("pass1.1");
             double savedScrollY = 0;
             double savedScrollX = 0;
     
@@ -246,11 +247,13 @@ public class ChatController {
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
     @FXML
     private void onSave() {
-        System.out.println("pass3aa");
         for (Document document : DocumentController.getDocuments()) {
             System.out.println(document.getName());
             if (document.getName().equals(this.file.getName())) {
                 document.setLines(lines);
+            }
+            for (LineModel lineModel : document.getLines()) {
+                System.out.println(lineModel.getLine());
             }
             document.save(Folder.PATH);
         }
