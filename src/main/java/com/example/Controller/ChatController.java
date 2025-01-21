@@ -50,13 +50,20 @@ public class ChatController {
 
     // Sauvegarder la position du caret avant modification
     private int savedCaretPosition = 0;
-    private LineModel currentLineCaret; // Sauvegarder l'indice de la ligne actuelle
-    private ArrayList<LineModel> oldLines;
+    private int savedLineCaretPosition = 0;
+    private int charBefore;
 
     public void saveCaretPosition() {
         savedCaretPosition = sharedTextArea.getCaretPosition();
-        this.currentLineCaret = lines.get(getLineIndexFromPosition(savedCaretPosition));
-        this.oldLines = lines;
+
+        this.savedLineCaretPosition = getLineIndexFromPosition(savedCaretPosition)
+        int charBef = 0;
+
+        for (int i = 0; i < this.savedLineCaretPosition; i++) {
+            charBef += lines.get(i).getLine().length();
+        }
+
+        this.charBefore = charBef;
     }
 
     private int getLineIndexFromPosition(int position) {
@@ -84,23 +91,12 @@ public class ChatController {
 
     private void adjustCaretPositionForChanges() {
 
-        int currentLineCaretPos = -1;
-        for (int i = 0; i < oldLines.size(); i++) {
-            if (oldLines.get(i) == this.currentLineCaret) {
-                currentLineCaretPos = i;
-                break;
-            }
+        int charBef = 0;
+        for (int i = 0; i < this.savedLineCaretPosition; i++) {
+            charBef += this.lines.get(i).getLine().length();
         }
 
-        int dif = 0;
-
-        for (int i = 0; i < currentLineCaretPos; i++) {
-            int oldLength = oldLines.get(i).getLine().length();
-            int currentLength = lines.get(i).getLine().length();
-            dif += currentLength - oldLength; 
-        }
-
-        sharedTextArea.positionCaret(savedCaretPosition + dif);
+        sharedTextArea.positionCaret(savedCaretPosition + (charBef - this.charBefore));
     }
 
     @FXML
@@ -150,7 +146,6 @@ public class ChatController {
         // Sauvegarder la position du caret avant toute modification du texte
         saveCaretPosition();
     
-        String oldText = sharedTextArea.getText();
         // Appliquer les modifications au TextArea
         StringBuilder newText = new StringBuilder();
         for (LineModel line : lines) {
