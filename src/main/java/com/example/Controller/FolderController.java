@@ -3,7 +3,7 @@ package com.example.Controller;
 
 import com.example.Model.Document;
 import com.example.Model.Folder;
-
+import com.example.Model.LineModel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ResourceBundle.Control;
 
 public class FolderController {
@@ -38,6 +39,7 @@ public class FolderController {
         
     @FXML
     public void initialize() {
+        Controller.ctrl.setFolderController(this);
         // Initialiser le dossier avec des fichiers
         this.folder = new Folder();
         // Ajouter des fichiers pour l'exemple
@@ -111,6 +113,13 @@ public class FolderController {
         } else {
             // Ajouter le nom du fichier à la liste
             fileListView.getItems().add(fileName);
+
+            Document doc = new Document();
+            doc.setName(fileName);
+            ArrayList<LineModel> newLines = new ArrayList<>();
+            newLines.add(new LineModel(Controller.ctrl.getUsername()));
+            doc.setLines(newLines);
+            doc.save(Folder.PATH);
         }
     }
     private void showAlert(String title, String message, AlertType alertType) {

@@ -42,6 +42,7 @@ public class ChatController {
 
     @FXML
     public void initialize() {
+        Controller.ctrl.setChatController(this);
         try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
             multicastEditor = new MulticastEditor(Controller.ctrl.getNetworkController()::handleReceive);
@@ -66,13 +67,13 @@ public class ChatController {
                 if (!lines.get(i).getLine().equals(newLines[i])) {
                     // Mettre à jour la ligne existante si elle a changé
                     lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
-                    multicastEditor.sendMessage(getLineFormat(lines.get(i)));
+                    multicastEditor.sendLine(lines.get(i), Controller.ctrl);
                 }
             } else {
                 // Ajouter une nouvelle ligne avec un GUID unique
                 LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
                 lines.add(newLineModel);
-                multicastEditor.sendMessage(getLineFormat(newLineModel));
+                multicastEditor.sendLine(newLineModel, Controller.ctrl);
             }
         }
 
@@ -104,7 +105,7 @@ public class ChatController {
 
     public void addLine(LineModel other) {
         for (LineModel lineModel : lines) {
-            if (lineModel.getIdLine() == other.getIdLine()) {
+            if (lineModel.getIdLine().equals(other.getIdLine())) {
                 lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
                 return;
             }
@@ -119,12 +120,15 @@ public class ChatController {
         this.addLine(line);
         this.setTextArea();
         sharedTextArea.positionCaret(caretPosition);
+
+
     }
 
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
     @FXML
     private void onSave() {
         Document doc = new Document();
+        doc.setName(this.file.getName());
         doc.setLines(lines);
         doc.save(Folder.PATH);
     }

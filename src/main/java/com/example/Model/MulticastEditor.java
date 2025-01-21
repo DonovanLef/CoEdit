@@ -2,8 +2,9 @@ package com.example.Model;
 
 import java.net.*;
 import java.io.*;
-import java.lang.ModuleLayer.Controller;
 import java.util.function.Consumer;
+
+import com.example.Controller.Controller;
 
 public class MulticastEditor {
     private static final String MULTICAST_ADDRESS = "224.0.0.1";
@@ -68,5 +69,19 @@ public class MulticastEditor {
     public void sendText(String text) {
         sendMessage("TEXT_UPDATE:" + text);
     }
+
+	public void sendLine(LineModel lineModel, Controller ctrl) {
+        try {
+
+            byte[] v = ctrl.getNetworkController().IntToByte((short)100);
+            byte[] l = lineModel.toByteArray();
+            byte[] data=  ctrl.getNetworkController().concatenateByteArrays(v, l);
+            //two array in one
+            sendData(data);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
     
 }
