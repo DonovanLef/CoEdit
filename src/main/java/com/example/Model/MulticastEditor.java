@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import com.example.Controller.Controller;
 
 public class MulticastEditor {
-    private static final String MULTICAST_ADDRESS = "223.0.0.1";
+    private static final String MULTICAST_ADDRESS = "225.0.0.1";
     private static final int PORT = 4446;
 
     private MulticastSocket socket;

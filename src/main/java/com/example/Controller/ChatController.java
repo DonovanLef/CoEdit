@@ -37,19 +37,13 @@ public class ChatController {
     @FXML
     private Button saveButton;
 
-    private MulticastEditor multicastEditor;
 
     private File file;
 
     @FXML
     public void initialize() {
         Controller.ctrl.setChatController(this);
-        try {
-            // Initialisation du MulticastEditor avec un callback pour recevoir les messages
-            multicastEditor = new MulticastEditor(Controller.ctrl.getNetworkController()::handleReceive);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
 
         sharedTextArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -70,14 +64,14 @@ public class ChatController {
                 if (!lines.get(i).getLine().equals(newLines[i])) {
                     // Mettre à jour la ligne existante si elle a changé
                     lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
-                    multicastEditor.sendLine(lines.get(i), Controller.ctrl);
+                    Controller.ctrl.getMulticastEditor().sendLine(lines.get(i), Controller.ctrl);
                     System.out.println("envoie");
                 }
             } else {
                 // Ajouter une nouvelle ligne avec un GUID unique
                 LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
                 lines.add(newLineModel);
-                multicastEditor.sendLine(newLineModel, Controller.ctrl);
+                Controller.ctrl.getMulticastEditor().sendLine(newLineModel, Controller.ctrl);
                 System.out.println("envoie");
             }
         }
@@ -124,7 +118,7 @@ public class ChatController {
         for (Document doc : DocumentController.getDocuments()) {
             short code = 203;
             try {
-                this.multicastEditor.sendData(code, doc.toByteArray());
+                Controller.ctrl.getMulticastEditor().sendData(code, doc.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -132,7 +126,7 @@ public class ChatController {
     }
 
     public void askDocuments(){
-        this.multicastEditor.sendData(202, [null]);
+        Controller.ctrl.getMulticastEditor().sendData((short)202, new byte[0]);
     }
 
     // Méthode appelée lorsqu'on clique sur "Enregistrer"

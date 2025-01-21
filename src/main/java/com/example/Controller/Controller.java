@@ -1,5 +1,7 @@
 package com.example.Controller;
 
+import com.example.Model.MulticastEditor;
+
 public class Controller {
 
 	public static Controller ctrl;
@@ -10,6 +12,7 @@ public class Controller {
 	private FolderController folderController;
 	private NameEntryController nameEntryController;
 	private StarterController starterController;
+	private MulticastEditor multicastEditor;
 
 	public Controller() {
 		ctrl = this;
@@ -20,6 +23,12 @@ public class Controller {
 		this.nameEntryController = new NameEntryController();
 		this.starterController = new StarterController();
 
+		try {
+            // Initialisation du MulticastEditor avec un callback pour recevoir les messages
+            multicastEditor = new MulticastEditor(getNetworkController()::handleReceive);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	public ChatController getChatController() {
@@ -52,6 +61,9 @@ public class Controller {
 
 	public void setChatController(ChatController chatController) {
 		this.chatController = chatController;
+	}
+	public MulticastEditor getMulticastEditor() {
+		return multicastEditor;
 	}
 
 	

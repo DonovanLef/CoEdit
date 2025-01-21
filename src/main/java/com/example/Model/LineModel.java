@@ -20,13 +20,15 @@ public class LineModel implements Serializable {
 
     private String createdBy;
     private String modifiedBy;
+    private String docName;
 
-    public LineModel(UUID idLine, String line, int nbOrder, String createdBy) {
+    public LineModel(UUID idLine, String line, int nbOrder, String createdBy, String docName) {
         this.idLine = idLine;
         this.line = line;
         this.nbOrder = nbOrder;
         this.createdBy = createdBy;
         this.modifiedBy = "";
+        this.docName = docName;
     }
 
     public LineModel(UUID idLine, int nbOrder, String createdBy) {
@@ -105,6 +107,9 @@ public class LineModel implements Serializable {
 
     public String getCreatedBy() {
         return createdBy;
+    }
+    public String getDocName () {
+        return docName;
     }
 
     public void setCreatedBy(String createdBy) {

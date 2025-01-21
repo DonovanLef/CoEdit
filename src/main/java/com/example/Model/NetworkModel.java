@@ -37,7 +37,6 @@ public class NetworkModel {
 		result[3] = (byte) ((data & 0x000000FF) >> 0);
 		return result;        
 	}
-	
 	public  byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
         int length1 = array1.length;
         int length2 = array2.length;

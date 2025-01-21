@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Controller.DocumentController;
+
 public class Folder {
 
     private List<File> files;
@@ -57,6 +59,7 @@ public class Folder {
                 for (File file : listOfFiles) {
                     if (file.isFile()) {
                         addFile(file); // Ajouter chaque fichier à la liste
+                        DocumentController.addDocument(Document.restoreByFile(PATH + file.getName()));
                     }
                 }
             }
@@ -99,21 +102,6 @@ public class Folder {
         }
     }
 
-    // public void deleteFile(String fileName) {
-    //     String projectPath = System.getProperty("user.dir");
-    //     String documentsPath = projectPath + File.separator + "documents/";
-    //     File file = new File(documentsPath + fileName);
-
-    //     if (file.exists() && file.isFile()) {
-    //         if (file.delete()) {
-    //             // System.out.println("Fichier supprimé : " + fileName);
-    //         } else {
-    //             // System.err.println("Erreur lors de la suppression du fichier : " + fileName);
-    //         }
-    //     } else {
-    //         // System.err.println("Fichier introuvable : " + fileName);
-    //     }
-    // }
 
     public void deleteFile(String name) {
         File file = getFile(name);
