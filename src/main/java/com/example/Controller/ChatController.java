@@ -56,7 +56,7 @@ public class ChatController {
     public void saveCaretPosition() {
         savedCaretPosition = sharedTextArea.getCaretPosition();
 
-        this.savedLineCaretPosition = getLineIndexFromPosition(savedCaretPosition)
+        this.savedLineCaretPosition = getLineIndexFromPosition(savedCaretPosition);
         int charBef = 0;
 
         for (int i = 0; i < this.savedLineCaretPosition; i++) {
