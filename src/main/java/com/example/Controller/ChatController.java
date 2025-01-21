@@ -4,14 +4,12 @@ import com.example.Model.Document;
 import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.MulticastEditor;
-import com.example.Model.NetworkModel;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
@@ -19,24 +17,13 @@ import javafx.scene.control.Button;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
-
-import com.example.Model.LineModel;
-import com.example.Model.MulticastEditor;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 public class ChatController {
@@ -44,11 +31,11 @@ public class ChatController {
     private ArrayList<LineModel> lines;
 
     @FXML
-    private TextArea sharedTextArea; // Zone de texte partagée
+    private TextArea sharedTextArea;
     @FXML
-    private TextField messageInput; // Champ pour taper un message
+    private TextField messageInput;
     @FXML
-    private Button saveButton; // Bouton pour enregistrer
+    private Button saveButton;
 
     private MulticastEditor multicastEditor;
 
@@ -70,9 +57,18 @@ public class ChatController {
                 updateLineModels(newValue);
             }
         });
+
+        // Ajouter un écouteur pour la touche "Entrée"
+        sharedTextArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                updateLineModels(sharedTextArea.getText());
+            }
+        });
+
     }
 
     private void updateLineModels(String newText) {
+        System.out.println("pass");
         String[] newLines = newText.split("\n");
 
         // Synchroniser lines avec newLines
@@ -97,10 +93,10 @@ public class ChatController {
         }
 
         // Debug : Afficher les identifiants et le contenu
-        lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
+        lines.forEach(line -> System.out.println(
+                "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
 
     }
-    
 
     private void setTextArea() {
         String textArea = "";
@@ -113,11 +109,13 @@ public class ChatController {
 
         }
         if (!textArea.isEmpty())
-            textArea = textArea.substring(0, textArea.length()-1);
+            textArea = textArea.substring(0, textArea.length() - 1);
         sharedTextArea.setText(textArea);
     }
 
-    public void addLine(LineModel other) {
+    public void handleCreateLine(LineModel other) {
+        int caretPosition = sharedTextArea.getCaretPosition();
+
         for (LineModel lineModel : lines) {
             if (lineModel.getIdLine().equals(other.getIdLine())) {
                 lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
@@ -126,19 +124,11 @@ public class ChatController {
         }
         lines.add(other);
 
-    }
-    public void handleCreateLine(LineModel line) 
-    {
-        int caretPosition = sharedTextArea.getCaretPosition();
-
-        this.addLine(line);
         this.setTextArea();
         sharedTextArea.positionCaret(caretPosition);
-
-
     }
 
-    public void sendDocuments(){
+    public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
             short code = 203;
             try {
@@ -172,7 +162,8 @@ public class ChatController {
             stage.setTitle("Folder Project");
             stage.setScene(new Scene(root));
             stage.show();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
     }
 
     public void setFile(File file) {
@@ -195,12 +186,5 @@ public class ChatController {
             e.printStackTrace();
         }
     }
-
-
-
-    private String getLineFormat(LineModel lineModel) {
-        return "<?" + lineModel.getIdLine() + ";>" + lineModel.getLine();
-    }
-
 
 }
