@@ -83,32 +83,42 @@ public class ChatController {
     private void adjustCaretPositionForChanges(String oldText, String newText) {
         String[] oldLines = oldText.split("\n");
         String[] newLines = newText.split("\n");
-
-        // Assurez-vous que savedCaretLineIndex est valide
+    
+        // Vérifier que savedCaretLineIndex est valide
         if (savedCaretLineIndex < 0 || savedCaretLineIndex >= oldLines.length) {
             throw new IllegalArgumentException("L'indice de ligne du caret est invalide.");
         }
-
-        int lengthDifference = 0;
-
-        // Si la ligne modifiée est avant le caret
+    
+        // Calcul de l'index dans la ligne actuelle
+        int caretInLinePosition = savedCaretPosition;
         for (int i = 0; i < savedCaretLineIndex; i++) {
-            lengthDifference += (newLines[i].length() - oldLines[i].length());
+            caretInLinePosition -= oldLines[i].length() + 1; // +1 pour les sauts de ligne
         }
-
-        // Si la ligne modifiée est la même que celle où le caret est situé
+    
+        // Ajustement si la ligne du caret a été modifiée
         if (savedCaretLineIndex < newLines.length) {
-            lengthDifference += (newLines[savedCaretLineIndex].length() - oldLines[savedCaretLineIndex].length());
+            int oldLineLength = oldLines[savedCaretLineIndex].length();
+            int newLineLength = newLines[savedCaretLineIndex].length();
+    
+            if (caretInLinePosition > oldLineLength) {
+                // Le caret était à la fin de l'ancienne ligne
+                caretInLinePosition = newLineLength;
+            } else {
+                // Ajustement basé sur la différence de longueur
+                int diff = newLineLength - oldLineLength;
+                caretInLinePosition = Math.max(0, Math.min(caretInLinePosition + diff, newLineLength));
+            }
         }
-
-        // Calculer la nouvelle position du caret
-        int newCaretPosition = savedCaretPosition + lengthDifference;
-
-        // Assurez-vous que la nouvelle position du caret ne dépasse pas la longueur du
-        // texte
+    
+        // Calcul de la nouvelle position globale du caret
+        int newCaretPosition = 0;
+        for (int i = 0; i < savedCaretLineIndex; i++) {
+            newCaretPosition += newLines[i].length() + 1; // +1 pour les sauts de ligne
+        }
+        newCaretPosition += caretInLinePosition;
+    
+        // Vérification pour éviter les dépassements
         newCaretPosition = Math.min(newCaretPosition, newText.length());
-
-        // Mettre à jour la position du caret
         sharedTextArea.positionCaret(newCaretPosition);
     }
 
