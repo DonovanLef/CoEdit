@@ -18,21 +18,7 @@ public class App extends Application {
         Controller ctrl = new Controller();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));
         byte[] byteArray = ByteBuffer.allocate(2).putShort((short) 200).array();
-        
-        Document doc = new Document();
 
-        doc.setName("Matthewthewthew");
-        doc.addLine(new LineModel("Hello"));
-        ctrl.getFolderController().createDocument(doc);
-
-        // Document doc = new Document();
-        // doc.setName("Matthewthewthew");
-        // doc.addLine(new LineModel(System.currentTimeMillis(), "Hello"));
-        // ctrl.getFolderController().createDocument(doc);
-    //    Document.deleteFile(doc.getName());
-    
-        //concatenate the two byte arrays
-        //ctrl.getNetworkController().handleReceive(concatenateByteArrays(byteArray, doc.toByteArray()));
         Scene scene = new Scene(loader.load());
         stage.setHeight(400);
         stage.setWidth(500);
