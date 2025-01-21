@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Pane?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
