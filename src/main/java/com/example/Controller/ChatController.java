@@ -54,15 +54,25 @@ public class ChatController {
         sharedTextArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                updateLineModels(newValue);
+                updateLineModels(newValue, false);
+            }
+        });
+
+        sharedTextArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                updateLineModels(sharedTextArea.getText(), true);
             }
         });
 
     }
 
-    private void updateLineModels(String newText) {
-        System.out.println("pass");
+    private void updateLineModels(String newText, boolean newLine) {
+        System.out.println("pass " + newLine);
         String[] newLines = newText.split("\n");
+
+        for (int i = 0; i < newLines.length; i++) {
+            System.out.println(newLines[i]);
+        }
 
         // Synchroniser lines avec newLines
         for (int i = 0; i < newLines.length; i++) {
@@ -73,9 +83,17 @@ public class ChatController {
                     multicastEditor.sendLine(lines.get(i), Controller.ctrl);
                     System.out.println("envoie");
                 }
-            } else {
-                // Ajouter une nouvelle ligne avec un GUID unique
-                LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
+            } 
+            // else {
+            //     // Ajouter une nouvelle ligne avec un GUID unique
+            //     LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
+            //     lines.add(newLineModel);
+            //     multicastEditor.sendLine(newLineModel, Controller.ctrl);
+            //     System.out.println("envoie");
+            // }
+
+            if (newLine) {
+                LineModel newLineModel = new LineModel("", Controller.ctrl.getUsername());
                 lines.add(newLineModel);
                 multicastEditor.sendLine(newLineModel, Controller.ctrl);
                 System.out.println("envoie");
@@ -113,6 +131,7 @@ public class ChatController {
     }
 
     public void handleCreateLine(LineModel line) {
+        System.out.println("received : " + line.getLine());
         int caretPosition = sharedTextArea.getCaretPosition();
 
         this.addLine(line);
