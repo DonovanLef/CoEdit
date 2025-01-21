@@ -29,4 +29,5 @@ public class NetworkModel {
 		return Document.restoreByBytes(bytes);
 
 	}
+	
 }

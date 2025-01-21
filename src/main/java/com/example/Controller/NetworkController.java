@@ -43,4 +43,5 @@ public class NetworkController {
 		//String res  = this.networkModel.handleReceive(message);	
 		//this.ctrl.getChatController().onMessageReceived(res);
 	}
+	
 }

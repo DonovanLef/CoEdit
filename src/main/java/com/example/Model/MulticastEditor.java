@@ -53,6 +53,23 @@ public class MulticastEditor {
             e.printStackTrace();
         }
     }
+    public void sendLine(byte[] line) {
+        
+            try {
+                DatagramPacket packet = new DatagramPacket(line, line.length, group, PORT);
+                socket.send(packet);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+    public void sendData(byte[] data) {
+        try {
+            DatagramPacket packet = new DatagramPacket(data, data.length, group, PORT);
+            socket.send(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // Envoi du texte complet (à appeler lors de la sauvegarde)
     public void sendText(String text) {
