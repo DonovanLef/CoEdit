@@ -98,5 +98,29 @@ public class MulticastEditor {
             e.printStackTrace();
         }
 	}
+
+    public void sendDocument(Document doc, Controller ctrl) {
+        try {
+            byte[] v = ctrl.getNetworkController().IntToByte((short)200);
+            byte[] d = doc.toByteArray();
+            byte[] data=  ctrl.getNetworkController().concatenateByteArrays(v, d);
+            sendData(data);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendAskDocuments(Controller ctrl) {
+        try {
+            byte[] v = ctrl.getNetworkController().IntToByte((short)203);
+            byte[] d = new byte[0];
+            byte[] data=  ctrl.getNetworkController().concatenateByteArrays(v, d);
+            sendData(data);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
 }

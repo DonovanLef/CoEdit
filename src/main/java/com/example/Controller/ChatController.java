@@ -168,9 +168,7 @@ public class ChatController {
         System.out.println(line.getLine());
 
         if (line.getDocName().equals(this.file.getName())) {
-            System.out.println("pass1");
             if (line.getModifiedBy() != null && line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
-            System.out.println("pass1.1");
             double savedScrollY = 0;
             double savedScrollX = 0;
     
@@ -200,11 +198,9 @@ public class ChatController {
             }
         }
         else {
-            System.out.println("pass2");
             this.addLine(line);
         }
 
-     
     }
 
     public void addLine(LineModel other) {

@@ -26,6 +26,7 @@ public class NetworkController {
 		int code = this.networkModel.getCode(bytes);
 		byte[] serial = Arrays.copyOfRange(bytes, 2, bytes.length);
 
+		System.out.println(code);
 		// Modification d'une ligne
 		if (code == 100) {
 			LineModel line = this.networkModel.handle100(serial);

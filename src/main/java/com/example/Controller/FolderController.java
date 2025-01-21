@@ -3,6 +3,8 @@ package com.example.Controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 import com.example.Model.Document;
 import com.example.Model.Folder;
@@ -44,9 +46,15 @@ public class FolderController {
 
     private ScreenLockController screenLockController;
 
+    private HashMap<LineModel, LineModel> linesToMerge;
+
 
     @FXML
     public void initialize() {
+
+        this.linesToMerge = new HashMap<>();
+
+        Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
 
         this.screenLockController = new ScreenLockController();
 
@@ -182,9 +190,9 @@ public class FolderController {
         String erreur = folder.createFile(fileName);
         // Créer un nouveau fichier dans le dossier documents
         if (erreur.length() > 0) {
-            // Afficher une alerte si le fichier existe déjà
-            String[] parts = erreur.split(":");
-            showAlert(parts[0], parts[1], AlertType.WARNING);
+            // // Afficher une alerte si le fichier existe déjà
+            // String[] parts = erreur.split(":");
+            // showAlert(parts[0], parts[1], AlertType.WARNING);
         } else {
             // Ajouter le nom du fichier à la liste
             fileListView.getItems().add(fileName);
@@ -195,7 +203,9 @@ public class FolderController {
             newLines.add(new LineModel(Controller.ctrl.getUsername(), fileName));
             doc.setLines(newLines);
             doc.save(Folder.PATH);
-        }
+
+            Controller.ctrl.getMulticastEditor().sendDocument(doc, Controller.ctrl);
+        }   
     }
 
     private void showAlert(String title, String message, AlertType alertType) {
@@ -212,8 +222,44 @@ public class FolderController {
     }
 
     public void createDocument(Document doc) {
-        doc.save(Folder.PATH);
+        String erreur = folder.createFile(doc.getName());
+        if (erreur.length() == 0) {
+            fileListView.getItems().add(doc.getName());
+            doc.save(Folder.PATH);
+        }
+        else {
+            Document myDoc = null;
+            for (Document document : DocumentController.getDocuments()) {
+                if (document.getName().equals(doc.getName())) {
+                    myDoc = document;
+                    break;
+                }
+            }
+
+            if (myDoc != null) {
+                for (LineModel line : doc.getLines()) {
+                    LineModel myLine = getMyLine(line.getIdLine(), myDoc);
+
+                    if (myLine == null) {
+                        myDoc.addLine(line);
+                    } else {
+                        if (!linesToMerge.containsKey(line))
+                            linesToMerge.put(line, myLine);
+                    }
+                }
+            }
+        }
     }
+
+    public LineModel getMyLine(UUID idLine, Document myDoc) {
+        for (LineModel myLine : myDoc.getLines()) {
+            if (myLine.getIdLine() == idLine) {
+                return myLine;
+            }
+        }
+        return null;
+    }
+
     public void deleteDocument(String name) {
         
         fileListView.getItems().remove(name);
