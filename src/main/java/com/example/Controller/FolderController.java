@@ -44,11 +44,6 @@ public class FolderController {
 
     private ScreenLockController screenLockController;
 
-    private Controller ctrl;
-
-    public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
-    }
 
     @FXML
     public void initialize() {
@@ -175,17 +170,13 @@ public class FolderController {
     public void createFile() {
         // Récupérer le nom du fichier à partir du TextField
         String fileName = fileNameTextField.getText().trim();
-        if (!fileName.endsWith(".txt"))fileName = fileName + ".ser";
+        if (!fileName.endsWith(".ser"))fileName = fileName + ".ser";
 
         // Vérifier si le nom est valide (non vide)
         if (fileName.isEmpty()) {
             // Afficher une alerte si le nom est vide
             showAlert("Erreur", "Nom de fichier vide : ne peut pas être vide.", AlertType.ERROR);
             return;
-        }
-
-        if (!fileName.endsWith(".txt")) {
-            fileName = fileName + ".txt";
         }
 
         String erreur = folder.createFile(fileName);
