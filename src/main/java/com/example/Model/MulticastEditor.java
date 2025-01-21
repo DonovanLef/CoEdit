@@ -2,8 +2,9 @@ package com.example.Model;
 
 import java.net.*;
 import java.io.*;
-import java.lang.ModuleLayer.Controller;
 import java.util.function.Consumer;
+
+import com.example.Controller.Controller;
 
 public class MulticastEditor {
     private static final String MULTICAST_ADDRESS = "224.0.0.1";
@@ -64,9 +65,38 @@ public class MulticastEditor {
         }
     }
 
+    public void sendData(short code, byte[] data) {
+        byte[] result = new byte[2];
+		result[0] = (byte) ((code & 0xFF000000) >> 8);
+		result[1] = (byte) ((code & 0x00FF0000) >> 0);
+        byte[] combined = new byte[result.length + data.length];
+        System.arraycopy(result, 0, combined, 0, result.length);
+        System.arraycopy(data, 0, combined, result.length, data.length);
+        try {
+            DatagramPacket packet = new DatagramPacket(combined, combined.length, group, PORT);
+            socket.send(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Envoi du texte complet (à appeler lors de la sauvegarde)
     public void sendText(String text) {
         sendMessage("TEXT_UPDATE:" + text);
     }
+
+	public void sendLine(LineModel lineModel, Controller ctrl) {
+        try {
+
+            byte[] v = ctrl.getNetworkController().IntToByte((short)100);
+            byte[] l = lineModel.toByteArray();
+            byte[] data=  ctrl.getNetworkController().concatenateByteArrays(v, l);
+            //two array in one
+            sendData(data);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
     
 }

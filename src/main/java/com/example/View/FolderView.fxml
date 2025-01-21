@@ -15,4 +15,5 @@
     <TextField fx:id="fileNameTextField" promptText="Entrez le nom du fichier"/>
     <!-- Bouton pour ouvrir le fichier -->
     <Button fx:id="btnAdd" text="+" onAction="#createFile"/>
+    <Button fx:id="btnLock" text="Lock Screen" onAction="#lockScreen"/>
 </VBox>

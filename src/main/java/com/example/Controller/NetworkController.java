@@ -13,6 +13,7 @@ public class NetworkController {
 	public NetworkController() {
 		this.networkModel = new NetworkModel();
 	}
+	
 	public void handleReceive(byte[] bytes) {
 		//Transformer les 16premiers byte en decimal
 
@@ -30,21 +31,23 @@ public class NetworkController {
 			Document doc = this.networkModel.handle200(serial);
 			Controller.ctrl.getFolderController().createDocument(doc);
 		}
+
 		// Suppression d'un document
 		if (code == 201) {
 			String name = new String(serial);
 			Controller.ctrl.getFolderController().deleteDocument(name);
 		}
+
 		// demande de modification
 		if (code == 202) {
-
+			Controller.ctrl.getChatController().sendDocuments();
 		}
 
 		//String res  = this.networkModel.handleReceive(message);	
 		//this.ctrl.getChatController().onMessageReceived(res);
 	}
 
-	public byte[] IntToByte(int value) {
+	public byte[] IntToByte(short value) {
 		return this.networkModel.IntToByteArray(value);
 	}
 	public byte[] concatenateByteArrays(byte[] array1, byte[] array2) {

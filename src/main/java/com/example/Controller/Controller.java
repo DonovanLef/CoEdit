@@ -38,6 +38,14 @@ public class Controller {
 	public String getUsername() {
 		return nameEntryController.getName();
 	}
+
+	public void setFolderController(FolderController folderController) {
+		this.folderController = folderController;
+	}
+
+	public void setChatController(ChatController chatController) {
+		this.chatController = chatController;
+	}
 	
 	
  	
