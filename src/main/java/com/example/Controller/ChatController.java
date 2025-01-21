@@ -102,14 +102,8 @@ public class ChatController {
         String textArea = "";
         for (LineModel lineModel : lines) {
             String line = lineModel.getLine();
-            if (!line.isEmpty()) {
-                line = line.replace("<!:>", "");
-                textArea += line + "\n";
-            }
-
+            textArea += line + "\n";
         }
-        if (!textArea.isEmpty())
-            textArea = textArea.substring(0, textArea.length() - 1);
         sharedTextArea.setText(textArea);
     }
 
