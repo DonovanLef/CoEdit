@@ -82,7 +82,7 @@ public class Document implements Serializable{
         return null;
 	}
 	public static void deleteFile(String name){
-		String path = Folder.PATH+name+".ser";
+		String path = Folder.PATH+name;
 		try {
 			if (new java.io.File(path).delete()) {
 				System.out.println("File deleted successfully");

@@ -1,7 +1,5 @@
 package com.example.Controller;
 
-import java.util.ResourceBundle.Control;
-
 public class Controller {
 
 	public static Controller ctrl;
@@ -36,6 +34,11 @@ public class Controller {
 	public NameEntryController getNameEntryController() {
 		return nameEntryController;
 	}
+
+	public String getUsername() {
+		return nameEntryController.getName();
+	}
+	
 	
  	
 }

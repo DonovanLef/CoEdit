@@ -25,6 +25,12 @@ public class App extends Application {
         doc.addLine(new LineModel("Hello"));
         ctrl.getFolderController().createDocument(doc);
 
+        // Document doc = new Document();
+        // doc.setName("Matthewthewthew");
+        // doc.addLine(new LineModel(System.currentTimeMillis(), "Hello"));
+        // ctrl.getFolderController().createDocument(doc);
+    //    Document.deleteFile(doc.getName());
+    
         //concatenate the two byte arrays
         //ctrl.getNetworkController().handleReceive(concatenateByteArrays(byteArray, doc.toByteArray()));
         Scene scene = new Scene(loader.load());
@@ -35,21 +41,7 @@ public class App extends Application {
         stage.show();
     }
 
-    public static byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
-        int length1 = array1.length;
-        int length2 = array2.length;
-
-        // Create a new byte array to hold the concatenated result
-        byte[] result = new byte[length1 + length2];
-
-        // Copy elements from the first array
-        System.arraycopy(array1, 0, result, 0, length1);
-
-        // Copy elements from the second array
-        System.arraycopy(array2, 0, result, length1, length2);
-
-        return result;
-    }
+   
     public static void main(String[] args) {
         launch();
     }

@@ -15,12 +15,18 @@ public class NameEntryController {
 	private TextField nameField;
 
 
+	private String name;
+
+	public String getName() {
+		return this.name;
+	}
 
 
 	@FXML
 	private void onNameSubmit() {
 		String userName = nameField.getText();
 		if (!userName.isEmpty()) {
+			this.name = userName;
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
 				Parent root = loader.load();

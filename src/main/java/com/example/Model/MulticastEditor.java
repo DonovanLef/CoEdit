@@ -2,6 +2,7 @@ package com.example.Model;
 
 import java.net.*;
 import java.io.*;
+import java.lang.ModuleLayer.Controller;
 import java.util.function.Consumer;
 
 public class MulticastEditor {
@@ -22,6 +23,7 @@ public class MulticastEditor {
 
         // Démarrage du thread d'écoute
         new Thread(this::listen).start();
+        
     }
 
     // Écoute des messages en multicast
@@ -52,15 +54,6 @@ public class MulticastEditor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public void sendLine(byte[] line) {
-        
-            try {
-                DatagramPacket packet = new DatagramPacket(line, line.length, group, PORT);
-                socket.send(packet);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
     }
     public void sendData(byte[] data) {
         try {
