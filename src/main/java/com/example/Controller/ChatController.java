@@ -362,10 +362,8 @@ public class ChatController {
         if (currentLineModel != null) {
             currentLineModel.setLine(currentLine);
         }
-        
 
         multicastEditor.sendMessage(getLineFormat(currentLineModel));
     }
-
 
 }
