@@ -83,6 +83,8 @@ public class Folder {
         try {
             File newFile = new File(PATH, fileName);
     
+            System.out.println(PATH);
+            System.out.println(fileName);
             if (newFile.createNewFile()) {
                 addFile(newFile); // Ajouter au modèle
                 return "";
