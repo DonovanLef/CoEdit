@@ -103,7 +103,11 @@ public class ChatController {
         System.out.println("current  : " + charBef);
         System.out.println("old  : " + charBefore);
 
-        sharedTextArea.positionCaret(savedCaretPosition + ((charBef - this.charBefore)*2));
+        int newPos = savedCaretPosition + ((charBef - this.charBefore)*2);
+
+        System.out.println("newPos : " + newPos);
+
+        sharedTextArea.positionCaret(newPos);
     }
 
     @FXML
