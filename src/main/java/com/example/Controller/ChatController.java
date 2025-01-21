@@ -65,6 +65,45 @@ public class ChatController {
             currentPos += lines[i].length() + 1; // +1 pour le saut de ligne
         }
     }
+
+    private void adjustCaretPositionForChanges(String oldText, String newText) {
+        // On suppose que `savedCaretPosition` et `savedCaretLineIndex` sont sauvegardés avant
+        // d'effectuer cette méthode (par exemple, dans `saveCaretPosition`).
+    
+        String[] oldLines = oldText.split("\n");
+        String[] newLines = newText.split("\n");
+    
+        // Calculer l'effet de la modification sur les lignes avant celle du caret.
+        int lengthDifference = 0;
+    
+        // Parcourir toutes les lignes avant la ligne du caret
+        for (int i = 0; i < savedCaretLineIndex; i++) {
+            int oldLineLength = oldLines[i].length();
+            int newLineLength = newLines[i].length();
+    
+            // Si du texte a été ajouté, ajuster la position du caret vers la droite
+            lengthDifference += (newLineLength - oldLineLength);
+        }
+    
+        // Si la ligne du caret (où l'utilisateur B est situé) est modifiée, calculer le changement
+        if (savedCaretLineIndex < newLines.length) {
+            int oldLineLength = oldLines[savedCaretLineIndex].length();
+            int newLineLength = newLines[savedCaretLineIndex].length();
+    
+            // Si des caractères ont été ajoutés, déplacer le caret vers la droite
+            lengthDifference += (newLineLength - oldLineLength);
+        }
+    
+        // Calculer la nouvelle position du caret
+        int newCaretPosition = savedCaretPosition + lengthDifference;
+    
+        // S'assurer que la position ne dépasse pas la longueur du texte actuel
+        newCaretPosition = Math.min(newCaretPosition, sharedTextArea.getLength());
+    
+        // Positionner le caret à la nouvelle position calculée
+        sharedTextArea.positionCaret(newCaretPosition);
+    }
+    
     
 
     private void restoreCaretPosition() {
@@ -141,6 +180,8 @@ public class ChatController {
 
     private void setTextArea() {
         saveCaretPosition(); // Enregistrer avant la mise à jour
+
+        String oldText = sharedTextArea.getText();
     
         sharedTextArea.textProperty().removeListener(textAreaChangeListener);
         StringBuilder updatedText = new StringBuilder();
@@ -149,6 +190,10 @@ public class ChatController {
         }
         sharedTextArea.setText(updatedText.toString().trim());
         sharedTextArea.textProperty().addListener(textAreaChangeListener);
+
+        String newText = sharedTextArea.getText();
+
+        adjustCaretPositionForChanges(oldText, newText);
     
         restoreCaretPosition(); // Restaurer après la mise à jour
     }
