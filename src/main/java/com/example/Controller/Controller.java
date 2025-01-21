@@ -53,6 +53,8 @@ public class Controller {
 	public void setChatController(ChatController chatController) {
 		this.chatController = chatController;
 	}
+
+	
 	
 	
  	

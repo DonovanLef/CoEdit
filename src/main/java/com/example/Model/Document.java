@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Controller.Controller;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -100,10 +102,5 @@ public class Document implements Serializable{
 		}
 		
 	}
-
-	public void merge(){
-
-	}
-
 
 }

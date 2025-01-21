@@ -7,6 +7,11 @@ import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.NetworkModel;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 public class NetworkController {
 	
 	
@@ -57,7 +62,18 @@ public class NetworkController {
 
 			// ça c'est le cas où on l'a déjà
 			if ( DocumentController.getDocumentsMap().containsKey(doc.getName()) ){
-				doc.merge();
+				Controller.ctrl.getConflictsController().setText(doc.getLines().toString(), DocumentController.getDocumentsMap().get(doc.getName()).getLines().toString());
+				// FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
+            	// Parent root = loader.load();
+
+				// Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+				// currentStage.close();
+
+				// Stage newStage = new Stage();
+				// newStage.setTitle("Nouvelle Vue");
+				// newStage.setScene(new Scene(root));
+				// newStage.show();
+			// Le cas où on ne l'a pas
 			} else {
 				doc.save(Folder.PATH);
 			}
