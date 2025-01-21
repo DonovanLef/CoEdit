@@ -9,7 +9,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.Controller.ChatController"
       spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-    <TextArea fx:id="sharedTextArea" editable="true" prefHeight="300" prefWidth="400"/>
+    <TextArea fx:id="sharedTextArea" wrapText="true" editable="true" prefHeight="300" prefWidth="400"/>
 
     <HBox spacing="20" alignment="CENTER">
         <Button text="Retour" onAction="#onBack">
