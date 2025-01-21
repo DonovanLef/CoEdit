@@ -50,13 +50,13 @@ public class ChatController {
 
     private int savedCaretPosition;
     private int savedCaretLineIndex;
-
+    
     private void saveCaretPosition() {
         savedCaretPosition = sharedTextArea.getCaretPosition();
         String[] lines = sharedTextArea.getText().split("\n");
         savedCaretLineIndex = 0;
         int currentPos = 0;
-
+    
         for (int i = 0; i < lines.length; i++) {
             if (currentPos + lines[i].length() >= savedCaretPosition) {
                 savedCaretLineIndex = i;
@@ -65,22 +65,35 @@ public class ChatController {
             currentPos += lines[i].length() + 1; // +1 pour le saut de ligne
         }
     }
+    
 
     private void restoreCaretPosition() {
         String[] lines = sharedTextArea.getText().split("\n");
         int newCaretPosition = 0;
     
+        // Calculer la position de départ du caret pour la ligne sauvegardée
         for (int i = 0; i < savedCaretLineIndex && i < lines.length; i++) {
             newCaretPosition += lines[i].length() + 1; // +1 pour le saut de ligne
         }
     
         if (savedCaretLineIndex < lines.length) {
-            newCaretPosition += Math.min(lines[savedCaretLineIndex].length(), 
+            newCaretPosition += Math.min(lines[savedCaretLineIndex].length(),
                                          savedCaretPosition - newCaretPosition);
         }
-        
+    
+        // Ajuster en fonction des modifications effectuées sur les lignes précédentes
+        int previousTextLength = sharedTextArea.getText().substring(0, newCaretPosition).length();
+        int currentTextLength = sharedTextArea.getText().length();
+    
+        // Ajuster la position du caret pour tenir compte des caractères ajoutés
+        newCaretPosition += currentTextLength - previousTextLength;
+    
+        // S'assurer que la position ne dépasse pas la longueur du texte
+        newCaretPosition = Math.min(newCaretPosition, sharedTextArea.getLength());
+    
         sharedTextArea.positionCaret(newCaretPosition);
     }
+    
     
 
     @FXML
