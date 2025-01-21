@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -154,14 +155,14 @@ public class ChatController {
     }
 
     public void setTextArea() {
-    
+
         // Appliquer les modifications au TextArea
         StringBuilder newText = new StringBuilder();
         for (LineModel line : lines) {
             newText.append(line.getLine()).append("\n");
         }
         sharedTextArea.setText(newText.toString());
-    
+
         // Vérifier et ajuster la position du caret après la mise à jour
         try {
             adjustCaretPositionForChanges();
@@ -169,7 +170,6 @@ public class ChatController {
             System.err.println("Erreur de position de caret: " + e.getMessage());
         }
     }
-    
 
     public void addLine(LineModel other) {
         Iterator<LineModel> iterator = lines.iterator();
@@ -184,10 +184,34 @@ public class ChatController {
     }
 
     public void handleCreateLine(LineModel line) {
+
+        double savedScrollY = 0;
+        double savedScrollX = 0;
+
+        ScrollBar scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
+        ScrollBar scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
+
+        if (scrollBarVertical != null) {
+            savedScrollY = scrollBarVertical.getValue();
+        }
+        if (scrollBarHorizontal != null) {
+            savedScrollX = scrollBarHorizontal.getValue();
+        }
+
         saveCaretPosition();
 
         this.addLine(line);
         this.setTextArea();
+
+        scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
+        scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
+    
+        if (scrollBarVertical != null) {
+            scrollBarVertical.setValue(savedScrollY);
+        }
+        if (scrollBarHorizontal != null) {
+            scrollBarHorizontal.setValue(savedScrollX);
+        }
     }
 
     public void sendDocuments() {
