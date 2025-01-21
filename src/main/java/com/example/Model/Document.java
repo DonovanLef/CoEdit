@@ -62,7 +62,7 @@ public class Document implements Serializable{
     }
 
 	public static Document restoreByFile(String name){
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name+".ser"))) {
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name))) {
 			Document doc = (Document) ois.readObject();
 			return doc;
 		} catch (IOException | ClassNotFoundException e) {
