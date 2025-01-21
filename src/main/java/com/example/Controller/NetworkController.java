@@ -67,7 +67,7 @@ public class NetworkController {
 
 	}
 
-	public byte[] IntToByte(int value) {
+	public byte[] IntToByte(short value) {
 		return this.networkModel.IntToByteArray(value);
 	}
 	public byte[] concatenateByteArrays(byte[] array1, byte[] array2) {

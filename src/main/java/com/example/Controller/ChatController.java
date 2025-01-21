@@ -4,14 +4,12 @@ import com.example.Model.Document;
 import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.MulticastEditor;
-import com.example.Model.NetworkModel;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
@@ -19,22 +17,25 @@ import javafx.scene.control.Button;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class ChatController {
 
     private ArrayList<LineModel> lines;
 
     @FXML
-    private TextArea sharedTextArea; // Zone de texte partagée
+    private TextArea sharedTextArea;
     @FXML
-    private TextField messageInput; // Champ pour taper un message
+    private TextField messageInput;
     @FXML
-    private Button saveButton; // Bouton pour enregistrer
+    private Button saveButton;
 
     private MulticastEditor multicastEditor;
 
@@ -42,6 +43,7 @@ public class ChatController {
 
     @FXML
     public void initialize() {
+        Controller.ctrl.setChatController(this);
         try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
             multicastEditor = new MulticastEditor(Controller.ctrl.getNetworkController()::handleReceive);
@@ -55,9 +57,11 @@ public class ChatController {
                 updateLineModels(newValue);
             }
         });
+
     }
 
     private void updateLineModels(String newText) {
+        System.out.println("pass");
         String[] newLines = newText.split("\n");
 
         // Synchroniser lines avec newLines
@@ -66,13 +70,15 @@ public class ChatController {
                 if (!lines.get(i).getLine().equals(newLines[i])) {
                     // Mettre à jour la ligne existante si elle a changé
                     lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
-                    multicastEditor.sendMessage(getLineFormat(lines.get(i)));
+                    multicastEditor.sendLine(lines.get(i), Controller.ctrl);
+                    System.out.println("envoie");
                 }
             } else {
                 // Ajouter une nouvelle ligne avec un GUID unique
                 LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
                 lines.add(newLineModel);
-                multicastEditor.sendMessage(getLineFormat(newLineModel));
+                multicastEditor.sendLine(newLineModel, Controller.ctrl);
+                System.out.println("envoie");
             }
         }
 
@@ -82,38 +88,31 @@ public class ChatController {
         }
 
         // Debug : Afficher les identifiants et le contenu
-        lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
+        lines.forEach(line -> System.out.println(
+                "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
 
     }
-    
 
     private void setTextArea() {
         String textArea = "";
         for (LineModel lineModel : lines) {
             String line = lineModel.getLine();
-            if (!line.isEmpty()) {
-                line = line.replace("<!:>", "");
-                textArea += line + "\n";
-            }
-
+            textArea += line + "\n";
         }
-        if (!textArea.isEmpty())
-            textArea = textArea.substring(0, textArea.length()-1);
         sharedTextArea.setText(textArea);
     }
 
     public void addLine(LineModel other) {
         for (LineModel lineModel : lines) {
-            if (lineModel.getIdLine() == other.getIdLine()) {
+            if (lineModel.getIdLine().equals(other.getIdLine())) {
                 lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
                 return;
             }
         }
         lines.add(other);
-
     }
-    public void handleCreateLine(LineModel line) 
-    {
+
+    public void handleCreateLine(LineModel line) {
         int caretPosition = sharedTextArea.getCaretPosition();
 
         this.addLine(line);
@@ -121,7 +120,7 @@ public class ChatController {
         sharedTextArea.positionCaret(caretPosition);
     }
 
-    public void sendDocuments(){
+    public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
             short code = 203;
             try {
@@ -136,8 +135,27 @@ public class ChatController {
     @FXML
     private void onSave() {
         Document doc = new Document();
+        doc.setName(this.file.getName());
         doc.setLines(lines);
         doc.save(Folder.PATH);
+    }
+
+    @FXML
+    private void onBack(ActionEvent event) {
+        onSave();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
+            Parent root = loader.load();
+
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+            Stage stage = new Stage();
+            stage.setTitle("Folder Project");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+        }
     }
 
     public void setFile(File file) {
@@ -160,12 +178,5 @@ public class ChatController {
             e.printStackTrace();
         }
     }
-
-
-
-    private String getLineFormat(LineModel lineModel) {
-        return "<?" + lineModel.getIdLine() + ";>" + lineModel.getLine();
-    }
-
 
 }

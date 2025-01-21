@@ -67,6 +67,7 @@ public class Document implements Serializable{
     }
 
 	public static Document restoreByFile(String name){
+		System.out.println(name);
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name))) {
 			Document doc = (Document) ois.readObject();
 			return doc;
