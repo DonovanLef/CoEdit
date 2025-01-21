@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 
 import com.example.Controller.Controller;
@@ -9,6 +10,7 @@ import com.example.Model.LineModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -27,6 +29,10 @@ public class App extends Application {
         ctrl.getNetworkController().handleReceive(concatenateByteArrays(byteArray, doc.toByteArray()));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Éditeur partagé");
+
+        File iconFile = new File("src/main/resources/icons/icons_coedit.png");
+        stage.getIcons().add(new Image(iconFile.toURI().toString()));
+
         stage.setScene(scene);
         stage.show();
     }
