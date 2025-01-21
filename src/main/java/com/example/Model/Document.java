@@ -46,7 +46,7 @@ public class Document implements Serializable{
 	}
 
 	public void save(String path){
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path+this.name))) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path+this.name+".ser"))) {
 			oos.writeObject(this);
 		} catch (IOException e) {
 			e.printStackTrace();

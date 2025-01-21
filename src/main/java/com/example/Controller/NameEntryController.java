@@ -28,12 +28,12 @@ public class NameEntryController {
 		if (!userName.isEmpty()) {
 			this.name = userName;
 			try {
-				// Charger le fichier FXML de la nouvelle vue
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));
-				Parent folderView = loader.load();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
+				Parent root = loader.load();
 
-				Stage stage = (Stage) nameField.getScene().getWindow();
-				stage.setScene(new Scene(folderView));
+				Stage stage = new Stage();
+				stage.setTitle("Nouvelle Vue");
+				stage.setScene(new Scene(root));
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();

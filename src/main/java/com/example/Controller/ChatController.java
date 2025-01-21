@@ -25,6 +25,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import com.example.Model.LineModel;
+import com.example.Model.MulticastEditor;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
+
 public class ChatController {
 
     private ArrayList<LineModel> lines;
@@ -131,6 +145,23 @@ public class ChatController {
         doc.setName(this.file.getName());
         doc.setLines(lines);
         doc.save(Folder.PATH);
+    }
+
+    @FXML
+    private void onBack(ActionEvent event) {
+        onSave();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
+            Parent root = loader.load();
+
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+            Stage stage = new Stage();
+            stage.setTitle("Folder Project");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) { }
     }
 
     public void setFile(File file) {
