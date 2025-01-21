@@ -16,6 +16,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class ChatController {
 
@@ -31,8 +33,6 @@ public class ChatController {
     private MulticastEditor multicastEditor;
 
     private File file;
-
-    private Controller ctrl;
 
 
 
@@ -108,6 +108,18 @@ public class ChatController {
                     currentLineModel.setLine(currentLine);
                 }
 
+                try {
+                    
+                    byte[] v =Controller.ctrl.getNetworkController().IntToByte(100);
+                    byte[] l =currentLineModel.toByteArray();
+                    byte[] data= Controller.ctrl.getNetworkController().concatenateByteArrays(v, l);
+                    //two array in one
+                    multicastEditor.sendData(data);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
                 multicastEditor.sendMessage(getLineFormat(currentLineModel));
             } else if (event.getCode() == KeyCode.ENTER) {
                 lines.add(new LineModel(System.currentTimeMillis()));

@@ -32,21 +32,7 @@ public class App extends Application {
         stage.show();
     }
 
-    public static byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
-        int length1 = array1.length;
-        int length2 = array2.length;
-
-        // Create a new byte array to hold the concatenated result
-        byte[] result = new byte[length1 + length2];
-
-        // Copy elements from the first array
-        System.arraycopy(array1, 0, result, 0, length1);
-
-        // Copy elements from the second array
-        System.arraycopy(array2, 0, result, length1, length2);
-
-        return result;
-    }
+   
     public static void main(String[] args) {
         launch();
     }

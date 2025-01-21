@@ -43,5 +43,12 @@ public class NetworkController {
 		//String res  = this.networkModel.handleReceive(message);	
 		//this.ctrl.getChatController().onMessageReceived(res);
 	}
+
+	public byte[] IntToByte(int value) {
+		return this.networkModel.IntToByteArray(value);
+	}
+	public byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
+		return this.networkModel.concatenateByteArrays(array1, array2);
+	}
 	
 }
