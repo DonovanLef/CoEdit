@@ -138,6 +138,17 @@ public class ChatController {
 
     }
 
+    public void sendDocuments(){
+        for (Document doc : DocumentController.getDocuments()) {
+            short code = 203;
+            try {
+                this.multicastEditor.sendData(code, doc.toByteArray());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
     @FXML
     private void onSave() {
