@@ -131,6 +131,10 @@ public class ChatController {
         }
     }
 
+    public void askDocuments(){
+        this.multicastEditor.sendData(202, [null]);
+    }
+
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
     @FXML
     private void onSave() {
