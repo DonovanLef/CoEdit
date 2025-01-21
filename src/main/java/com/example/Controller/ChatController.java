@@ -58,13 +58,6 @@ public class ChatController {
             }
         });
 
-        // Ajouter un écouteur pour la touche "Entrée"
-        sharedTextArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                updateLineModels(sharedTextArea.getText());
-            }
-        });
-
     }
 
     private void updateLineModels(String newText) {
@@ -78,12 +71,14 @@ public class ChatController {
                     // Mettre à jour la ligne existante si elle a changé
                     lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
                     multicastEditor.sendLine(lines.get(i), Controller.ctrl);
+                    System.out.println("envoie");
                 }
             } else {
                 // Ajouter une nouvelle ligne avec un GUID unique
                 LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
                 lines.add(newLineModel);
                 multicastEditor.sendLine(newLineModel, Controller.ctrl);
+                System.out.println("envoie");
             }
         }
 
@@ -113,7 +108,7 @@ public class ChatController {
         for (LineModel lineModel : lines) {
             if (lineModel.getIdLine().equals(other.getIdLine())) {
                 lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
-                return;
+                break;
             }
         }
         lines.add(other);
