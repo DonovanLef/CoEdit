@@ -93,7 +93,7 @@ public class FolderController {
     public void createFile() {
         // Récupérer le nom du fichier à partir du TextField
         String fileName = fileNameTextField.getText().trim();
-        if (!fileName.endsWith(".txt"))fileName = fileName + ".txt";
+        if (!fileName.endsWith(".txt"))fileName = fileName + ".ser";
 
         // Vérifier si le nom est valide (non vide)
         if (fileName.isEmpty()) {
