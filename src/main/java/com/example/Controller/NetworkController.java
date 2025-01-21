@@ -3,6 +3,7 @@ package com.example.Controller;
 import java.util.Arrays;
 
 import com.example.Model.Document;
+import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.NetworkModel;
 
@@ -13,10 +14,10 @@ public class NetworkController {
 	public NetworkController() {
 		this.networkModel = new NetworkModel();
 	}
-	
-	public void handleReceive(byte[] bytes) {
-		//Transformer les 16premiers byte en decimal
 
+	public void handleReceive(byte[] bytes) {
+
+		//Transformer les 16premiers byte en decimal
 		int code = this.networkModel.getCode(bytes);
 		byte[] serial = Arrays.copyOfRange(bytes, 2, bytes.length);
 
@@ -26,6 +27,7 @@ public class NetworkController {
 			Controller.ctrl.getChatController().handleCreateLine(line);
 			
 		}
+
 		// Creation d'un document
 		if (code == 200) {
 			Document doc = this.networkModel.handle200(serial);
@@ -40,11 +42,29 @@ public class NetworkController {
 
 		// demande de modification
 		if (code == 202) {
+			// Skip si c'est nous qui avions envoyé la demande 202;
 			Controller.ctrl.getChatController().sendDocuments();
 		}
 
-		//String res  = this.networkModel.handleReceive(message);	
-		//this.ctrl.getChatController().onMessageReceived(res);
+		// récéption d'un document, uniquement à la connexion
+		if (code == 203) {
+			StarterController starter = Controller.ctrl.getStarterController();
+			if ( starter.lasttime > (System.currentTimeMillis() -5000) ) return;
+			Document doc = Document.restoreByBytes(bytes);
+
+			// ça c'est le cas où on l'a déjà reçu
+			if ( starter.documentsReceived.containsKey(doc.getName())) return;
+
+			// ça c'est le cas où on l'a déjà
+			if ( DocumentController.getDocumentsMap().containsKey(doc.getName()) ){
+				doc.merge();
+			} else {
+				doc.save(Folder.PATH);
+			}
+			starter.documentsReceived.put(doc.getName(), doc);
+			starter.updateLastTime();
+		}
+
 	}
 
 	public byte[] IntToByte(int value) {

@@ -9,6 +9,7 @@ public class Controller {
 	private NetworkController networkController;
 	private FolderController folderController;
 	private NameEntryController nameEntryController;
+	private StarterController starterController;
 
 	public Controller() {
 		ctrl = this;
@@ -17,6 +18,8 @@ public class Controller {
 		this.networkController = new NetworkController();
 		this.folderController = new FolderController();
 		this.nameEntryController = new NameEntryController();
+		this.starterController = new StarterController();
+
 	}
 
 	public ChatController getChatController() {
@@ -33,6 +36,10 @@ public class Controller {
 	}
 	public NameEntryController getNameEntryController() {
 		return nameEntryController;
+	}
+
+	public StarterController getStarterController(){
+		return starterController;
 	}
 
 	public String getUsername() {

@@ -11,6 +11,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 public class Document implements Serializable{
 
 	private String name;
@@ -93,6 +98,10 @@ public class Document implements Serializable{
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void merge(){
+
 	}
 
 
