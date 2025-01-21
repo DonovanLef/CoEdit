@@ -16,14 +16,21 @@ public class NameEntryController {
 
 	private Controller ctrl;
 
+	private String name;
+
+	public String getName() {
+		return this.name;
+	}
+
 	public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
-    }
+		this.ctrl = ctrl;
+	}
 
 	@FXML
 	private void onNameSubmit() {
 		String userName = nameField.getText();
 		if (!userName.isEmpty()) {
+			this.name = userName;
 			try {
 				// Charger le fichier FXML de la nouvelle vue
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));

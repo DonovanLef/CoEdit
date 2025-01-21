@@ -38,69 +38,20 @@ public class ChatController {
 
     private File file;
 
-    private boolean isUserChange = false;
-    private boolean enterPressed = false;
-    private boolean deletePressed = false;
-
     private Controller ctrl;
 
     public void setController(Controller ctrl) {
         this.ctrl = ctrl;
     }
 
-    // public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
-    //     String filePath = fileRepo + "/" + this.file.getName();
-    //     ArrayList<LineModel> lineModels = new ArrayList<>();
-
-    //     try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-    //         String line;
-    //         while ((line = br.readLine()) != null) {
-    //             // Supposons que chaque ligne est au format "<?'idLine'; line"
-    //             if (line.startsWith("<?") && line.contains(";>")) {
-    //                 // Supprimer les balises "<?" et ">"
-    //                 line = line.substring(2, line.length());
-    //                 // Diviser la ligne en idLine et le contenu
-    //                 String[] parts = line.split(";>");
-
-    //                 // S'assurer que parts contient deux éléments après le split
-    //                 if (parts.length >= 2) {
-    //                     if (!parts[1].isEmpty())
-    //                         lineModels.add(new LineModel(Long.parseLong(parts[0]), parts[1]));
-    //                 } else {
-    //                     System.err.println("Ligne mal formée : " + line);
-    //                 }
-    //             }
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-
-    //     return lineModels;
-    // }
-
     @FXML
     public void initialize() {
         if (this.ctrl == null) this.ctrl = new Controller();
         try {
-            // Initialisation du MulticastEditor avec un callback pour recevoir les messages
             multicastEditor = new MulticastEditor(this.ctrl.getNetworkController()::handleReceive);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // sharedTextArea.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-        //     enterPressed = event.getCode() == KeyCode.ENTER;
-        //     deletePressed = event.getCode() == KeyCode.BACK_SPACE;
-        //     isUserChange = event.getCode().isLetterKey();
-        // });
-
-
-        // sharedTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
-        //     if (isUserChange || enterPressed || deletePressed) {
-        //         isUserChange = false; 
-        //         handleUserTextChange(oldValue, newValue);
-        //     }
-        // });
 
         sharedTextArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -118,12 +69,12 @@ public class ChatController {
             if (i < lines.size()) {
                 if (!lines.get(i).getLine().equals(newLines[i])) {
                     // Mettre à jour la ligne existante si elle a changé
-                    lines.get(i).setLine(newLines[i]);
+                    lines.get(i).setLine(newLines[i], this.ctrl.getUsername());
                     multicastEditor.sendMessage(getLineFormat(lines.get(i)));
                 }
             } else {
                 // Ajouter une nouvelle ligne avec un GUID unique
-                LineModel newLineModel = new LineModel(newLines[i]);
+                LineModel newLineModel = new LineModel(newLines[i], this.ctrl.getUsername());
                 lines.add(newLineModel);
                 multicastEditor.sendMessage(getLineFormat(newLineModel));
             }
@@ -135,9 +86,8 @@ public class ChatController {
         }
 
         // Debug : Afficher les identifiants et le contenu
-        lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine()));
+        lines.forEach(line -> System.out.println("ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
 
-        this.setTextArea();
     }
     
 
@@ -159,7 +109,7 @@ public class ChatController {
     public void addLine(LineModel other) {
         for (LineModel lineModel : lines) {
             if (lineModel.getIdLine() == other.getIdLine()) {
-                lineModel.setLine(other.getLine());
+                lineModel.setLine(other.getLine(), this.ctrl.getUsername());
                 return;
             }
         }
@@ -195,7 +145,7 @@ public class ChatController {
                 lines = (ArrayList<LineModel>) doc.getLines();
             else {
                 lines = new ArrayList<>();
-                lines.add(new LineModel());
+                lines.add(new LineModel(this.ctrl.getUsername()));
             }
 
             this.setTextArea();
@@ -204,133 +154,10 @@ public class ChatController {
         }
     }
 
-    private String getTextWithBalises() {
-        String textArea = "";
-        for (LineModel lineModel : lines) {
-            if (!lineModel.getLine().isEmpty()) {
-                textArea += getLineFormat(lineModel) + "\n";
-            }
-        }
-        return textArea;
-    }
+
 
     private String getLineFormat(LineModel lineModel) {
         return "<?" + lineModel.getIdLine() + ";>" + lineModel.getLine();
-    }
-
-    private void handleUserTextChange(String oldText, String newText) {
-        // Logique pour traiter le changement de texte
-        int caretPosition = sharedTextArea.getCaretPosition();
-
-        String beforeCaret = sharedTextArea.getText().substring(0, caretPosition);
-        String afterCaret = sharedTextArea.getText().substring(caretPosition);
-
-        int startOfLine = beforeCaret.lastIndexOf('\n');
-
-        int endOfLine = afterCaret.indexOf('\n');
-
-        if (endOfLine == -1)
-            endOfLine = afterCaret.length(); // S'il n'y a pas de '\n', prendre jusqu'à la fin
-
-        if (startOfLine == -1)
-            startOfLine = 0;
-
-        System.out.println("beforeCaret : " + beforeCaret + " ||");
-        String[] parts = beforeCaret.split("\n");
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        for (int i = 0; i < parts.length; i++) {
-            System.out.println(parts[i]);
-        }
-        int lineNumber = beforeCaret.split("\n").length -1;
-
-        System.out.println("--------------- : " + lineNumber);
-        System.out.println("--------------- : ");
-
-        if (beforeCaret.endsWith("\n")) {
-            System.out.println("pass32");
-            lineNumber ++;
-        }
-        
-
-        String currentLine = sharedTextArea.getText().substring(startOfLine, caretPosition + endOfLine);
-        if (currentLine.endsWith("\n")) {
-            currentLine = currentLine.substring(0, currentLine.length() - 1);
-        }
-        else if (currentLine.startsWith("\n")) {
-            currentLine = currentLine.substring(1);
-        }
-
-
-        int oldLineCount = oldText.split("\n").length;
-        int newLineCount = newText.split("\n").length;
-
-        System.out.println("oldLineCount : " + oldLineCount);
-        System.out.println("newLineCount : " + newLineCount);
-        System.out.println("currentLine : " + currentLine);
-
-        if (enterPressed) {
-            enterPressed = false;
-            System.out.println("newLine");
-            System.out.println("afterCaret : " + afterCaret);
-            afterCaret = afterCaret.substring(1);
-            int nextLine = afterCaret.indexOf("\n");
-            String newEndOfLine = "";
-            if (nextLine != -1)
-                newEndOfLine = afterCaret.substring(0, nextLine);
-            handleNewLine(caretPosition, currentLine,newEndOfLine ,lineNumber);
-        } else if (deletePressed && oldLineCount > newLineCount) {
-            deletePressed = false; 
-            System.out.println("removeLine");
-            if (lineNumber <= lines.size() -1) {
-                LineModel lineModel = lines.get(lineNumber);
-                lineModel.setLine("");
-            }
-        } else {
-            System.out.println("updateLine");
-            updateCurrentLine(currentLine, lineNumber);
-        }
-    }
-
-
-    private void handleNewLine(int caretPosition, String currentLine, String endOfLine,int lineNumber) {
-        System.out.println("caret : " + caretPosition);
-        System.out.println("current : " + currentLine);
-        System.out.println("currentLength : " + currentLine.length());
-        System.out.println("endOfLine : " + endOfLine);
-        System.out.println("lineNb : " + lineNumber);
-        if (endOfLine.isEmpty()) {
-            System.out.println("test1");
-            LineModel newLineModel = new LineModel("<!:>");
-            lines.add(lineNumber+1, newLineModel);
-            multicastEditor.sendMessage(getLineFormat(newLineModel));
-        } else {
-            LineModel lineModel = lines.get(lineNumber);
-            lineModel.setLine(currentLine);
-            multicastEditor.sendMessage(getLineFormat(lineModel));
-
-            LineModel newLineModel = new LineModel(endOfLine);
-            lines.add(lineNumber+1, newLineModel);
-
-            multicastEditor.sendMessage(getLineFormat(newLineModel));
-        }
-    }
-
-    private void updateCurrentLine(String currentLine, int lineNumber) {
-        System.out.println("current : " + currentLine);
-        System.out.println("lineNb : " + lineNumber);
-        System.out.println("lineNb : " + lineNumber);
-        LineModel currentLineModel = (lines.size() >= lineNumber && lineNumber >= 0) ? lines.get(lineNumber) 
-                : lines.get(lines.size() - 1);
-
-        if (currentLine.length() == 0) currentLine = "<!:>";
-        if (currentLineModel != null) {
-            currentLineModel.setLine(currentLine);
-        }
-        
-
-        multicastEditor.sendMessage(getLineFormat(currentLineModel));
     }
 
 

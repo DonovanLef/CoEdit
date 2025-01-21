@@ -37,5 +37,10 @@ public class Controller {
 	public NameEntryController getNameEntryController() {
 		return nameEntryController;
 	}
+
+	public String getUsername() {
+		return nameEntryController.getName();
+	}
+	
 	
 }
