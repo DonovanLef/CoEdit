@@ -10,6 +10,7 @@ import java.util.List;
 public class Folder {
 
     private List<File> files;
+    public static final String PATH = System.getProperty("user.dir") +"/documents/";
 
     public Folder() {
         files = new ArrayList<>();
@@ -51,9 +52,7 @@ public class Folder {
 
     public void scanDocumentsFolder() {
         // Remplacez ceci par le chemin de votre dossier Documents
-        String documentsPath =System.getProperty("user.dir") +"/documents"; // Chemin vers Documents sur la machine de l'utilisateur
-        System.out.println(documentsPath); // Chemin racine du projet
-        File folder = new File(documentsPath);
+        File folder = new File(PATH);
         if (folder.exists() && folder.isDirectory()) {
             File[] listOfFiles = folder.listFiles();
             if (listOfFiles != null) {
@@ -68,10 +67,8 @@ public class Folder {
 
     public void renameFile(String oldName, String newName) {
         try {
-            String projectPath = System.getProperty("user.dir");
-            String documentsPath = projectPath + File.separator + "documents";
-            File oldFile = new File(documentsPath, oldName);
-            File newFile = new File(documentsPath, newName);
+            File oldFile = new File(PATH, oldName);
+            File newFile = new File(PATH, newName);
     
             if (oldFile.exists() && oldFile.renameTo(newFile)) {
                 // System.out.println("Fichier renommé de " + oldName + " à " + newName);
@@ -86,9 +83,7 @@ public class Folder {
 
     public String createFile(String fileName) {
         try {
-            String projectPath = System.getProperty("user.dir");
-            String documentsPath = projectPath + File.separator + "documents";
-            File newFile = new File(documentsPath, fileName);
+            File newFile = new File(PATH, fileName);
     
             if (newFile.createNewFile()) {
                 addFile(newFile); // Ajouter au modèle
@@ -102,20 +97,32 @@ public class Folder {
         }
     }
 
-    public void deleteFile(String fileName) {
-        String projectPath = System.getProperty("user.dir");
-        String documentsPath = projectPath + File.separator + "documents/";
-        File file = new File(documentsPath + fileName);
+    // public void deleteFile(String fileName) {
+    //     String projectPath = System.getProperty("user.dir");
+    //     String documentsPath = projectPath + File.separator + "documents/";
+    //     File file = new File(documentsPath + fileName);
 
-        if (file.exists() && file.isFile()) {
+    //     if (file.exists() && file.isFile()) {
+    //         if (file.delete()) {
+    //             // System.out.println("Fichier supprimé : " + fileName);
+    //         } else {
+    //             // System.err.println("Erreur lors de la suppression du fichier : " + fileName);
+    //         }
+    //     } else {
+    //         // System.err.println("Fichier introuvable : " + fileName);
+    //     }
+    // }
+
+    public void deleteFile(String name) {
+        File file = getFile(name);
+        if (file != null) {
             if (file.delete()) {
-                // System.out.println("Fichier supprimé : " + fileName);
+                System.out.println("Fichier supprimé : " + name);
+                files.remove(file);
             } else {
-                // System.err.println("Erreur lors de la suppression du fichier : " + fileName);
+                System.out.println("Impossible de supprimer le fichier.");
             }
-        } else {
-            // System.err.println("Fichier introuvable : " + fileName);
+            files.remove(file);
         }
     }
-
 }

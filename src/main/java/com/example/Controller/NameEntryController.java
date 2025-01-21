@@ -14,11 +14,8 @@ public class NameEntryController {
 	@FXML
 	private TextField nameField;
 
-	private Controller ctrl;
 
-	public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
-    }
+
 
 	@FXML
 	private void onNameSubmit() {

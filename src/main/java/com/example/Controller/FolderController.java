@@ -3,6 +3,7 @@ package com.example.Controller;
 import java.io.File;
 import java.io.IOException;
 
+import com.example.Model.Document;
 import com.example.Model.Folder;
 
 import javafx.event.ActionEvent;
@@ -52,12 +53,12 @@ public class FolderController {
         this.screenLockController = new ScreenLockController();
 
         // Initialiser le dossier avec des fichiers
-        folder = new Folder();
-
+        this.folder = new Folder();
         // Ajouter des fichiers pour l'exemple
         folder.scanDocumentsFolder();
         // Ajouter la liste des fichiers au ListView
         fileListView.getItems().addAll(folder.getFileNames());
+        
 
         fileListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double-clic
@@ -207,4 +208,11 @@ public class FolderController {
         this.screenLockController.openLock(event);
     }
 
+    public void createDocument(Document doc) {
+        doc.save(Folder.PATH);
+    }
+    public void deleteDocument(String name) {
+        
+        fileListView.getItems().remove(name);
+    }
 }

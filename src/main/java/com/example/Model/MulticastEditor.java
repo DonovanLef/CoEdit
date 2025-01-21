@@ -10,9 +10,9 @@ public class MulticastEditor {
 
     private MulticastSocket socket;
     private InetAddress group;
-    private Consumer<String> messageListener; // Callback pour transmettre les messages à la vue
+    private Consumer<byte[]> messageListener; // Callback pour transmettre les messages à la vue
 
-    public MulticastEditor(Consumer<String> messageListener) throws IOException {
+    public MulticastEditor(Consumer<byte[]> messageListener) throws IOException {
         this.messageListener = messageListener;
 
         // Initialisation du socket multicast
@@ -29,13 +29,13 @@ public class MulticastEditor {
         byte[] buffer = new byte[10240];
         while (true) {
             try {
+                
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 String message = new String(packet.getData(), 0, packet.getLength());
-
                 // Utiliser le callback pour transmettre le message
                 if (messageListener != null) {
-                    messageListener.accept(message);
+                    messageListener.accept(packet.getData());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -50,6 +50,23 @@ public class MulticastEditor {
             DatagramPacket packet = new DatagramPacket(msg, msg.length, group, PORT);
             socket.send(packet);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void sendLine(byte[] line) {
+        
+            try {
+                DatagramPacket packet = new DatagramPacket(line, line.length, group, PORT);
+                socket.send(packet);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+    public void sendData(byte[] data) {
+        try {
+            DatagramPacket packet = new DatagramPacket(data, data.length, group, PORT);
+            socket.send(packet);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
