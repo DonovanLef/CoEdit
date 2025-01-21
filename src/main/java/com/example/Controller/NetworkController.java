@@ -76,7 +76,7 @@ public class NetworkController {
 				// newStage.show();
 			// Le cas où on ne l'a pas
 			} else {
-				doc.save(Folder.PATH);
+				Controller.ctrl.getFolderController().createDocument(doc);
 			}
 			starter.documentsReceived.put(doc.getName(), doc);
 			starter.updateLastTime();

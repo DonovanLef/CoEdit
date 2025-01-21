@@ -46,19 +46,14 @@ public class FolderController {
 
     private ScreenLockController screenLockController;
 
-    private HashMap<LineModel, LineModel> linesToMerge;
-
 
     @FXML
     public void initialize() {
 
-        this.linesToMerge = new HashMap<>();
-
-        Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
-
         this.screenLockController = new ScreenLockController();
 
         Controller.ctrl.setFolderController(this);
+
         // Initialiser le dossier avec des fichiers
         this.folder = new Folder();
         // Ajouter des fichiers pour l'exemple
@@ -227,28 +222,28 @@ public class FolderController {
             fileListView.getItems().add(doc.getName());
             doc.save(Folder.PATH);
         }
-        else {
-            Document myDoc = null;
-            for (Document document : DocumentController.getDocuments()) {
-                if (document.getName().equals(doc.getName())) {
-                    myDoc = document;
-                    break;
-                }
-            }
+        // else {
+        //     Document myDoc = null;
+        //     for (Document document : DocumentController.getDocuments()) {
+        //         if (document.getName().equals(doc.getName())) {
+        //             myDoc = document;
+        //             break;
+        //         }
+        //     }
 
-            if (myDoc != null) {
-                for (LineModel line : doc.getLines()) {
-                    LineModel myLine = getMyLine(line.getIdLine(), myDoc);
+        //     if (myDoc != null) {
+        //         for (LineModel line : doc.getLines()) {
+        //             LineModel myLine = getMyLine(line.getIdLine(), myDoc);
 
-                    if (myLine == null) {
-                        myDoc.addLine(line);
-                    } else {
-                        if (!linesToMerge.containsKey(line))
-                            linesToMerge.put(line, myLine);
-                    }
-                }
-            }
-        }
+        //             if (myLine == null) {
+        //                 myDoc.addLine(line);
+        //             } else {
+        //                 if (!linesToMerge.containsKey(line))
+        //                     linesToMerge.put(line, myLine);
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     public LineModel getMyLine(UUID idLine, Document myDoc) {
