@@ -20,6 +20,7 @@ public class App extends Application {
         byte[] byteArray = ByteBuffer.allocate(2).putShort((short) 200).array();
         
         Document doc = new Document();
+
         doc.setName("Matthewthewthew");
         doc.addLine(new LineModel(System.currentTimeMillis(), "Hello"));
         ctrl.getFolderController().createDocument(doc);
