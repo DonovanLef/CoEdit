@@ -11,13 +11,15 @@ public class ConflictsController {
     @FXML
     private TextArea textAreaRight;
 
-    private Controller ctrl;
-
-    public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
+    @FXML
+    public void initialize() {
+        
     }
 
-
+    public void setText(String left, String right){
+        this.textAreaLeft.setText(left);
+        this.textAreaRight.setText(right);
+    }
 
     // Action pour le bouton de gauche
     public void onSelectLeft() {

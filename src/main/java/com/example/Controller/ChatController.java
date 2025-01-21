@@ -35,7 +35,6 @@ public class ChatController {
     @FXML
     private Button saveButton;
 
-    private MulticastEditor multicastEditor;
 
     private File file;
 
@@ -102,12 +101,6 @@ public class ChatController {
     @FXML
     public void initialize() {
         Controller.ctrl.setChatController(this);
-        try {
-            // Initialisation du MulticastEditor avec un callback pour recevoir les messages
-            multicastEditor = new MulticastEditor(Controller.ctrl.getNetworkController()::handleReceive);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         sharedTextArea.textProperty().addListener(textAreaChangeListener);
 
@@ -239,11 +232,15 @@ public class ChatController {
         for (Document doc : DocumentController.getDocuments()) {
             short code = 203;
             try {
-                this.multicastEditor.sendData(code, doc.toByteArray());
+                Controller.ctrl.getMulticastEditor().sendData(code, doc.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void askDocuments(){
+        Controller.ctrl.getMulticastEditor().sendData((short)202, new byte[0]);
     }
 
     // Méthode appelée lorsqu'on clique sur "Enregistrer"

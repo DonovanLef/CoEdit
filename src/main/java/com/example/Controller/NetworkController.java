@@ -3,8 +3,14 @@ package com.example.Controller;
 import java.util.Arrays;
 
 import com.example.Model.Document;
+import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.NetworkModel;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class NetworkController {
 	
@@ -13,10 +19,10 @@ public class NetworkController {
 	public NetworkController() {
 		this.networkModel = new NetworkModel();
 	}
-	
-	public void handleReceive(byte[] bytes) {
-		//Transformer les 16premiers byte en decimal
 
+	public void handleReceive(byte[] bytes) {
+
+		//Transformer les 16premiers byte en decimal
 		int code = this.networkModel.getCode(bytes);
 		byte[] serial = Arrays.copyOfRange(bytes, 2, bytes.length);
 
@@ -26,6 +32,7 @@ public class NetworkController {
 			Controller.ctrl.getChatController().handleCreateLine(line);
 			
 		}
+
 		// Creation d'un document
 		if (code == 200) {
 			Document doc = this.networkModel.handle200(serial);
@@ -40,11 +47,40 @@ public class NetworkController {
 
 		// demande de modification
 		if (code == 202) {
+			// Skip si c'est nous qui avions envoyé la demande 202;
 			Controller.ctrl.getChatController().sendDocuments();
 		}
 
-		//String res  = this.networkModel.handleReceive(message);	
-		//this.ctrl.getChatController().onMessageReceived(res);
+		// récéption d'un document, uniquement à la connexion
+		if (code == 203) {
+			StarterController starter = Controller.ctrl.getStarterController();
+			if ( starter.lasttime > (System.currentTimeMillis() -5000) ) return;
+			Document doc = Document.restoreByBytes(bytes);
+
+			// ça c'est le cas où on l'a déjà reçu
+			if ( starter.documentsReceived.containsKey(doc.getName())) return;
+
+			// ça c'est le cas où on l'a déjà
+			if ( DocumentController.getDocumentsMap().containsKey(doc.getName()) ){
+				Controller.ctrl.getConflictsController().setText(doc.getLines().toString(), DocumentController.getDocumentsMap().get(doc.getName()).getLines().toString());
+				// FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
+            	// Parent root = loader.load();
+
+				// Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+				// currentStage.close();
+
+				// Stage newStage = new Stage();
+				// newStage.setTitle("Nouvelle Vue");
+				// newStage.setScene(new Scene(root));
+				// newStage.show();
+			// Le cas où on ne l'a pas
+			} else {
+				doc.save(Folder.PATH);
+			}
+			starter.documentsReceived.put(doc.getName(), doc);
+			starter.updateLastTime();
+		}
+
 	}
 
 	public byte[] IntToByte(short value) {

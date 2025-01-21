@@ -29,10 +29,12 @@ public class NetworkModel {
 		return Document.restoreByBytes(bytes);
 
 	}
-	public byte[] IntToByteArray( short data ) {    
-		byte[] result = new byte[2];
-		result[0] = (byte) ((data & 0x0000FF00) >> 8);
-		result[1] = (byte) ((data & 0x000000FF) >> 0);
+	public byte[] IntToByteArray( int data ) {    
+		byte[] result = new byte[4];
+		result[0] = (byte) ((data & 0xFF000000) >> 24);
+		result[1] = (byte) ((data & 0x00FF0000) >> 16);
+		result[2] = (byte) ((data & 0x0000FF00) >> 8);
+		result[3] = (byte) ((data & 0x000000FF) >> 0);
 		return result;        
 	}
 	public  byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
