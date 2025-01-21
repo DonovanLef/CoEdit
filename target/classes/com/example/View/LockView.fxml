@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller.ScreenLockController" spacing="10" alignment="CENTER" styleClass="root">
-    <Label
-        text="L'écran est verrouillé. Attendez que les modifications soient fusionnées."
-        style="-fx-font-size: 16px;"
-        wrapText="true"
-        textAlignment="CENTER"
-    />
-    <Button text="Déverrouiller" onAction="#closeLock" style="-fx-font-size: 14px;" />
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.ScreenLockController">
+   <VBox alignment="CENTER" prefHeight="77.0" prefWidth="600.0">
+      <children>
+          <Label style="-fx-font-size: 16px;" text="L'écran est verrouillé." textAlignment="CENTER" wrapText="true" />
+         <Label style="-fx-font-size: 16px;" text="Un utilisateur est entrain de fusionner ses fichiers." textAlignment="CENTER" wrapText="true" />
+      </children>
+   </VBox>
+   <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="0.0" prefWidth="494.0" />
+   <VBox alignment="CENTER" prefHeight="143.0" prefWidth="600.0" spacing="20.0">
+      <children>
+         <Label style="-fx-font-size: 16px;" text="Patientez en attendant que les modifications soient fusionnées." textAlignment="CENTER" wrapText="true" />
+         <ImageView fitHeight="81.0" fitWidth="90.0">
+            <image>
+               <Image url="@../../../../classes/images/loading.gif" />
+            </image>
+         </ImageView>
+      </children>
+   </VBox>
 </VBox>
