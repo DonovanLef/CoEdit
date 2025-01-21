@@ -143,8 +143,6 @@ public class ChatController {
     }
 
     public void setTextArea() {
-        // Sauvegarder la position du caret avant toute modification du texte
-        saveCaretPosition();
     
         // Appliquer les modifications au TextArea
         StringBuilder newText = new StringBuilder();
