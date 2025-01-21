@@ -1,32 +1,27 @@
 package com.example.Controller;
 
-import com.example.Model.Document;
-import com.example.Model.Folder;
-import com.example.Model.LineModel;
-import com.example.Model.MulticastEditor;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ResourceBundle.Control;
 
+import com.example.Model.Document;
+import com.example.Model.Folder;
+import com.example.Model.LineModel;
+import com.example.Model.MulticastEditor;
+
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class ChatController {
@@ -178,7 +173,8 @@ public class ChatController {
 
     public void handleCreateLine(LineModel line) {
 
-        if (line.getModifiedBy() == Controller.ctrl.getUsername()) return;
+        if (line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
+
         
         double savedScrollY = 0;
         double savedScrollX = 0;
