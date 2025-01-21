@@ -163,6 +163,7 @@ public class FolderController {
             chatController.setFile(selectedFile);
             Stage stage = (Stage) btnAdd.getScene().getWindow();
             stage.setScene(new Scene(chatView));
+            stage.sizeToScene();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
