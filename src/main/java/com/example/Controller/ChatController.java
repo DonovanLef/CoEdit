@@ -62,7 +62,6 @@ public class ChatController {
 
         for (int i = 0; i < this.savedLineCaretPosition; i++) {
             charBef += lines.get(i).getLine().length();
-            System.out.println(" o : " + lines.get(i).getLine().length());
         }
 
         this.charBefore = charBef;
@@ -96,17 +95,10 @@ public class ChatController {
         int charBef = 0;
         for (int i = 0; i < this.savedLineCaretPosition; i++) {
             charBef += this.lines.get(i).getLine().length();
-            System.out.println(" c : " + lines.get(i).getLine().length());
 
         }
 
-        System.out.println("scp  : " + savedCaretPosition);
-        System.out.println("current  : " + charBef);
-        System.out.println("old  : " + charBefore);
-
         int newPos = savedCaretPosition + (charBef - this.charBefore);
-
-        System.out.println("newPos : " + newPos);
 
         sharedTextArea.positionCaret(newPos);
     }
@@ -149,9 +141,9 @@ public class ChatController {
             lines.remove(lines.size() - 1);
         }
 
-        // Debug : Afficher les identifiants et le contenu
-        lines.forEach(line -> System.out.println(
-                "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
+        // // Debug : Afficher les identifiants et le contenu
+        // lines.forEach(line -> System.out.println(
+        //         "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
     }
 
     public void setTextArea() {
@@ -200,6 +192,7 @@ public class ChatController {
 
         saveCaretPosition();
 
+        System.out.println(line.getLine());
         this.addLine(line);
         this.setTextArea();
 
