@@ -22,6 +22,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class ChatController {
 
@@ -38,17 +40,47 @@ public class ChatController {
 
     private File file;
 
-    private Controller ctrl;
 
     public void setController(Controller ctrl) {
         this.ctrl = ctrl;
+    }
+
+    public ArrayList<LineModel> readLinesFromFile(String fileRepo) {
+        String filePath = fileRepo + "/" + this.file.getName();
+        ArrayList<LineModel> lineModels = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Supposons que chaque ligne est au format "<?'idLine'; line"
+                if (line.startsWith("<?") && line.contains(";>")) {
+                    // Supprimer les balises "<?" et ">"
+                    line = line.substring(2, line.length());
+                    System.out.println(line);
+                    // Diviser la ligne en idLine et le contenu
+                    String[] parts = line.split(";>");
+
+                    // S'assurer que parts contient deux éléments après le split
+                    if (parts.length >= 2) {
+                        lineModels.add(new LineModel(Long.parseLong(parts[0]), parts[1]));
+                    } else {
+                        System.err.println("Ligne mal formée : " + line);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lineModels;
     }
 
     @FXML
     public void initialize() {
         if (this.ctrl == null) this.ctrl = new Controller();
         try {
-            multicastEditor = new MulticastEditor(this.ctrl.getNetworkController()::handleReceive);
+            // Initialisation du MulticastEditor avec un callback pour recevoir les messages
+            multicastEditor = new MulticastEditor(Controller.ctrl.getNetworkController()::handleReceive);
         } catch (Exception e) {
             e.printStackTrace();
         }

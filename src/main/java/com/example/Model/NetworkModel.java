@@ -29,4 +29,27 @@ public class NetworkModel {
 		return Document.restoreByBytes(bytes);
 
 	}
+	public byte[] IntToByteArray( int data ) {    
+		byte[] result = new byte[4];
+		result[0] = (byte) ((data & 0xFF000000) >> 24);
+		result[1] = (byte) ((data & 0x00FF0000) >> 16);
+		result[2] = (byte) ((data & 0x0000FF00) >> 8);
+		result[3] = (byte) ((data & 0x000000FF) >> 0);
+		return result;        
+	}
+	public  byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
+        int length1 = array1.length;
+        int length2 = array2.length;
+
+        // Create a new byte array to hold the concatenated result
+        byte[] result = new byte[length1 + length2];
+
+        // Copy elements from the first array
+        System.arraycopy(array1, 0, result, 0, length1);
+
+        // Copy elements from the second array
+        System.arraycopy(array2, 0, result, length1, length2);
+
+        return result;
+    }
 }

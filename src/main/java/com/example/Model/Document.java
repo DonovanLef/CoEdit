@@ -81,20 +81,7 @@ public class Document implements Serializable{
         }
         return null;
 	}
-	public static void deleteFile(String name){
-		String path = Folder.PATH+name+".ser";
-		try {
-			if (new java.io.File(path).delete()) {
-				System.out.println("File deleted successfully");
-			} else {
-				System.out.println("Failed to delete the file");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
 
-	
+
 
 }

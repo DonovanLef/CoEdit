@@ -35,14 +35,7 @@ public class FolderController {
     
     private Folder folder;
 
-    private Controller ctrl;
-
-    public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
         
-        
-        
-    }
     @FXML
     public void initialize() {
         // Initialiser le dossier avec des fichiers
@@ -131,7 +124,7 @@ public class FolderController {
         doc.save(Folder.PATH);
     }
     public void deleteDocument(String name) {
-        folder.deleteFile(name);
+        
         fileListView.getItems().remove(name);
     }
 }
