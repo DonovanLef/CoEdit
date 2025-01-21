@@ -102,17 +102,20 @@ public class ChatController {
         sharedTextArea.setText(textArea);
     }
 
-    public void handleCreateLine(LineModel other) {
-        int caretPosition = sharedTextArea.getCaretPosition();
-
+    public void addLine(LineModel other) {
         for (LineModel lineModel : lines) {
             if (lineModel.getIdLine().equals(other.getIdLine())) {
                 lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
-                break;
+                return;
             }
         }
         lines.add(other);
+    }
 
+    public void handleCreateLine(LineModel line) {
+        int caretPosition = sharedTextArea.getCaretPosition();
+
+        this.addLine(line);
         this.setTextArea();
         sharedTextArea.positionCaret(caretPosition);
     }
