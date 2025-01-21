@@ -159,6 +159,7 @@ public class ChatController {
         // Sauvegarder la position du caret avant toute modification du texte
         saveCaretPosition();
     
+        String oldText = sharedTextArea.getText();
         // Appliquer les modifications au TextArea
         StringBuilder newText = new StringBuilder();
         for (LineModel line : lines) {
@@ -168,7 +169,7 @@ public class ChatController {
     
         // Vérifier et ajuster la position du caret après la mise à jour
         try {
-            adjustCaretPositionForChanges(sharedTextArea.getText(), newText.toString());
+            adjustCaretPositionForChanges(oldText, sharedTextArea.getText());
         } catch (IllegalArgumentException e) {
             System.err.println("Erreur de position de caret: " + e.getMessage());
         }
