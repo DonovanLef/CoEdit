@@ -46,6 +46,10 @@ public class Controller {
 	public void setChatController(ChatController chatController) {
 		this.chatController = chatController;
 	}
+
+	public void setNameEntryController(NameEntryController nameEntryController) {
+		this.nameEntryController = nameEntryController;
+	}
 	
 	
  	

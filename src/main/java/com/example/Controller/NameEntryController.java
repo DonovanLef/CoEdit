@@ -14,6 +14,10 @@ public class NameEntryController {
 	@FXML
 	private TextField nameField;
 
+	@FXML
+    public void initialize() {
+		Controller.ctrl.setNameEntryController(this);
+	}
 
 	private String name;
 
