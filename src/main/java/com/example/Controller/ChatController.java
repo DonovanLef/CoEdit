@@ -127,7 +127,7 @@ public class ChatController {
 
         // Ajout des nouvelles lignes
         for (int i = minLength; i < newLines.length; i++) {
-            LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
+            LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername(), this.file.getName());
             lines.add(newLineModel);
             multicastEditor.sendLine(newLineModel, Controller.ctrl);
         }
@@ -159,7 +159,7 @@ public class ChatController {
         }
     }
 
-    public void addLine(LineModel other) {
+    public void addLineCurrentDoc(LineModel other) {
         Iterator<LineModel> iterator = lines.iterator();
         while (iterator.hasNext()) {
             LineModel lineModel = iterator.next();
@@ -172,38 +172,67 @@ public class ChatController {
     }
 
     public void handleCreateLine(LineModel line) {
+        System.out.println(line.getLine());
 
         if (line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
-
-        
-        double savedScrollY = 0;
-        double savedScrollX = 0;
-
-        ScrollBar scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
-        ScrollBar scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
-
-        if (scrollBarVertical != null) {
-            savedScrollY = scrollBarVertical.getValue();
-        }
-        if (scrollBarHorizontal != null) {
-            savedScrollX = scrollBarHorizontal.getValue();
-        }
-
-        saveCaretPosition();
-
-        System.out.println(line.getLine());
-        this.addLine(line);
-        this.setTextArea();
-
-        scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
-        scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
+        if (line.getDocName().equals(this.file.getName())) {
+            System.out.println("pass1");
+            double savedScrollY = 0;
+            double savedScrollX = 0;
     
-        if (scrollBarVertical != null) {
-            scrollBarVertical.setValue(savedScrollY);
+            ScrollBar scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
+            ScrollBar scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
+    
+            if (scrollBarVertical != null) {
+                savedScrollY = scrollBarVertical.getValue();
+            }
+            if (scrollBarHorizontal != null) {
+                savedScrollX = scrollBarHorizontal.getValue();
+            }
+    
+            saveCaretPosition();
+    
+            this.addLineCurrentDoc(line);
+            this.setTextArea();
+    
+            scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
+            scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
+        
+            if (scrollBarVertical != null) {
+                scrollBarVertical.setValue(savedScrollY);
+            }
+            if (scrollBarHorizontal != null) {
+                scrollBarHorizontal.setValue(savedScrollX);
+            }
         }
-        if (scrollBarHorizontal != null) {
-            scrollBarHorizontal.setValue(savedScrollX);
+        else {
+            System.out.println("pass2");
+            this.addLine(line);
         }
+
+     
+    }
+
+    public void addLine(LineModel other) {
+        Document doc = null;
+        for (Document document : DocumentController.getDocuments()) {
+            if (document.getName().equals(other.getDocName())) {
+                doc = document;
+                break;
+            }
+        }
+    
+        if (doc == null) return; 
+
+        Iterator<LineModel> iterator = doc.getLines().iterator();
+        while (iterator.hasNext()) {
+            LineModel lineModel = iterator.next();
+            if (lineModel.getIdLine().equals(other.getIdLine())) {
+                lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
+                return;
+            }
+        }
+        doc.getLines().add(other);
     }
 
     public void sendDocuments() {
@@ -220,10 +249,14 @@ public class ChatController {
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
     @FXML
     private void onSave() {
-        Document doc = new Document();
-        doc.setName(this.file.getName());
-        doc.setLines(lines);
-        doc.save(Folder.PATH);
+        System.out.println("pass3aa");
+        for (Document document : DocumentController.getDocuments()) {
+            System.out.println(document.getName());
+            if (document.getName().equals(this.file.getName())) {
+                document.setLines(lines);
+            }
+            document.save(Folder.PATH);
+        }
     }
 
     @FXML
@@ -251,12 +284,18 @@ public class ChatController {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             reader.close();
 
-            Document doc = Document.restoreByFile(Folder.PATH + file.getName());
+            Document doc = null;
+
+            for (Document document : DocumentController.getDocuments()) {
+                if (document.getName().equals(this.file.getName()))
+                    doc = document;
+            }
+
             if (doc != null)
                 lines = (ArrayList<LineModel>) doc.getLines();
             else {
                 lines = new ArrayList<>();
-                lines.add(new LineModel(Controller.ctrl.getUsername()));
+                lines.add(new LineModel(Controller.ctrl.getUsername(), this.file.getName()));
             }
 
             this.setTextArea();

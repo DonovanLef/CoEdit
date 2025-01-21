@@ -192,7 +192,7 @@ public class FolderController {
             Document doc = new Document();
             doc.setName(fileName);
             ArrayList<LineModel> newLines = new ArrayList<>();
-            newLines.add(new LineModel(Controller.ctrl.getUsername()));
+            newLines.add(new LineModel(Controller.ctrl.getUsername(), fileName));
             doc.setLines(newLines);
             doc.save(Folder.PATH);
         }
