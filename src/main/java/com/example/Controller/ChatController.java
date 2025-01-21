@@ -50,11 +50,13 @@ public class ChatController {
 
     // Sauvegarder la position du caret avant modification
     private int savedCaretPosition = 0;
-    private int savedCaretLineIndex = 0; // Sauvegarder l'indice de la ligne actuelle
+    private LineModel currentLineCaret; // Sauvegarder l'indice de la ligne actuelle
+    private ArrayList<LineModel> oldLines;
 
     public void saveCaretPosition() {
         savedCaretPosition = sharedTextArea.getCaretPosition();
-        savedCaretLineIndex = getLineIndexFromPosition(savedCaretPosition);
+        this.currentLineCaret = lines.get(getLineIndexFromPosition(savedCaretPosition));
+        this.oldLines = lines;
     }
 
     private int getLineIndexFromPosition(int position) {
@@ -80,46 +82,25 @@ public class ChatController {
         return lines.length - 1;
     }
 
-    private void adjustCaretPositionForChanges(String oldText, String newText) {
-        String[] oldLines = oldText.split("\n");
-        String[] newLines = newText.split("\n");
-    
-        // Vérifier que savedCaretLineIndex est valide
-        if (savedCaretLineIndex < 0 || savedCaretLineIndex >= oldLines.length) {
-            throw new IllegalArgumentException("L'indice de ligne du caret est invalide.");
-        }
-    
-        // Calcul de l'index dans la ligne actuelle
-        int caretInLinePosition = savedCaretPosition;
-        for (int i = 0; i < savedCaretLineIndex; i++) {
-            caretInLinePosition -= oldLines[i].length() + 1; // +1 pour les sauts de ligne
-        }
-    
-        // Ajustement si la ligne du caret a été modifiée
-        if (savedCaretLineIndex < newLines.length) {
-            int oldLineLength = oldLines[savedCaretLineIndex].length();
-            int newLineLength = newLines[savedCaretLineIndex].length();
-    
-            if (caretInLinePosition > oldLineLength) {
-                // Le caret était à la fin de l'ancienne ligne
-                caretInLinePosition = newLineLength;
-            } else {
-                // Ajustement basé sur la différence de longueur
-                int diff = newLineLength - oldLineLength;
-                caretInLinePosition = Math.max(0, Math.min(caretInLinePosition + diff, newLineLength));
+    private void adjustCaretPositionForChanges() {
+
+        int currentLineCaretPos = -1;
+        for (int i = 0; i < oldLines.size(); i++) {
+            if (oldLines.get(i) == this.currentLineCaret) {
+                currentLineCaretPos = i;
+                break;
             }
         }
-    
-        // Calcul de la nouvelle position globale du caret
-        int newCaretPosition = 0;
-        for (int i = 0; i < savedCaretLineIndex; i++) {
-            newCaretPosition += newLines[i].length() + 1; // +1 pour les sauts de ligne
+
+        int dif = 0;
+
+        for (int i = 0; i < currentLineCaretPos; i++) {
+            int oldLength = oldLines.get(i).getLine().length();
+            int currentLength = lines.get(i).getLine().length();
+            dif += currentLength - oldLength; 
         }
-        newCaretPosition += caretInLinePosition;
-    
-        // Vérification pour éviter les dépassements
-        newCaretPosition = Math.min(newCaretPosition, newText.length());
-        sharedTextArea.positionCaret(newCaretPosition);
+
+        sharedTextArea.positionCaret(savedCaretPosition + dif);
     }
 
     @FXML
@@ -179,7 +160,7 @@ public class ChatController {
     
         // Vérifier et ajuster la position du caret après la mise à jour
         try {
-            adjustCaretPositionForChanges(oldText, sharedTextArea.getText());
+            adjustCaretPositionForChanges();
         } catch (IllegalArgumentException e) {
             System.err.println("Erreur de position de caret: " + e.getMessage());
         }
