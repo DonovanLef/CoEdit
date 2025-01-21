@@ -48,6 +48,40 @@ public class ChatController {
         }
     };
 
+    private int savedCaretPosition;
+    private int savedCaretLineIndex;
+
+    private void saveCaretPosition() {
+        savedCaretPosition = sharedTextArea.getCaretPosition();
+        String[] lines = sharedTextArea.getText().split("\n");
+        savedCaretLineIndex = 0;
+        int currentPos = 0;
+
+        for (int i = 0; i < lines.length; i++) {
+            if (currentPos + lines[i].length() >= savedCaretPosition) {
+                savedCaretLineIndex = i;
+                break;
+            }
+            currentPos += lines[i].length() + 1; // +1 pour le saut de ligne
+        }
+    }
+
+    private void restoreCaretPosition() {
+        String[] lines = sharedTextArea.getText().split("\n");
+        int newCaretPosition = 0;
+    
+        for (int i = 0; i < savedCaretLineIndex && i < lines.length; i++) {
+            newCaretPosition += lines[i].length() + 1; // +1 pour le saut de ligne
+        }
+    
+        if (savedCaretLineIndex < lines.length) {
+            newCaretPosition += Math.min(lines[savedCaretLineIndex].length(), 
+                                         savedCaretPosition - newCaretPosition);
+        }
+        
+        sharedTextArea.positionCaret(newCaretPosition);
+    }
+    
 
     @FXML
     public void initialize() {
@@ -59,9 +93,7 @@ public class ChatController {
             e.printStackTrace();
         }
 
-        
         sharedTextArea.textProperty().addListener(textAreaChangeListener);
-
 
     }
 
@@ -95,15 +127,18 @@ public class ChatController {
     }
 
     private void setTextArea() {
-        sharedTextArea.textProperty().removeListener(textAreaChangeListener); // Désactiver l'écouteur
+        saveCaretPosition(); // Enregistrer avant la mise à jour
+    
+        sharedTextArea.textProperty().removeListener(textAreaChangeListener);
         StringBuilder updatedText = new StringBuilder();
         for (LineModel line : lines) {
             updatedText.append(line.getLine()).append("\n");
         }
-        sharedTextArea.setText(updatedText.toString().trim()); // Met à jour le texte
-        sharedTextArea.textProperty().addListener(textAreaChangeListener); // Réactiver l'écouteur
-    }
+        sharedTextArea.setText(updatedText.toString().trim());
+        sharedTextArea.textProperty().addListener(textAreaChangeListener);
     
+        restoreCaretPosition(); // Restaurer après la mise à jour
+    }
     
 
     public void addLine(LineModel other) {
@@ -117,17 +152,16 @@ public class ChatController {
         }
         lines.add(other);
     }
-    
 
     public synchronized void handleCreateLine(LineModel line) {
         System.out.println("received : " + line.getIdLine() + " | " + line.getLine());
         int caretPosition = sharedTextArea.getCaretPosition();
-    
+
         this.addLine(line);
         this.setTextArea();
         sharedTextArea.positionCaret(caretPosition);
     }
-    
+
     public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
             short code = 203;
