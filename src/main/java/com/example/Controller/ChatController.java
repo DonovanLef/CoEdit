@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +42,13 @@ public class ChatController {
 
     private File file;
 
+    private final ChangeListener<String> textAreaChangeListener = (observable, oldValue, newValue) -> {
+        if (!oldValue.equals(newValue)) {
+            updateLineModels(newValue);
+        }
+    };
+
+
     @FXML
     public void initialize() {
         Controller.ctrl.setChatController(this);
@@ -51,56 +59,32 @@ public class ChatController {
             e.printStackTrace();
         }
 
-        sharedTextArea.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                updateLineModels(newValue, false);
-            }
-        });
+        
+        sharedTextArea.textProperty().addListener(textAreaChangeListener);
 
-        sharedTextArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                updateLineModels(sharedTextArea.getText(), true);
-            }
-        });
 
     }
 
-    private void updateLineModels(String newText, boolean newLine) {
-        System.out.println("pass " + newLine);
+    private void updateLineModels(String newText) {
         String[] newLines = newText.split("\n");
+        int minLength = Math.min(newLines.length, lines.size());
 
-        for (int i = 0; i < newLines.length; i++) {
-            System.out.println(newLines[i]);
-        }
-
-        // Synchroniser lines avec newLines
-        for (int i = 0; i < newLines.length; i++) {
-            if (i < lines.size()) {
-                if (!lines.get(i).getLine().equals(newLines[i])) {
-                    // Mettre à jour la ligne existante si elle a changé
-                    lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
-                    multicastEditor.sendLine(lines.get(i), Controller.ctrl);
-                    System.out.println("envoie");
-                }
-            } 
-            // else {
-            //     // Ajouter une nouvelle ligne avec un GUID unique
-            //     LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
-            //     lines.add(newLineModel);
-            //     multicastEditor.sendLine(newLineModel, Controller.ctrl);
-            //     System.out.println("envoie");
-            // }
-
-            if (newLine) {
-                LineModel newLineModel = new LineModel("", Controller.ctrl.getUsername());
-                lines.add(newLineModel);
-                multicastEditor.sendLine(newLineModel, Controller.ctrl);
-                System.out.println("envoie");
+        // Mise à jour ou insertion des lignes existantes ou nouvelles
+        for (int i = 0; i < minLength; i++) {
+            if (!lines.get(i).getLine().equals(newLines[i])) {
+                lines.get(i).setLine(newLines[i], Controller.ctrl.getUsername());
+                multicastEditor.sendLine(lines.get(i), Controller.ctrl);
             }
         }
 
-        // Supprimer les lignes excédentaires si nécessaire
+        // Ajout des nouvelles lignes
+        for (int i = minLength; i < newLines.length; i++) {
+            LineModel newLineModel = new LineModel(newLines[i], Controller.ctrl.getUsername());
+            lines.add(newLineModel);
+            multicastEditor.sendLine(newLineModel, Controller.ctrl);
+        }
+
+        // Suppression des lignes excédentaires
         while (lines.size() > newLines.length) {
             lines.remove(lines.size() - 1);
         }
@@ -108,20 +92,24 @@ public class ChatController {
         // Debug : Afficher les identifiants et le contenu
         lines.forEach(line -> System.out.println(
                 "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
-
     }
 
     private void setTextArea() {
-        String textArea = "";
-        for (LineModel lineModel : lines) {
-            String line = lineModel.getLine();
-            textArea += line + "\n";
+        sharedTextArea.textProperty().removeListener(textAreaChangeListener); // Désactiver l'écouteur
+        StringBuilder updatedText = new StringBuilder();
+        for (LineModel line : lines) {
+            updatedText.append(line.getLine()).append("\n");
         }
-        sharedTextArea.setText(textArea);
+        sharedTextArea.setText(updatedText.toString().trim()); // Met à jour le texte
+        sharedTextArea.textProperty().addListener(textAreaChangeListener); // Réactiver l'écouteur
     }
+    
+    
 
     public void addLine(LineModel other) {
-        for (LineModel lineModel : lines) {
+        Iterator<LineModel> iterator = lines.iterator();
+        while (iterator.hasNext()) {
+            LineModel lineModel = iterator.next();
             if (lineModel.getIdLine().equals(other.getIdLine())) {
                 lineModel.setLine(other.getLine(), Controller.ctrl.getUsername());
                 return;
@@ -129,16 +117,17 @@ public class ChatController {
         }
         lines.add(other);
     }
+    
 
-    public void handleCreateLine(LineModel line) {
-        System.out.println("received : " + line.getLine());
+    public synchronized void handleCreateLine(LineModel line) {
+        System.out.println("received : " + line.getIdLine() + " | " + line.getLine());
         int caretPosition = sharedTextArea.getCaretPosition();
-
+    
         this.addLine(line);
         this.setTextArea();
         sharedTextArea.positionCaret(caretPosition);
     }
-
+    
     public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
             short code = 203;
