@@ -103,7 +103,7 @@ public class ChatController {
         System.out.println("current  : " + charBef);
         System.out.println("old  : " + charBefore);
 
-        int newPos = savedCaretPosition + ((charBef - this.charBefore)*2);
+        int newPos = savedCaretPosition + (charBef - this.charBefore);
 
         System.out.println("newPos : " + newPos);
 
@@ -184,15 +184,10 @@ public class ChatController {
     }
 
     public void handleCreateLine(LineModel line) {
-        // Sauvegarder la position du caret avant modification
         saveCaretPosition();
 
-        // Ajouter la ligne et mettre à jour le TextArea
         this.addLine(line);
         this.setTextArea();
-
-        // Rétablir la position du caret après la mise à jour
-        sharedTextArea.positionCaret(savedCaretPosition);
     }
 
     public void sendDocuments() {
