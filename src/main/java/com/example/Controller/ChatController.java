@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle.Control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -177,6 +178,8 @@ public class ChatController {
 
     public void handleCreateLine(LineModel line) {
 
+        if (line.getModifiedBy() == Controller.ctrl.getUsername()) return;
+        
         double savedScrollY = 0;
         double savedScrollX = 0;
 
