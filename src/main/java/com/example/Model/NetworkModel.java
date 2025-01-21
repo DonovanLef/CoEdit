@@ -21,8 +21,33 @@ public class NetworkModel {
 
 
 	// Cette méthode est utilisée pour la modification de lignes
-	public LineModel handle200(byte[] bytes) {
+	public LineModel handle100(byte[] bytes) {
 		return LineModel.restoreByBytes(bytes);
 
 	}
+	public Document handle200(byte[] bytes) {
+		return Document.restoreByBytes(bytes);
+
+	}
+	public byte[] IntToByteArray( short data ) {    
+		byte[] result = new byte[2];
+		result[0] = (byte) ((data & 0x0000FF00) >> 8);
+		result[1] = (byte) ((data & 0x000000FF) >> 0);
+		return result;        
+	}
+	public  byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
+        int length1 = array1.length;
+        int length2 = array2.length;
+
+        // Create a new byte array to hold the concatenated result
+        byte[] result = new byte[length1 + length2];
+
+        // Copy elements from the first array
+        System.arraycopy(array1, 0, result, 0, length1);
+
+        // Copy elements from the second array
+        System.arraycopy(array2, 0, result, length1, length2);
+
+        return result;
+    }
 }

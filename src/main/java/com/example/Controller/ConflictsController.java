@@ -17,7 +17,7 @@ public class ConflictsController {
         this.ctrl = ctrl;
     }
 
-   
+
 
     // Action pour le bouton de gauche
     public void onSelectLeft() {

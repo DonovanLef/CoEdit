@@ -14,23 +14,26 @@ public class NameEntryController {
 	@FXML
 	private TextField nameField;
 
-	private Controller ctrl;
 
-	public void setController(Controller ctrl) {
-        this.ctrl = ctrl;
-    }
+	private String name;
+
+	public String getName() {
+		return this.name;
+	}
+
 
 	@FXML
 	private void onNameSubmit() {
 		String userName = nameField.getText();
 		if (!userName.isEmpty()) {
+			this.name = userName;
 			try {
-				// Charger le fichier FXML de la nouvelle vue
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
-				Parent folderView = loader.load();
+				Parent root = loader.load();
 
-				Stage stage = (Stage) nameField.getScene().getWindow();
-				stage.setScene(new Scene(folderView));
+				Stage stage = new Stage();
+				stage.setTitle("Nouvelle Vue");
+				stage.setScene(new Scene(root));
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();

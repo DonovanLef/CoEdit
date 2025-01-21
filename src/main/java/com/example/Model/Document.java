@@ -45,8 +45,8 @@ public class Document implements Serializable{
 		return res;
 	}
 
-	public void save(){
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(this.name + ".ser"))) {
+	public void save(String path){
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path+this.name))) {
 			oos.writeObject(this);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,7 +62,8 @@ public class Document implements Serializable{
     }
 
 	public static Document restoreByFile(String name){
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name+".ser"))) {
+		System.out.println(name);
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name))) {
 			Document doc = (Document) ois.readObject();
 			return doc;
 		} catch (IOException | ClassNotFoundException e) {
@@ -81,5 +82,19 @@ public class Document implements Serializable{
         }
         return null;
 	}
+	public static void deleteFile(String name){
+		String path = Folder.PATH+name;
+		try {
+			if (new java.io.File(path).delete()) {
+				System.out.println("File deleted successfully");
+			} else {
+				System.out.println("Failed to delete the file");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 
 }
