@@ -163,6 +163,7 @@ public class FolderController {
             chatController.setFile(selectedFile);
             Stage stage = (Stage) btnAdd.getScene().getWindow();
             stage.setScene(new Scene(chatView));
+            stage.sizeToScene();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,6 +175,7 @@ public class FolderController {
     public void createFile() {
         // Récupérer le nom du fichier à partir du TextField
         String fileName = fileNameTextField.getText().trim();
+        if (!fileName.endsWith(".txt"))fileName = fileName + ".ser";
 
         // Vérifier si le nom est valide (non vide)
         if (fileName.isEmpty()) {
