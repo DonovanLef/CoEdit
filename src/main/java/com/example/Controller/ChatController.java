@@ -60,47 +60,57 @@ public class ChatController {
     private int getLineIndexFromPosition(int position) {
         String text = sharedTextArea.getText();
         String[] lines = text.split("\n");
-    
-        int index = 0;
+
+        // Si la position est en dehors du texte
+        if (position < 0 || position > text.length()) {
+            throw new IllegalArgumentException("La position du caret est invalide.");
+        }
+
         int currentPos = 0;
-        for (String line : lines) {
-            if (currentPos <= position && position < currentPos + line.length()) {
+        for (int index = 0; index < lines.length; index++) {
+            // Vérifier si la position se trouve dans cette ligne
+            if (currentPos <= position && position < currentPos + lines[index].length() + 1) { // +1 pour le caractère
+                                                                                               // de saut de ligne
                 return index;
             }
-            currentPos += line.length() + 1; // +1 pour le saut de ligne
-            index++;
+            currentPos += lines[index].length() + 1; // Ajouter la longueur de la ligne + saut de ligne
         }
-        return -1;  // Retourne -1 si la position est invalide
+
+        // Si la position dépasse la longueur du texte, renvoyer la dernière ligne
+        return lines.length - 1;
     }
 
     private void adjustCaretPositionForChanges(String oldText, String newText) {
-        // Diviser le texte en lignes
         String[] oldLines = oldText.split("\n");
         String[] newLines = newText.split("\n");
-    
-        // Calculer l'effet des changements
+
+        // Assurez-vous que savedCaretLineIndex est valide
+        if (savedCaretLineIndex < 0 || savedCaretLineIndex >= oldLines.length) {
+            throw new IllegalArgumentException("L'indice de ligne du caret est invalide.");
+        }
+
         int lengthDifference = 0;
-    
+
         // Si la ligne modifiée est avant le caret
         for (int i = 0; i < savedCaretLineIndex; i++) {
             lengthDifference += (newLines[i].length() - oldLines[i].length());
         }
-    
+
         // Si la ligne modifiée est la même que celle où le caret est situé
         if (savedCaretLineIndex < newLines.length) {
             lengthDifference += (newLines[savedCaretLineIndex].length() - oldLines[savedCaretLineIndex].length());
         }
-    
+
         // Calculer la nouvelle position du caret
         int newCaretPosition = savedCaretPosition + lengthDifference;
-    
-        // Assurez-vous que la nouvelle position du caret ne dépasse pas la longueur du texte
+
+        // Assurez-vous que la nouvelle position du caret ne dépasse pas la longueur du
+        // texte
         newCaretPosition = Math.min(newCaretPosition, newText.length());
-    
+
         // Mettre à jour la position du caret
         sharedTextArea.positionCaret(newCaretPosition);
     }
-    
 
     @FXML
     public void initialize() {
@@ -156,8 +166,12 @@ public class ChatController {
         }
         sharedTextArea.setText(newText.toString());
     
-        // Appeler la méthode pour ajuster la position du caret après la mise à jour
-        adjustCaretPositionForChanges(sharedTextArea.getText(), newText.toString());
+        // Vérifier et ajuster la position du caret après la mise à jour
+        try {
+            adjustCaretPositionForChanges(sharedTextArea.getText(), newText.toString());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erreur de position de caret: " + e.getMessage());
+        }
     }
     
 
@@ -176,15 +190,14 @@ public class ChatController {
     public void handleCreateLine(LineModel line) {
         // Sauvegarder la position du caret avant modification
         saveCaretPosition();
-    
+
         // Ajouter la ligne et mettre à jour le TextArea
         this.addLine(line);
         this.setTextArea();
-    
+
         // Rétablir la position du caret après la mise à jour
         sharedTextArea.positionCaret(savedCaretPosition);
     }
-    
 
     public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
