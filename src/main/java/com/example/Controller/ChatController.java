@@ -61,6 +61,7 @@ public class ChatController {
 
         for (int i = 0; i < this.savedLineCaretPosition; i++) {
             charBef += lines.get(i).getLine().length();
+            System.out.println(" o : " + lines.get(i).getLine().length());
         }
 
         this.charBefore = charBef;
@@ -94,7 +95,13 @@ public class ChatController {
         int charBef = 0;
         for (int i = 0; i < this.savedLineCaretPosition; i++) {
             charBef += this.lines.get(i).getLine().length();
+            System.out.println(" c : " + lines.get(i).getLine().length());
+
         }
+
+        System.out.println("scp  : " + savedCaretPosition);
+        System.out.println("current  : " + charBef);
+        System.out.println("old  : " + charBefore);
 
         sharedTextArea.positionCaret(savedCaretPosition + (charBef - this.charBefore));
     }
