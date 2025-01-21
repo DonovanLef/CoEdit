@@ -70,6 +70,8 @@ public class Folder {
     
             if (oldFile.exists() && oldFile.renameTo(newFile)) {
                 // System.out.println("Fichier renommé de " + oldName + " à " + newName);
+                files.remove(oldFile);
+                files.add(newFile);
             } else {
                 // Rétablir l'ancien nom de fichier dans le dossier
                 files.set(files.indexOf(newFile), oldFile);

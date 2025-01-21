@@ -5,18 +5,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller.NameEntryController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.NameEntryController">
    <children>
-      <ImageView fitHeight="214.0" fitWidth="222.0" layoutX="189.0" layoutY="30.0">
+      <ImageView fitHeight="214.0" fitWidth="222.0">
          <image>
             <Image url="@../../../../classes/images/logo_coedit.png" />
          </image>
       </ImageView>
-      <Label layoutX="251.0" layoutY="258.0" text="Entrez votre nom :" />
-      <TextField fx:id="nameField" layoutX="225.0" layoutY="287.0" />
-      <Button layoutX="244.0" layoutY="328.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Valider" onAction="#onNameSubmit"/>
+      <Label text="Entrez votre nom :" />
+      <TextField fx:id="nameField" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="26.0" prefWidth="145.0" />
+      <Button mnemonicParsing="false" onAction="#onNameSubmit" prefHeight="25.0" prefWidth="112.0" text="Valider" />
    </children>
-</Pane>
+</VBox>
