@@ -236,9 +236,12 @@ public class ChatController {
             }
             try {
                 System.out.println(doc.getName());
-                for (LineModel lineModel : lines) {
-                    System.out.println(lineModel.getLine());
+                if (doc.getLines() != null) {
+                    for (LineModel lineModel : lines) {
+                        System.out.println(lineModel.getLine());
+                    }
                 }
+
                 byte[] v = Controller.ctrl.getNetworkController().IntToByte((short)203);
                 byte[] d = doc.toByteArray();
                 byte[] data=  Controller.ctrl.getNetworkController().concatenateByteArrays(v, d);
