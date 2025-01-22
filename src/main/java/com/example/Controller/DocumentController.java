@@ -49,5 +49,9 @@ public class DocumentController {
 			}
 		}
 	}
+
+	public static void clear() {
+		documents = new HashMap<>();
+	}
 	
 }

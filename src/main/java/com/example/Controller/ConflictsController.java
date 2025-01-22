@@ -57,23 +57,23 @@ public class ConflictsController {
             alert.showAndWait();
 
             // Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
-            Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
+            // Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
 
-            Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
-            stage.setScene(stageFolder.getScene());
-            stage.show();
+            // Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
+            // stage.setScene(stageFolder.getScene());
+            // stage.show();
 
-            // try {
-            //     Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
-            //     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
-            //     Parent root = loader.load();
+            try {
+                Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
+                Parent root = loader.load();
 
-            //     Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
-            //     stage.setScene(new Scene(root));
-            //     stage.show();
-            // } catch (IOException e) {
-            //     e.printStackTrace();
-            // }
+                Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
