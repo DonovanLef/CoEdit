@@ -303,12 +303,18 @@ public class FolderController {
     }
 
     public void createDocument(Document doc) {
-        String erreur = folder.createFile(doc.getName());
-        if (erreur.length() == 0) {
-            fileListView.getItems().add(doc.getName());
-            doc.save(Folder.PATH);
-        } else {
-            doc.save(Folder.PATH);
+        this.folder.scanDocumentsFolder();
+        if (!DocumentController.getDocumentsMap().containsKey(doc.getName())) {
+            String erreur = folder.createFile(doc.getName());
+            if (erreur.length() == 0) {
+                fileListView.getItems().add(doc.getName());
+                doc.save(Folder.PATH);
+            }
+        }
+        else {
+            Document document = DocumentController.getDocumentsMap().get(doc.getName());
+            document.setLines(doc.getLines());
+            document.save(Folder.PATH);
         }
         this.folder.scanDocumentsFolder();
 

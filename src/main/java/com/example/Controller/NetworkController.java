@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 public class NetworkController {
 	
-	private static Integer startReceived = null;
 
 	private NetworkModel networkModel;
 	public NetworkController() {
