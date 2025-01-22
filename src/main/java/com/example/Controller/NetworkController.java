@@ -57,6 +57,14 @@ public class NetworkController {
 		// récéption d'un document, uniquement à la connexion
 		if (code == 203) {
 			StarterController starter = Controller.ctrl.getStarterController();
+
+			if (starter.initTime < (System.currentTimeMillis() - 5000) ) {
+				System.out.println("ça fait 5 secondes que ça a lancé, il serait temps de terminer là gros");
+				for (Document d : starter.documentsReceived.values()) {
+					System.out.println(d.getName());
+				}
+			}
+			// si quelqu'un se reco pendant que je recup
 			if ( starter.lasttime < (System.currentTimeMillis() - 5000) ) {
 				System.out.println("fini");
 				return;
@@ -70,20 +78,7 @@ public class NetworkController {
 			if ( starter.documentsReceived.containsKey(doc.getName())) return;
 
 			// ça c'est le cas où on l'a déjà
-			if ( DocumentController.getDocumentsMap().containsKey(doc.getName()) ){
-				Controller.ctrl.getConflictsController().setText(doc.getLines().toString(), DocumentController.getDocumentsMap().get(doc.getName()).getLines().toString());
-				// FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
-            	// Parent root = loader.load();
-
-				// Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-				// currentStage.close();
-
-				// Stage newStage = new Stage();
-				// newStage.setTitle("Nouvelle Vue");
-				// newStage.setScene(new Scene(root));
-				// newStage.show();
-			// Le cas où on ne l'a pas
-			} else {
+			if ( !DocumentController.getDocumentsMap().containsKey(doc.getName()) ){
 				Controller.ctrl.getFolderController().createDocument(doc);
 			}
 			starter.documentsReceived.put(doc.getName(), doc);
