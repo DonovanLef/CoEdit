@@ -1,11 +1,6 @@
 package com.example;
 
-import java.nio.ByteBuffer;
-
 import com.example.Controller.Controller;
-import com.example.Controller.StarterController;
-import com.example.Model.Document;
-import com.example.Model.LineModel;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +23,7 @@ public class App extends Application {
         stage.show();
     }
 
-   
+
     public static void main(String[] args) {
         launch();
     }
