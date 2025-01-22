@@ -54,6 +54,8 @@ public class FolderController {
 
         Controller.ctrl.setFolderController(this);
 
+        Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
+
         // Initialiser le dossier avec des fichiers
         this.folder = new Folder();
         // Ajouter des fichiers pour l'exemple
