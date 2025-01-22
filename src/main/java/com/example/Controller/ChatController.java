@@ -171,7 +171,7 @@ public class ChatController {
     public void handleCreateLine(LineModel line) {
         System.out.println(line.getLine());
 
-        if (line.getDocName().equals(this.file.getName())) {
+        if (this.file != null && line.getDocName().equals(this.file.getName())) {
             if (line.getModifiedBy() != null && line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
             double savedScrollY = 0;
             double savedScrollX = 0;
