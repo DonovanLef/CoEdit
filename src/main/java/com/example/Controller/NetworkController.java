@@ -51,6 +51,7 @@ public class NetworkController {
 		// demande de modification
 		if (code == 202) {
 			// Skip si c'est nous qui avions envoyé la demande 202;
+			Controller.ctrl.getFolderController().getFolder().scanDocumentsFolder();
 			Controller.ctrl.getChatController().sendDocuments();
 			Controller.ctrl.getChatController().lockTextArea(true);
 		}

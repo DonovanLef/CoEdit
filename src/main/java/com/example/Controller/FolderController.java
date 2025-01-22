@@ -49,6 +49,9 @@ public class FolderController {
 
     private ScreenLockController screenLockController;
 
+    public Folder getFolder() {
+        return this.folder;
+    }
 
     @FXML
     public void initialize() {
