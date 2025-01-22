@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class NetworkController {
 	
 	private static Integer startReceived = null;
-	
+
 	private NetworkModel networkModel;
 	public NetworkController() {
 		this.networkModel = new NetworkModel();
@@ -57,15 +57,14 @@ public class NetworkController {
 		// récéption d'un document, uniquement à la connexion
 		if (code == 203) {
 			StarterController starter = Controller.ctrl.getStarterController();
-			if ( starter.lasttime > (System.currentTimeMillis() - 5000) ) {
-				System.out.println("fini");
-				for (Document d : starter.documentsReceived.values()) {
-					System.out.println(d.getName());
-				}
+			if ( starter.lasttime < (System.currentTimeMillis() - 5000) ) {
 				System.out.println("fini");
 				return;
 			}
-			Document doc = Document.restoreByBytes(bytes);
+			Document doc = Document.restoreByBytes(serial);
+
+
+			if (doc == null) return;
 
 			// ça c'est le cas où on l'a déjà reçu
 			if ( starter.documentsReceived.containsKey(doc.getName())) return;
