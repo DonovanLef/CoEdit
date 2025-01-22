@@ -111,6 +111,9 @@ public class LineModel implements Serializable {
     public String getDocName () {
         return docName;
     }
+    public void setDocName(String docName) {
+        this.docName = docName;
+    }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
