@@ -237,7 +237,7 @@ public class ChatController {
             try {
                 System.out.println(doc.getName());
                 if (doc.getLines() != null) {
-                    for (LineModel lineModel : lines) {
+                    for (LineModel lineModel : doc.getLines()) {
                         System.out.println(lineModel.getLine());
                     }
                 }
