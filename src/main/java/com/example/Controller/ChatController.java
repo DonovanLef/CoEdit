@@ -231,7 +231,7 @@ public class ChatController {
 
     public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
-            if (doc.getName().equals(this.file.getName())) {
+            if (this.file != null && doc.getName().equals(this.file.getName())) {
                 doc.setLines(lines);
             }
             try {
