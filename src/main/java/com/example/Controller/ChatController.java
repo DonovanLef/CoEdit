@@ -231,6 +231,9 @@ public class ChatController {
 
     public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
+            if (doc.getName().equals(this.file.getName())) {
+                doc.setLines(lines);
+            }
             try {
                 byte[] v = Controller.ctrl.getNetworkController().IntToByte((short)203);
                 byte[] d = doc.toByteArray();

@@ -79,8 +79,9 @@ public class FolderController {
             StarterController starter = Controller.ctrl.getStarterController();
             Map<Document, Document> docToMerge = new HashMap<>();
             if (starter.documentsReceived != null && starter.documentsReceived.size() > 0) {
-                
                 for (String docName : starter.documentsReceived.keySet()) {
+                    System.out.println(docName);
+
                     Document otherDoc = starter.documentsReceived.get(docName);
                     Document myDoc = getMyDocByName(docName);
                     
@@ -90,7 +91,10 @@ public class FolderController {
 
                     for (LineModel otherLine : otherDoc.getLines()) {
                         LineModel myLine = getMyLineByDocAndId(myDoc,otherLine.getIdLine());
+                        System.out.println(myLine.getLine());
+                        System.out.println(otherLine.getLine());                        
                         if (myLine == null || !myLine.getLine().equals(otherLine.getLine())) {
+
                             docToMerge.put(otherDoc, myDoc);
                             break;
                         }
