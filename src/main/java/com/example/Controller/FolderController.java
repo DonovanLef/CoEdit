@@ -66,6 +66,7 @@ public class FolderController {
         Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
 
         this.fileListView.setDisable(true);
+        this.btnAdd.setDisable(true);
         // on attend 5 secondes 
         System.out.println("avant");
         PauseTransition pause = new PauseTransition(Duration.seconds(5));
@@ -114,6 +115,7 @@ public class FolderController {
             }
 
             this.fileListView.setDisable(false);
+            this.btnAdd.setDisable(false);
 
 
         });
