@@ -116,11 +116,11 @@ public class FolderController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    fileListView.getItems().addAll(folder.getFileNames());
                 }
                 else {
                     Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
                 }
-                fileListView.getItems().addAll(folder.getFileNames());
 
             }
             else {
