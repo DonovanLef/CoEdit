@@ -55,7 +55,10 @@ public class NetworkController {
 		// récéption d'un document, uniquement à la connexion
 		if (code == 203) {
 			StarterController starter = Controller.ctrl.getStarterController();
-			if ( starter.lasttime > (System.currentTimeMillis() -5000) ) return;
+			if ( starter.lasttime > (System.currentTimeMillis() -5000) ) {
+				System.out.println("fini");
+				return;
+			}
 			Document doc = Document.restoreByBytes(bytes);
 
 			// ça c'est le cas où on l'a déjà reçu
