@@ -227,10 +227,14 @@ public class ChatController {
 
     public void sendDocuments() {
         for (Document doc : DocumentController.getDocuments()) {
-            short code = 203;
             try {
-                Controller.ctrl.getMulticastEditor().sendData(code, doc.toByteArray());
-            } catch (IOException e) {
+                byte[] v = Controller.ctrl.getNetworkController().IntToByte((short)203);
+                byte[] d = doc.toByteArray();
+                byte[] data=  Controller.ctrl.getNetworkController().concatenateByteArrays(v, d);
+                //two array in one
+                Controller.ctrl.getMulticastEditor().sendData(data);
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

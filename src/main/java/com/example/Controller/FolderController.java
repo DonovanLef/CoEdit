@@ -54,12 +54,13 @@ public class FolderController {
 
         Controller.ctrl.setFolderController(this);
 
-        Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
 
         // Initialiser le dossier avec des fichiers
         this.folder = new Folder();
         // Ajouter des fichiers pour l'exemple
         folder.scanDocumentsFolder();
+
+        Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
         // Ajouter la liste des fichiers au ListView
         fileListView.getItems().addAll(folder.getFileNames());
         

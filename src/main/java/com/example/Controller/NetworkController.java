@@ -12,8 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class NetworkController {
 	
+	private static Integer startReceived = null;
 	
 	private NetworkModel networkModel;
 	public NetworkController() {
@@ -55,7 +57,11 @@ public class NetworkController {
 		// récéption d'un document, uniquement à la connexion
 		if (code == 203) {
 			StarterController starter = Controller.ctrl.getStarterController();
-			if ( starter.lasttime > (System.currentTimeMillis() -5000) ) {
+			if ( starter.lasttime > (System.currentTimeMillis() - 5000) ) {
+				System.out.println("fini");
+				for (Document d : starter.documentsReceived.values()) {
+					System.out.println(d.getName());
+				}
 				System.out.println("fini");
 				return;
 			}

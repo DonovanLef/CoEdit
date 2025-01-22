@@ -113,7 +113,7 @@ public class MulticastEditor {
 
     public void sendAskDocuments(Controller ctrl) {
         try {
-            byte[] v = ctrl.getNetworkController().IntToByte((short)203);
+            byte[] v = ctrl.getNetworkController().IntToByte((short)202);
             byte[] d = new byte[0];
             byte[] data=  ctrl.getNetworkController().concatenateByteArrays(v, d);
             sendData(data);
