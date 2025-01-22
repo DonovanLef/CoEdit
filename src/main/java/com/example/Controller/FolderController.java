@@ -122,8 +122,12 @@ public class FolderController {
                 }
 
             }
+            else {
+                Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
+            }
 
             this.fileListView.setDisable(false);
+            this.fileListView.refresh();
             this.btnAdd.setDisable(false);
 
 
