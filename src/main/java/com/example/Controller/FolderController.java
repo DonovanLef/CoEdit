@@ -120,6 +120,7 @@ public class FolderController {
                 else {
                     Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
                 }
+                fileListView.getItems().addAll(folder.getFileNames());
 
             }
             else {
@@ -127,7 +128,6 @@ public class FolderController {
             }
 
             this.fileListView.setDisable(false);
-            fileListView.getItems().addAll(folder.getFileNames());
             this.btnAdd.setDisable(false);
 
 
