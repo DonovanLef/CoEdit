@@ -69,6 +69,7 @@ public class FolderController {
         System.out.println("avant");
         PauseTransition pause = new PauseTransition(Duration.seconds(5));
         pause.setOnFinished(event -> {
+            System.out.println("apres");
             // Code à exécuter après les 5 secondes
             StarterController starter = Controller.ctrl.getStarterController();
             Map<Document, Document> docToMerge = new HashMap<>();
@@ -91,9 +92,22 @@ public class FolderController {
                     }
                 }
 
-                for (Document document : docToMerge.keySet()) {
-                    System.out.println(document.getName());
+                if (!docToMerge.isEmpty()) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
+                        Parent root = loader.load();
+                        ConflictsController controller = loader.getController();
+                        controller.setDocuments(docToMerge);
+        
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("Résolution de Conflits");
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
 
