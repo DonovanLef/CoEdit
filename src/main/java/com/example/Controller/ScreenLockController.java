@@ -43,13 +43,10 @@ public class ScreenLockController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/LockView.fxml"));
             Parent root = loader.load();
 
-            Stage currentStage = (Stage) btn.getScene().getWindow();
-            currentStage.close();
-
-            Stage newStage = new Stage();
-            newStage.setTitle("Nouvelle Vue");
-            newStage.setScene(new Scene(root, 400, 400));
-            newStage.show();
+            Stage stage = (Stage) btn.getScene().getWindow();
+            stage.setTitle("Merge en cours");
+            stage.setScene(new Scene(root));
+            stage.show();
 
             this.isOpen = true;
         } catch (IOException e) {
