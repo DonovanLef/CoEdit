@@ -65,6 +65,7 @@ public class ConflictsController {
 
             try {
                 Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
+                Controller.ctrl.getStarterController().clearDocumentsReceived();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
                 Parent root = loader.load();
 

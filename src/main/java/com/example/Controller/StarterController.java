@@ -20,5 +20,9 @@ public class StarterController {
 	public synchronized void updateLastTime(){
 		this.lasttime = System.currentTimeMillis();
 	}
+
+	public void clearDocumentsReceived() {
+		documentsReceived = new HashMap<>();
+	}
 	
 }
