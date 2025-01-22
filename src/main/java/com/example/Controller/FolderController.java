@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import com.example.Model.Document;
@@ -69,17 +70,33 @@ public class FolderController {
         PauseTransition pause = new PauseTransition(Duration.seconds(5));
         pause.setOnFinished(event -> {
             // Code à exécuter après les 5 secondes
-            // StarterController starter = Controller.ctrl.getStarterController();
-            // ArrayList<Document> docToMerge = new ArrayList<>();
-            // if (starter.documentsReceived != null && starter.documentsReceived.size() > 0) {
-            //     for (String docName : starter.documentsReceived.keySet()) {
-            //         Document otherDoc = starter.documentsReceived.
-            //         Document myDoc = 
-            //         for (LineModel line : document.getLines()) {
-            //             if (line.getLine().equals(pause))
-            //         }
-            //     }
-            // }
+            StarterController starter = Controller.ctrl.getStarterController();
+            Map<Document, Document> docToMerge = new HashMap<>();
+            if (starter.documentsReceived != null && starter.documentsReceived.size() > 0) {
+                
+                for (String docName : starter.documentsReceived.keySet()) {
+                    Document otherDoc = starter.documentsReceived.get(docName);
+                    Document myDoc = getMyDocByName(docName);
+                    
+                    if (otherDoc.getLines().size() == 0 && myDoc.getLines().size() != 0) {
+                        docToMerge.put(otherDoc, myDoc);
+                    }
+
+                    for (LineModel otherLine : otherDoc.getLines()) {
+                        LineModel myLine = getMyLineByDocAndId(myDoc,otherLine.getIdLine());
+                        if (myLine == null || !myLine.getLine().equals(otherLine.getLine())) {
+                            docToMerge.put(otherDoc, myDoc);
+                            break;
+                        }
+                    }
+                }
+
+                for (Document document : docToMerge.keySet()) {
+                    System.out.println(document.getName());
+                }
+            }
+
+
         });
 
         pause.play();
@@ -171,6 +188,20 @@ public class FolderController {
             return cell;
         });
 
+    }
+
+    private Document getMyDocByName(String docName) {
+        for (Document doc : DocumentController.getDocuments()) {
+            if (doc.getName().equals(docName)) return doc;
+        }
+        return null;
+    }
+
+    private LineModel getMyLineByDocAndId(Document doc, UUID idLine) {
+        for (LineModel line : doc.getLines()) {
+            if (line.getIdLine().equals(idLine)) return line;
+        }
+        return null;
     }
 
     // Ouvrir le fichier sélectionné dans le ListView
