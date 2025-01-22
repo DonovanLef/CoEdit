@@ -314,6 +314,22 @@ public class ChatController {
     public void lockTextArea(boolean disable) {
         if (this.sharedTextArea == null) return;
         this.sharedTextArea.setDisable(disable);
+
+        Document doc = null;
+
+        for (Document document : DocumentController.getDocuments()) {
+            if (document.getName().equals(this.file.getName()))
+                doc = document;
+        }
+
+        if (doc != null)
+            lines = (ArrayList<LineModel>) doc.getLines();
+        else {
+            lines = new ArrayList<>();
+            lines.add(new LineModel(Controller.ctrl.getUsername(), this.file.getName()));
+        }
+        
+        this.setTextArea();
     }
 
 }
