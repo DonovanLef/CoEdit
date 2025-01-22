@@ -111,12 +111,14 @@ public class FolderController {
                         e.printStackTrace();
                     }
                 }
+                else {
+                    Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
+                }
 
             }
 
             this.fileListView.setDisable(false);
             this.btnAdd.setDisable(false);
-            Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
 
 
         });
@@ -299,10 +301,11 @@ public class FolderController {
         if (erreur.length() == 0) {
             fileListView.getItems().add(doc.getName());
             doc.save(Folder.PATH);
-            DocumentController.addDocument(doc);
         } else {
             doc.save(Folder.PATH);
         }
+        this.folder.scanDocumentsFolder();
+
     }
 
     public LineModel getMyLine(UUID idLine, Document myDoc) {
