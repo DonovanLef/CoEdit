@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -27,6 +28,8 @@ public class ConflictsController {
 
     private Document leftDoc;
     private Document rightDoc;
+
+    private Button btn;
 
     @FXML
     public void initialize() {
@@ -56,7 +59,7 @@ public class ConflictsController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
                 Parent root = loader.load();
 
-                Stage stage = new Stage();
+                Stage stage = (Stage) btn.getScene().getWindow();                
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {
@@ -90,5 +93,9 @@ public class ConflictsController {
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void setButton(Button btnAdd) {
+        this.btn = btnAdd;
     }
 }

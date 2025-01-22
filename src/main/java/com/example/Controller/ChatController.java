@@ -49,6 +49,10 @@ public class ChatController {
     private int savedLineCaretPosition = 0;
     private int charBefore;
 
+    public Button getButton() {
+        return saveButton;
+    }
+
     public void saveCaretPosition() {
         savedCaretPosition = sharedTextArea.getCaretPosition();
 

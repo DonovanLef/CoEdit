@@ -39,6 +39,9 @@ public class ScreenLockController {
 	}
 
     public void openLock(Button btn) {
+        if (btn == null) {
+            btn = Controller.ctrl.getChatController().getButton();
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/LockView.fxml"));
             Parent root = loader.load();

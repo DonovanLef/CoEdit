@@ -102,6 +102,7 @@ public class FolderController {
                         Parent root = loader.load();
                         ConflictsController controller = loader.getController();
                         controller.setDocuments(docToMerge);
+                        controller.setButton(btnAdd);
         
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root));
