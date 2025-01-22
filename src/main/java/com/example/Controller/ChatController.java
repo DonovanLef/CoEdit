@@ -308,4 +308,9 @@ public class ChatController {
         }
     }
 
+    public void lockTextArea(boolean disable) {
+        if (this.sharedTextArea == null) return;
+        this.sharedTextArea.setDisable(disable);
+    }
+
 }

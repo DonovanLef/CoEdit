@@ -96,7 +96,6 @@ public class FolderController {
 
                 if (!docToMerge.isEmpty()) {
                     try {
-                        Controller.ctrl.getMulticastEditor().sendLockView();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
                         
                         Parent root = loader.load();
@@ -117,6 +116,7 @@ public class FolderController {
 
             this.fileListView.setDisable(false);
             this.btnAdd.setDisable(false);
+            Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
 
 
         });

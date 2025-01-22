@@ -123,7 +123,7 @@ public class MulticastEditor {
         }
     }
 
-    public void sendLockView() {
+    public void sendUnlockTextArea() {
         try {
             byte[] v = Controller.ctrl.getNetworkController().IntToByte((short)204);
             byte[] d = new byte[0];

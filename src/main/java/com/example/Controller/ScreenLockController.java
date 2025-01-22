@@ -47,7 +47,6 @@ public class ScreenLockController {
             Parent root = loader.load();
 
             Stage stage = (Stage) btn.getScene().getWindow();
-            stage.setTitle("Merge en cours");
             stage.setScene(new Scene(root));
             stage.show();
 

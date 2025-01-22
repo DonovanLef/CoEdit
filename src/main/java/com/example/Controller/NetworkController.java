@@ -52,6 +52,7 @@ public class NetworkController {
 		if (code == 202) {
 			// Skip si c'est nous qui avions envoyé la demande 202;
 			Controller.ctrl.getChatController().sendDocuments();
+			Controller.ctrl.getChatController().lockTextArea(true);
 		}
 
 		// récéption d'un document, uniquement à la connexion
@@ -80,7 +81,7 @@ public class NetworkController {
 		}
 
 		if (code == 204) {
-			Controller.ctrl.getFolderController().lockScreen();
+			Controller.ctrl.getChatController().lockTextArea(false);
 		}
 
 	}
