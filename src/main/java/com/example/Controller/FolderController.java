@@ -127,7 +127,7 @@ public class FolderController {
             }
 
             this.fileListView.setDisable(false);
-            this.fileListView.refresh();
+            fileListView.getItems().addAll(folder.getFileNames());
             this.btnAdd.setDisable(false);
 
 

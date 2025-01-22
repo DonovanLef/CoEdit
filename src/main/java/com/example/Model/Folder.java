@@ -44,9 +44,18 @@ public class Folder {
     // Méthode pour lister les fichiers sous forme de chaînes de caractères (pour l'affichage)
     public List<String> getFileNames() {
         List<String> fileNames = new ArrayList<>();
-        for (File file : files) {
-            fileNames.add(file.getName());
+        File folder = new File(PATH);
+        if (folder.exists() && folder.isDirectory()) {
+            File[] listOfFiles = folder.listFiles();
+            if (listOfFiles != null) {
+                for (File file : listOfFiles) {
+                    if (file.isFile()) {
+                        fileNames.add(file.getName());
+                    }
+                }
+            }
         }
+
         return fileNames;
     }
 
