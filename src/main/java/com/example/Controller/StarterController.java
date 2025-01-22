@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.example.Model.Document;
@@ -11,6 +12,7 @@ public class StarterController {
 
 	public StarterController(){
 		this.lasttime = System.currentTimeMillis();
+		this.documentsReceived = new HashMap<>();
 	}
 
 	public synchronized void updateLastTime(){
