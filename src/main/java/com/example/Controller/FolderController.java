@@ -92,8 +92,6 @@ public class FolderController {
                     if (docToMerge.containsKey(otherDoc)) break;
                     for (LineModel otherLine : otherDoc.getLines()) {
                         LineModel myLine = getMyLineByDocAndId(myDoc,otherLine.getIdLine());
-                        System.out.println(myLine.getLine());
-                        System.out.println(otherLine.getLine());                        
                         if (myLine == null || !myLine.getLine().equals(otherLine.getLine())) {
                             docToMerge.put(otherDoc, myDoc);
                             break;
@@ -110,7 +108,7 @@ public class FolderController {
                         controller.setDocuments(docToMerge);
                         controller.setButton(btnAdd);
         
-                        Stage stage = new Stage();
+                        Stage stage =  (Stage) btnAdd.getScene().getWindow();
                         stage.setScene(new Scene(root));
                         stage.setTitle("Résolution de Conflits");
                         stage.show();

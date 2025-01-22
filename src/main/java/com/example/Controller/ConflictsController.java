@@ -55,12 +55,15 @@ public class ConflictsController {
             alert.setContentText("Plus de documents à comparer.");
             alert.showAndWait();
 
+            // Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
+
+
             try {
                 Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/FolderView.fxml"));
                 Parent root = loader.load();
 
-                Stage stage = (Stage) btn.getScene().getWindow();                
+                Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {
