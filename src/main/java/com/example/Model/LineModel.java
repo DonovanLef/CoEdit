@@ -31,36 +31,40 @@ public class LineModel implements Serializable {
         this.docName = docName;
     }
 
-    public LineModel(UUID idLine, int nbOrder, String createdBy) {
+    public LineModel(UUID idLine, int nbOrder, String createdBy, String docName) {
         this.idLine = idLine;
         this.line = "";
         this.nbOrder = nbOrder;
         this.createdBy = createdBy;
         this.modifiedBy = "";
+        this.docName = docName;
     }
 
-    public LineModel(String createdBy) {
+    public LineModel(String createdBy, String docName) {
         this.idLine = UUID.randomUUID();
         this.line = "";
         this.nbOrder = order++;
         this.createdBy = createdBy;
         this.modifiedBy = "";
+        this.docName = docName;
     }
 
-    public LineModel(String line, int nbOrder, String createdBy) {
+    public LineModel(String line, int nbOrder, String createdBy, String docName) {
         this.idLine = UUID.randomUUID();
         this.line = line;
         this.nbOrder = nbOrder;
         this.createdBy = createdBy;
         this.modifiedBy = "";
+        this.docName = docName;
     }
 
-    public LineModel(String line, String createdBy) {
+    public LineModel(String line, String createdBy, String docName) {
         this.idLine = UUID.randomUUID();
         this.line = line;
         this.nbOrder = order++;
-        this.modifiedBy = "";
         this.createdBy = createdBy;
+        this.modifiedBy = "";
+        this.docName = docName;
     }
 
     public UUID getIdLine() {
@@ -74,6 +78,7 @@ public class LineModel implements Serializable {
     public String getLine() {
         return line;
     }
+
 
     public void setLine(String line, String modifiedBy) {
         this.line = line;
@@ -141,5 +146,9 @@ public class LineModel implements Serializable {
         oos.writeObject(this);
         oos.close();
         return baos.toByteArray();
+    }
+
+    public void setDocName(String docName) {
+        this.docName = docName;
     }
 }

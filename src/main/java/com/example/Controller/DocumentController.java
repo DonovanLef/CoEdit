@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,10 @@ import com.example.Model.Folder;
 public class DocumentController {
 
 	private static Map<String, Document> documents;
+	
+	static{
+		documents = new HashMap<>();
+	}
 
 	public static List<Document> getDocuments() {
 		if (documents == null) {

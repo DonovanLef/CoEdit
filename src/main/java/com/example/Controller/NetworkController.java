@@ -26,6 +26,7 @@ public class NetworkController {
 		int code = this.networkModel.getCode(bytes);
 		byte[] serial = Arrays.copyOfRange(bytes, 2, bytes.length);
 
+		System.out.println(code);
 		// Modification d'une ligne
 		if (code == 100) {
 			LineModel line = this.networkModel.handle100(serial);
@@ -75,7 +76,7 @@ public class NetworkController {
 				// newStage.show();
 			// Le cas où on ne l'a pas
 			} else {
-				doc.save(Folder.PATH);
+				Controller.ctrl.getFolderController().createDocument(doc);
 			}
 			starter.documentsReceived.put(doc.getName(), doc);
 			starter.updateLastTime();
