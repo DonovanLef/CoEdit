@@ -313,6 +313,7 @@ public class FolderController {
             if (erreur.length() == 0) {
                 fileListView.getItems().add(doc.getName());
                 doc.save(Folder.PATH);
+                DocumentController.addDocument(doc);
             }
         }
         else {
