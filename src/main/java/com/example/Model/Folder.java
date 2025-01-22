@@ -51,6 +51,7 @@ public class Folder {
     }
 
     public void scanDocumentsFolder() {
+        files.clear();
         // Remplacez ceci par le chemin de votre dossier Documents
         File folder = new File(PATH);
         if (folder.exists() && folder.isDirectory()) {
