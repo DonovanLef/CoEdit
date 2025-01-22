@@ -58,12 +58,6 @@ public class NetworkController {
 		if (code == 203) {
 			StarterController starter = Controller.ctrl.getStarterController();
 
-			if (starter.initTime < (System.currentTimeMillis() - 5000) ) {
-				System.out.println("ça fait 5 secondes que ça a lancé, il serait temps de terminer là gros");
-				for (Document d : starter.documentsReceived.values()) {
-					System.out.println(d.getName());
-				}
-			}
 			// si quelqu'un se reco pendant que je recup
 			if ( starter.lasttime < (System.currentTimeMillis() - 5000) ) {
 				System.out.println("fini");

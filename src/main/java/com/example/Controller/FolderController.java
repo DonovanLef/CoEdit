@@ -10,7 +10,7 @@ import com.example.Model.Document;
 import com.example.Model.Folder;
 import com.example.Model.LineModel;
 
-
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -28,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class FolderController {
 
@@ -61,6 +63,27 @@ public class FolderController {
         folder.scanDocumentsFolder();
 
         Controller.ctrl.getMulticastEditor().sendAskDocuments(Controller.ctrl);
+
+        // on attend 5 secondes 
+        System.out.println("avant");
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        pause.setOnFinished(event -> {
+            // Code à exécuter après les 5 secondes
+            // StarterController starter = Controller.ctrl.getStarterController();
+            // ArrayList<Document> docToMerge = new ArrayList<>();
+            // if (starter.documentsReceived != null && starter.documentsReceived.size() > 0) {
+            //     for (String docName : starter.documentsReceived.keySet()) {
+            //         Document otherDoc = starter.documentsReceived.
+            //         Document myDoc = 
+            //         for (LineModel line : document.getLines()) {
+            //             if (line.getLine().equals(pause))
+            //         }
+            //     }
+            // }
+        });
+
+        pause.play();
+
         // Ajouter la liste des fichiers au ListView
         fileListView.getItems().addAll(folder.getFileNames());
         
