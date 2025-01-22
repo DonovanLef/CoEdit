@@ -1,9 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1212.0" spacing="5.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.ConflictsController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
          <children>
-            <Label fx:id="labelLeft" text="Texte gauche" />
-            <TextArea fx:id="textAreaLeft" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="574.0" />
+            <Label fx:id="labelLeft" text="Texte droit" />
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
                <children>
                   <Button onAction="#onSelectLeft" prefHeight="35.0" text="Sélectionner gauche" />
@@ -15,7 +22,6 @@
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
          <children>
             <Label fx:id="labelRight" text="Texte droit" />
-            <TextArea fx:id="textAreaRight" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="574.0" />
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
                <children>
                   <Button onAction="#onSelectRight" prefHeight="35.0" text="Sélectionner droite" />
