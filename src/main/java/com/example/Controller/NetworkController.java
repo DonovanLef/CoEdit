@@ -79,6 +79,10 @@ public class NetworkController {
 			starter.updateLastTime();
 		}
 
+		if (code == 204) {
+			Controller.ctrl.getFolderController().lockScreen();
+		}
+
 	}
 
 	public byte[] IntToByte(short value) {

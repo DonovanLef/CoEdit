@@ -94,7 +94,9 @@ public class FolderController {
 
                 if (!docToMerge.isEmpty()) {
                     try {
+                        Controller.ctrl.getMulticastEditor().sendLockView();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
+                        
                         Parent root = loader.load();
                         ConflictsController controller = loader.getController();
                         controller.setDocuments(docToMerge);
@@ -282,9 +284,8 @@ public class FolderController {
         alert.showAndWait();
     }
 
-    @FXML
-    private void lockScreen(ActionEvent event) {
-        this.screenLockController.openLock(event);
+    public void lockScreen() {
+        this.screenLockController.openLock(btnAdd);
     }
 
     public void createDocument(Document doc) {
@@ -292,29 +293,9 @@ public class FolderController {
         if (erreur.length() == 0) {
             fileListView.getItems().add(doc.getName());
             doc.save(Folder.PATH);
+        } else {
+            doc.save(Folder.PATH);
         }
-        // else {
-        //     Document myDoc = null;
-        //     for (Document document : DocumentController.getDocuments()) {
-        //         if (document.getName().equals(doc.getName())) {
-        //             myDoc = document;
-        //             break;
-        //         }
-        //     }
-
-        //     if (myDoc != null) {
-        //         for (LineModel line : doc.getLines()) {
-        //             LineModel myLine = getMyLine(line.getIdLine(), myDoc);
-
-        //             if (myLine == null) {
-        //                 myDoc.addLine(line);
-        //             } else {
-        //                 if (!linesToMerge.containsKey(line))
-        //                     linesToMerge.put(line, myLine);
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     public LineModel getMyLine(UUID idLine, Document myDoc) {

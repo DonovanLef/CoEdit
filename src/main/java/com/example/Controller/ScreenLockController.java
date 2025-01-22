@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class ScreenLockController {
@@ -37,13 +38,12 @@ public class ScreenLockController {
         }
 	}
 
-    @FXML
-    public void openLock(ActionEvent event) {
+    public void openLock(Button btn) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/LockView.fxml"));
             Parent root = loader.load();
 
-            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Stage currentStage = (Stage) btn.getScene().getWindow();
             currentStage.close();
 
             Stage newStage = new Stage();

@@ -122,5 +122,17 @@ public class MulticastEditor {
             e.printStackTrace();
         }
     }
+
+    public void sendLockView() {
+        try {
+            byte[] v = Controller.ctrl.getNetworkController().IntToByte((short)204);
+            byte[] d = new byte[0];
+            byte[] data=  Controller.ctrl.getNetworkController().concatenateByteArrays(v, d);
+            sendData(data);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
 }
