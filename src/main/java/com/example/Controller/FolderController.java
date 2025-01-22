@@ -109,6 +109,7 @@ public class FolderController {
                         controller.setButton(btnAdd);
         
                         Stage stage =  (Stage) btnAdd.getScene().getWindow();
+                        controller.setFolderStage(stage);
                         stage.setScene(new Scene(root));
                         stage.setTitle("Résolution de Conflits");
                         stage.show();
