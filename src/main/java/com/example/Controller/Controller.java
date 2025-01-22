@@ -2,6 +2,8 @@ package com.example.Controller;
 
 import com.example.Model.MulticastEditor;
 
+import javafx.stage.Stage;
+
 public class Controller {
 
 	public static Controller ctrl;
@@ -13,6 +15,7 @@ public class Controller {
 	private NameEntryController nameEntryController;
 	private StarterController starterController;
 	private MulticastEditor multicastEditor;
+	private Stage stage;
 
 	public Controller() {
 		ctrl = this;
@@ -45,6 +48,12 @@ public class Controller {
 	}
 	public NameEntryController getNameEntryController() {
 		return nameEntryController;
+	}
+	public Stage getStage() {
+		return stage;
+	}
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 
 	public StarterController getStarterController(){

@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import com.example.Model.Document;
@@ -72,16 +73,20 @@ public class NetworkController {
 			// ça c'est le cas où on l'a déjà
 			if ( DocumentController.getDocumentsMap().containsKey(doc.getName()) ){
 				Controller.ctrl.getConflictsController().setText(doc.getLines().toString(), DocumentController.getDocumentsMap().get(doc.getName()).getLines().toString());
-				// FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
-            	// Parent root = loader.load();
-
-				// Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-				// currentStage.close();
-
-				// Stage newStage = new Stage();
-				// newStage.setTitle("Nouvelle Vue");
-				// newStage.setScene(new Scene(root));
-				// newStage.show();
+				 
+				
+				 
+				 Controller.ctrl.getStage().setTitle("Éditeur partagé");
+				 try {
+					System.out.println("iciiiiii");
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/View/ConflictsView.fxml"));
+					Controller.ctrl.getStage().setScene(new Scene(loader.load()));
+					Controller.ctrl.getStage().show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			// Le cas où on ne l'a pas
 			} else {
 				Controller.ctrl.getFolderController().createDocument(doc);
