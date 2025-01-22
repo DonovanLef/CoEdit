@@ -1,8 +1,10 @@
 package com.example.Controller;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
@@ -34,7 +37,6 @@ public class ChatController {
     private TextField messageInput;
     @FXML
     private Button saveButton;
-
 
     private File file;
 
@@ -136,7 +138,8 @@ public class ChatController {
 
         // // Debug : Afficher les identifiants et le contenu
         // lines.forEach(line -> System.out.println(
-        //         "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : " + line.getCreatedBy()));
+        // "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : "
+        // + line.getCreatedBy()));
     }
 
     public void setTextArea() {
@@ -172,36 +175,36 @@ public class ChatController {
         System.out.println(line.getLine());
 
         if (this.file != null && line.getDocName().equals(this.file.getName())) {
-            if (line.getModifiedBy() != null && line.getModifiedBy().equals(Controller.ctrl.getUsername())) return;
+            if (line.getModifiedBy() != null && line.getModifiedBy().equals(Controller.ctrl.getUsername()))
+                return;
             double savedScrollY = 0;
             double savedScrollX = 0;
-    
+
             ScrollBar scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
             ScrollBar scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
-    
+
             if (scrollBarVertical != null) {
                 savedScrollY = scrollBarVertical.getValue();
             }
             if (scrollBarHorizontal != null) {
                 savedScrollX = scrollBarHorizontal.getValue();
             }
-    
+
             saveCaretPosition();
-    
+
             this.addLineCurrentDoc(line);
             this.setTextArea();
-    
+
             scrollBarVertical = (ScrollBar) sharedTextArea.lookup(".scroll-bar:vertical");
             scrollBarHorizontal = (ScrollBar) sharedTextArea.lookup(".scroll-bar:horizontal");
-        
+
             if (scrollBarVertical != null) {
                 scrollBarVertical.setValue(savedScrollY);
             }
             if (scrollBarHorizontal != null) {
                 scrollBarHorizontal.setValue(savedScrollX);
             }
-        }
-        else {
+        } else {
             this.addLine(line);
         }
 
@@ -215,8 +218,9 @@ public class ChatController {
                 break;
             }
         }
-    
-        if (doc == null) return; 
+
+        if (doc == null)
+            return;
 
         Iterator<LineModel> iterator = doc.getLines().iterator();
         while (iterator.hasNext()) {
@@ -242,20 +246,19 @@ public class ChatController {
                     }
                 }
 
-                byte[] v = Controller.ctrl.getNetworkController().IntToByte((short)203);
+                byte[] v = Controller.ctrl.getNetworkController().IntToByte((short) 203);
                 byte[] d = doc.toByteArray();
-                byte[] data=  Controller.ctrl.getNetworkController().concatenateByteArrays(v, d);
-                //two array in one
+                byte[] data = Controller.ctrl.getNetworkController().concatenateByteArrays(v, d);
+                // two array in one
                 Controller.ctrl.getMulticastEditor().sendData(data);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void askDocuments(){
-        Controller.ctrl.getMulticastEditor().sendData((short)202, new byte[0]);
+    public void askDocuments() {
+        Controller.ctrl.getMulticastEditor().sendData((short) 202, new byte[0]);
     }
 
     // Méthode appelée lorsqu'on clique sur "Enregistrer"
@@ -270,6 +273,28 @@ public class ChatController {
                 System.out.println(lineModel.getLine());
             }
             document.save(Folder.PATH);
+        }
+    }
+
+    @FXML
+    private void onExport(ActionEvent event) {
+        String content = sharedTextArea.getText();
+
+        String fileName = this.file.getName();
+
+        File file = new File(Folder.PATH_EXPORT + fileName.substring(0, fileName.length()-3) + "txt");
+
+        try {
+            file.getParentFile().mkdirs();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write(content);
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Export effectué");
+            alert.setContentText("Votre fichier est disponible dans le dossier export.");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -319,7 +344,8 @@ public class ChatController {
     }
 
     public void lockTextArea(boolean disable) {
-        if (this.sharedTextArea == null) return;
+        if (this.sharedTextArea == null)
+            return;
         this.sharedTextArea.setDisable(disable);
 
         Document doc = null;

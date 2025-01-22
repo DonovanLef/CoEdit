@@ -8,9 +8,10 @@
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" style="-fx-padding: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.ChatController">
    <children>
       <TextArea fx:id="sharedTextArea" editable="true" VBox.vgrow="ALWAYS" />
-      <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
+      <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="100.0">
          <children>
             <Button onAction="#onBack" prefHeight="26.0" text="← Retour" />
+            <Button onAction="#onExport" prefHeight="33.0" text="Exporter" />
             <Button onAction="#onSave" prefHeight="33.0" text="Enregistrer" />
          </children>
       </HBox>

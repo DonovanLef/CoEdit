@@ -11,6 +11,7 @@ public class Folder {
 
     private List<File> files;
     public static final String PATH = System.getProperty("user.dir") +"/documents/";
+    public static final String PATH_EXPORT = System.getProperty("user.dir") +"/export/";
 
     public Folder() {
         files = new ArrayList<>();
