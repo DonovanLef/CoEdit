@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -25,10 +26,10 @@ public class ConflictsController {
     private TextArea textAreaRight;
 
     @FXML
-    private Text leftText;
+    private Label labelLeft;
 
     @FXML
-    private Text rightText;
+    private Label labelRight;
 
     private Iterator<Map.Entry<Document, Document>> iterator;
     private Map.Entry<Document, Document> currentEntry;
@@ -55,9 +56,9 @@ public class ConflictsController {
             leftDoc = (Document) currentEntry.getKey();
             rightDoc = (Document) currentEntry.getValue();
 
-            leftText.setText(leftDoc.getName() + " entrant");
+            labelLeft.setText(leftDoc.getName() + " entrant");
             textAreaLeft.setText(getTextByDoc(leftDoc));
-            rightText.setText(rightDoc.getName() + " actuel");
+            labelRight.setText(rightDoc.getName() + " actuel");
             textAreaRight.setText(getTextByDoc(rightDoc));
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
