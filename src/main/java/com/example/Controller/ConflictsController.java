@@ -1,5 +1,12 @@
 package com.example.Controller;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.example.Model.Document;
+import com.example.Model.LineModel;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,13 +15,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.example.Model.Document;
-import com.example.Model.LineModel;
 
 public class ConflictsController {
     @FXML

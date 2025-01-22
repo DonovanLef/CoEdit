@@ -10,8 +10,8 @@
       <TextArea fx:id="sharedTextArea" editable="true" VBox.vgrow="ALWAYS" />
       <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
          <children>
-            <Button onAction="#onBack" prefHeight="26.0" prefWidth="66.0" text="← Retour" />
-            <Button onAction="#onSave" prefHeight="33.0" prefWidth="94.0" text="Enregistrer" />
+            <Button onAction="#onBack" prefHeight="26.0" text="← Retour" />
+            <Button onAction="#onSave" prefHeight="33.0" text="Enregistrer" />
          </children>
       </HBox>
    </children>
