@@ -13,7 +13,7 @@
             <TextArea fx:id="textAreaLeft" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="574.0" />
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
                <children>
-                  <Button onAction="#onSelectLeft" prefHeight="35.0" prefWidth="131.0" text="Sélectionner gauche" />
+                  <Button onAction="#onSelectLeft" prefHeight="35.0" text="Sélectionner gauche" />
                </children>
             </HBox>
          </children>
@@ -24,7 +24,7 @@
             <TextArea fx:id="textAreaRight" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="574.0" />
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
                <children>
-                  <Button onAction="#onSelectRight" prefHeight="35.0" prefWidth="131.0" text="Sélectionner droite" />
+                  <Button onAction="#onSelectRight" prefHeight="35.0" text="Sélectionner droite" />
                </children>
             </HBox>
          </children>
