@@ -10,7 +10,7 @@
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
          <children>
-            <Text fx:id="leftTextField" alignment="CENTER">
+            <Text fx:id="leftText" alignment="CENTER">
             <TextArea fx:id="textAreaLeft" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="574.0" />
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
                <children>
@@ -22,7 +22,7 @@
       <Separator orientation="VERTICAL" prefHeight="200.0" />
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
          <children>
-            <Text fx:id="rightTextField" alignment="CENTER">
+            <Text fx:id="rightText" alignment="CENTER">
             <TextArea fx:id="textAreaRight" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="574.0" />
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="400.0">
                <children>
