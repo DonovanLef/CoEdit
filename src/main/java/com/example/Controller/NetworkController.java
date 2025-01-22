@@ -71,7 +71,7 @@ public class NetworkController {
 			if (doc == null) return;
 
 			// ça c'est le cas où on l'a déjà reçu
-			if ( starter.documentsReceived.containsKey(doc.getName())) return;
+			// if ( starter.documentsReceived.containsKey(doc.getName())) return;
 
 			// ça c'est le cas où on l'a déjà
 			if ( !DocumentController.getDocumentsMap().containsKey(doc.getName()) ){

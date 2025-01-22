@@ -89,12 +89,12 @@ public class FolderController {
                         docToMerge.put(otherDoc, myDoc);
                     }
 
+                    if (docToMerge.containsKey(otherDoc)) break;
                     for (LineModel otherLine : otherDoc.getLines()) {
                         LineModel myLine = getMyLineByDocAndId(myDoc,otherLine.getIdLine());
                         System.out.println(myLine.getLine());
                         System.out.println(otherLine.getLine());                        
                         if (myLine == null || !myLine.getLine().equals(otherLine.getLine())) {
-
                             docToMerge.put(otherDoc, myDoc);
                             break;
                         }
