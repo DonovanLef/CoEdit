@@ -62,7 +62,6 @@ public class ConflictsController {
             // Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
             // stage.setScene(stageFolder.getScene());
             // stage.show();
-            DocumentController.clear();
 
             try {
                 Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
