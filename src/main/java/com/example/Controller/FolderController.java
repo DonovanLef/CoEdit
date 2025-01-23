@@ -47,7 +47,6 @@ public class FolderController {
 
     private Folder folder;
 
-    private ScreenLockController screenLockController;
 
     public Folder getFolder() {
         return this.folder;
@@ -56,7 +55,6 @@ public class FolderController {
     @FXML
     public void initialize() {
 
-        this.screenLockController = new ScreenLockController();
 
         Controller.ctrl.setFolderController(this);
 
@@ -302,9 +300,7 @@ public class FolderController {
         alert.showAndWait();
     }
 
-    public void lockScreen() {
-        this.screenLockController.openLock(btnAdd);
-    }
+
 
     public void createDocument(Document doc) {
         this.folder.scanDocumentsFolder();
