@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import com.example.Model.MulticastEditor;
+import com.example.Model.Starter;
 
 public class Controller {
 
@@ -11,7 +12,7 @@ public class Controller {
 	private NetworkController networkController;
 	private FolderController folderController;
 	private NameEntryController nameEntryController;
-	private StarterController starterController;
+	private Starter starter;
 	private MulticastEditor multicastEditor;
 
 	public Controller() {
@@ -21,7 +22,7 @@ public class Controller {
 		this.networkController = new NetworkController();
 		this.folderController = new FolderController();
 		this.nameEntryController = new NameEntryController();
-		this.starterController = new StarterController();
+		this.starter = new Starter();
 
 		try {
             // Initialisation du MulticastEditor avec un callback pour recevoir les messages
@@ -47,8 +48,8 @@ public class Controller {
 		return nameEntryController;
 	}
 
-	public StarterController getStarterController(){
-		return starterController;
+	public Starter getStarterController(){
+		return starter;
 	}
 
 	public String getUsername() {

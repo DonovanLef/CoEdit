@@ -6,6 +6,7 @@ import com.example.Model.Document;
 import com.example.Model.Folder;
 import com.example.Model.LineModel;
 import com.example.Model.NetworkModel;
+import com.example.Model.Starter;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,7 +57,7 @@ public class NetworkController {
 
 		// récéption d'un document, uniquement à la connexion
 		if (code == 203) {
-			StarterController starter = Controller.ctrl.getStarterController();
+			Starter starter = Controller.ctrl.getStarterController();
 
 			// si quelqu'un se reco pendant que je recup
 			if ( starter.lasttime < (System.currentTimeMillis() - 5000) ) {

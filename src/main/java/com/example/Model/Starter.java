@@ -1,17 +1,15 @@
-package com.example.Controller;
+package com.example.Model;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.Model.Document;
-
-public class StarterController {
+public class Starter {
 
 	public long lasttime; 
 	public Map<String, Document> documentsReceived;
 	public long initTime;
 
-	public StarterController(){
+	public Starter(){
 		this.lasttime = System.currentTimeMillis();
 		this.documentsReceived = new HashMap<>();
 		this.initTime = System.currentTimeMillis();

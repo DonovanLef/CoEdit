@@ -10,6 +10,7 @@ import java.util.UUID;
 import com.example.Model.Document;
 import com.example.Model.Folder;
 import com.example.Model.LineModel;
+import com.example.Model.Starter;
 
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
@@ -70,7 +71,7 @@ public class FolderController {
         PauseTransition pause = new PauseTransition(Duration.seconds(3)); // 5 par défaut mais 3 pour les tests
         pause.setOnFinished(event -> {
             // Code à exécuter après les 5 secondes
-            StarterController starter = Controller.ctrl.getStarterController();
+            Starter starter = Controller.ctrl.getStarterController();
             Map<Document, Document> docToMerge = new HashMap<>();
             if (starter.documentsReceived != null && starter.documentsReceived.size() > 0) {
                 for (String docName : starter.documentsReceived.keySet()) {
