@@ -136,10 +136,6 @@ public class ChatController {
             lines.remove(lines.size() - 1);
         }
 
-        // // Debug : Afficher les identifiants et le contenu
-        // lines.forEach(line -> System.out.println(
-        // "ID: " + line.getIdLine() + " | Content: " + line.getLine() + " | Created : "
-        // + line.getCreatedBy()));
     }
 
     public void setTextArea() {
@@ -172,8 +168,6 @@ public class ChatController {
     }
 
     public void handleCreateLine(LineModel line) {
-        System.out.println(line.getLine());
-
         if (this.file != null && line.getDocName().equals(this.file.getName())) {
             if (line.getModifiedBy() != null && line.getModifiedBy().equals(Controller.ctrl.getUsername()))
                 return;
@@ -239,12 +233,6 @@ public class ChatController {
                 doc.setLines(lines);
             }
             try {
-                System.out.println(doc.getName());
-                if (doc.getLines() != null) {
-                    for (LineModel lineModel : doc.getLines()) {
-                        System.out.println(lineModel.getLine());
-                    }
-                }
 
                 byte[] v = Controller.ctrl.getNetworkController().IntToByte((short) 203);
                 byte[] d = doc.toByteArray();
@@ -265,12 +253,8 @@ public class ChatController {
     @FXML
     private void onSave() {
         for (Document document : DocumentController.getDocuments()) {
-            System.out.println(document.getName());
             if (document.getName().equals(this.file.getName())) {
                 document.setLines(lines);
-            }
-            for (LineModel lineModel : document.getLines()) {
-                System.out.println(lineModel.getLine());
             }
             document.save(Folder.PATH);
         }

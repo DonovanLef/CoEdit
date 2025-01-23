@@ -37,9 +37,6 @@ public class ConflictsController {
     private Document leftDoc;
     private Document rightDoc;
 
-    private Button btn;
-    private Stage stageFolder;
-
     @FXML
     public void initialize() {
         // Initialisation
@@ -115,11 +112,4 @@ public class ConflictsController {
         alert.showAndWait();
     }
 
-    public void setButton(Button btnAdd) {
-        this.btn = btnAdd;
-    }
-
-    public void setFolderStage(Stage stage) {
-        stageFolder = stage;
-    }
 }

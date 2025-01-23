@@ -27,7 +27,6 @@ public class NetworkController {
 		int code = this.networkModel.getCode(bytes);
 		byte[] serial = Arrays.copyOfRange(bytes, 2, bytes.length);
 
-		System.out.println(code);
 		// Modification d'une ligne
 		if (code == 100) {
 			LineModel line = this.networkModel.handle100(serial);
@@ -61,7 +60,6 @@ public class NetworkController {
 
 			// si quelqu'un se reco pendant que je recup
 			if ( starter.lasttime < (System.currentTimeMillis() - 5000) ) {
-				System.out.println("fini");
 				return;
 			}
 			Document doc = Document.restoreByBytes(serial);

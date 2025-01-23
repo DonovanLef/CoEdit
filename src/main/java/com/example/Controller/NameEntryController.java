@@ -41,8 +41,6 @@ public class NameEntryController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			System.out.println("Veuillez entrer un nom.");
 		}
 	}
 }

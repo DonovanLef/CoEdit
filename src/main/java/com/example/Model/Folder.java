@@ -84,7 +84,6 @@ public class Folder {
             File newFile = new File(PATH, newName);
     
             if (oldFile.exists() && oldFile.renameTo(newFile)) {
-                // System.out.println("Fichier renommé de " + oldName + " à " + newName);
                 files.remove(oldFile);
                 files.add(newFile);
             } else {
@@ -99,9 +98,6 @@ public class Folder {
     public String createFile(String fileName) {
         try {
             File newFile = new File(PATH, fileName);
-    
-            System.out.println(PATH);
-            System.out.println(fileName);
             if (newFile.createNewFile()) {
                 addFile(newFile); // Ajouter au modèle
                 return "";
@@ -109,7 +105,6 @@ public class Folder {
                 return "Attention: Le fichier existe déjà.";
             }
         } catch (IOException e) {
-            System.out.println("Erreur lors de la création du fichier.");
             return "Erreur: Une erreur s'est produite lors de la création du fichier.";
         }
     }
@@ -119,7 +114,6 @@ public class Folder {
         File file = getFile(name);
         if (file != null) {
             if (file.delete()) {
-                System.out.println("Fichier supprimé : " + name);
                 files.remove(file);
             } else {
                 System.out.println("Impossible de supprimer le fichier.");
