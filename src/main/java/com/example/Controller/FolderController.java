@@ -67,7 +67,7 @@ public class FolderController {
         this.fileListView.setDisable(true);
         this.btnAdd.setDisable(true);
         // on attend 5 secondes 
-        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        PauseTransition pause = new PauseTransition(Duration.seconds(3)); // 5 par défaut mais 3 pour les tests
         pause.setOnFinished(event -> {
             // Code à exécuter après les 5 secondes
             StarterController starter = Controller.ctrl.getStarterController();
