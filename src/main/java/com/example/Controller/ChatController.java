@@ -330,14 +330,8 @@ public class ChatController {
     public void lockTextArea(boolean disable) {
         if (this.sharedTextArea == null)
             return;
-        this.sharedTextArea.setDisable(disable);
 
-        if (disable) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Connexion d'un utilisateur");
-            alert.setContentText("Un utilisateur est en train de se connecter et de récuperer vos modifications.");
-            alert.showAndWait();
-        }
+        this.sharedTextArea.setDisable(disable);
 
         Document doc = null;
 
