@@ -16,7 +16,7 @@ public class App extends Application {
         Controller.ctrl.getChatController().askDocuments();
         // Attendre la fin
         // On se connecte, donc on fetch tout, une fois que tout est fetch, on ouvre l'app
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/NameView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("View/FolderView.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Éditeur partagé");
         stage.setScene(scene);
