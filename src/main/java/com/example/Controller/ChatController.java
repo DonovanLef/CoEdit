@@ -332,6 +332,13 @@ public class ChatController {
             return;
         this.sharedTextArea.setDisable(disable);
 
+        if (disable) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Connexion d'un utilisateur");
+            alert.setContentText("Un utilisateur est en train de se connecter et de récuperer vos modifications.");
+            alert.showAndWait();
+        }
+
         Document doc = null;
 
         for (Document document : DocumentController.getDocuments()) {

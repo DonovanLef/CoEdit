@@ -55,9 +55,7 @@ public class FolderController {
     @FXML
     public void initialize() {
 
-
         Controller.ctrl.setFolderController(this);
-
 
         // Initialiser le dossier avec des fichiers
         this.folder = new Folder();
@@ -80,7 +78,7 @@ public class FolderController {
                     Document otherDoc = starter.documentsReceived.get(docName);
                     Document myDoc = getMyDocByName(docName);
                     
-                    if (otherDoc.getLines().size() == 0 && myDoc.getLines().size() != 0) {
+                    if (myDoc == null || otherDoc.getLines().size() == 0 && myDoc.getLines().size() != 0) {
                         docToMerge.put(otherDoc, myDoc);
                     }
 
@@ -269,9 +267,7 @@ public class FolderController {
         String erreur = folder.createFile(fileName);
         // Créer un nouveau fichier dans le dossier documents
         if (erreur.length() > 0) {
-            // // Afficher une alerte si le fichier existe déjà
-            // String[] parts = erreur.split(":");
-            // showAlert(parts[0], parts[1], AlertType.WARNING);
+            showAlert("Erreur", "Impossible de créer ce fichier", AlertType.WARNING);
         } else {
             // Ajouter le nom du fichier à la liste
             fileListView.getItems().add(fileName);

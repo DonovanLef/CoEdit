@@ -63,13 +63,6 @@ public class ConflictsController {
             alert.setContentText("Plus de documents à comparer.");
             alert.showAndWait();
 
-            // Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
-            // Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
-
-            // Stage stage = (Stage) textAreaLeft.getScene().getWindow();                
-            // stage.setScene(stageFolder.getScene());
-            // stage.show();
-
             try {
                 Controller.ctrl.getMulticastEditor().sendUnlockTextArea();
                 Controller.ctrl.getStarterController().clearDocumentsReceived();
